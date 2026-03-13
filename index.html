@@ -3260,6 +3260,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
               🔔<span style={{position:'absolute',top:-4,right:-4,background:'#e53e3e',color:'#fff',borderRadius:'50%',fontSize:9,width:14,height:14,display:'flex',alignItems:'center',justifyContent:'center'}}>{overdue}</span>
             </button>}
             <button className="ibtn" onClick={()=>setQnote(v=>!v)} title="Hızlı not">✎</button>
+          </div>
           <div className="search-wrap">
             <span className="search-ic">⌕</span>
             <input value={search} onChange={ev=>setSearch(ev.target.value)} placeholder="Ara…"/>
