@@ -10,195 +10,225 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Cabinet+Grotesk:wght@300;400;500;600;700;800&family=Commit+Mono:ital,wght@0,100;0,400;1,100&display=swap" rel="stylesheet"/>
 <style>
-/* Apps Script Web App tam ekran fix */
-html, body { height: 100% !important; margin: 0; padding: 0; overflow: hidden !important; }
-#root { width: 100vw; height: 100vh; overflow: hidden; display: block; }
-.app { width: 100vw !important; }
-</style>
-<style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-/* ══════════════════════════════════════════════
-   FOCUSUP PRO — Design System v7
-   Aesthetic: Linear × Notion — Clean SaaS
-   ══════════════════════════════════════════════ */
 :root{
   --ff:'Cabinet Grotesk',sans-serif;
   --fd:'Instrument Serif',serif;
   --fm:'Commit Mono',monospace;
 
-  /* Clean neutral grays — Notion/Linear inspired */
-  --bg:#F7F7F8;
-  --bg2:#F0F0F1;
-  --bg3:#E5E5E6;
-  --sur:#FFFFFF;
-  --sur2:#FAFAFA;
-  --bd:#E5E5E5;
-  --bd2:#D4D4D4;
+  /* Light — warm ivory system */
+  --bg:#F5F2EC;
+  --bg2:#EDEAE2;
+  --bg3:#E3DFD5;
+  --sur:#FDFCF9;
+  --sur2:#F7F5F0;
+  --bd:#DDD8CE;
+  --bd2:#CCC6BA;
 
-  --ink:#111111;
-  --ink2:#1F1F1F;
-  --ink3:#404040;
-  --ink4:#737373;
-  --ink5:#A3A3A3;
-  --ink6:#D4D4D4;
+  --ink:#18160F;
+  --ink2:#2E2C22;
+  --ink3:#5C5848;
+  --ink4:#8C8674;
+  --ink5:#B8B2A4;
+  --ink6:#D6D1C6;
 
-  /* Accent: Indigo — purposeful, confident */
-  --ac:#4F46E5;
-  --ac2:#6366F1;
-  --ac3:#818CF8;
-  --acb:#EEF2FF;
-  --acbd:#C7D2FE;
-  --actext:#3730A3;
+  /* Accent — deep amber/cognac */
+  --ac:#B8621A;
+  --ac2:#D4782A;
+  --ac3:#E89050;
+  --acb:#FBF2E8;
+  --acbd:#F0C898;
+  --actext:#7A3E0A;
 
-  /* Semantic */
-  --gn:#16A34A;--gnb:#F0FDF4;--gnbd:#BBF7D0;
-  --rd:#DC2626;--rdb:#FEF2F2;--rdbd:#FECACA;
-  --bl:#2563EB;--blb:#EFF6FF;--blbd:#BFDBFE;
-  --pu:#7C3AED;--pub:#F5F3FF;--pubd:#DDD6FE;
-  --tl:#0D9488;--tlb:#F0FDFA;--tlbd:#99F6E4;
-  --or:#EA580C;--orb:#FFF7ED;--orbd:#FED7AA;
+  /* Status */
+  --gn:#1F6B42;--gnb:#EAF5EF;--gnbd:#8ECFAC;
+  --rd:#B52B1E;--rdb:#FBF0EE;--rdbd:#EDA89F;
+  --bl:#1A52B8;--blb:#EEF3FB;--blbd:#98B8EE;
+  --pu:#6B28C8;--pub:#F2EDFB;--pubd:#C0A0EE;
+  --tl:#0F6B6B;--tlb:#E8F5F5;--tlbd:#7EC8C8;
 
-  /* Shadows — subtle, precise */
-  --sh:0 1px 2px rgba(0,0,0,.05),0 1px 4px rgba(0,0,0,.04);
-  --shm:0 4px 12px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
-  --shl:0 8px 24px rgba(0,0,0,.1),0 4px 8px rgba(0,0,0,.05);
+  /* Shadows */
+  --sh:0 1px 2px rgba(24,22,15,.05),0 2px 8px rgba(24,22,15,.04);
+  --shm:0 2px 12px rgba(24,22,15,.08),0 8px 24px rgba(24,22,15,.06);
+  --shl:0 8px 32px rgba(24,22,15,.12),0 24px 64px rgba(24,22,15,.08);
+  --shxl:0 16px 64px rgba(24,22,15,.16),0 40px 100px rgba(24,22,15,.1);
 
-  /* Radius — slightly tighter */
-  --r:5px;--r2:8px;--r3:10px;--r4:14px;
+  /* Radius */
+  --r:6px;--r2:10px;--r3:14px;--r4:20px;
 
-  /* 8px spacing grid */
-  --sp1:4px;--sp2:8px;--sp3:12px;--sp4:16px;--sp5:20px;--sp6:24px;--sp8:32px;
+  /* Layout */
+  --sw:230px;--th:54px;
 
-  --sw:212px;--th:48px;
+  /* Grain */
+  --grain:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
 [data-dark]{
-  --bg:#0A0A0A;--bg2:#111111;--bg3:#1A1A1A;
-  --sur:#141414;--sur2:#1C1C1C;
-  --bd:#262626;--bd2:#383838;
-  --ink:#FAFAFA;--ink2:#E5E5E5;--ink3:#A3A3A3;--ink4:#737373;--ink5:#404040;--ink6:#262626;
-  --ac:#6366F1;--ac2:#818CF8;--ac3:#A5B4FC;--acb:#1E1B4B;--acbd:#312E81;--actext:#A5B4FC;
-  --gn:#22C55E;--gnb:#052E16;--gnbd:#166534;
-  --rd:#EF4444;--rdb:#1C0A0A;--rdbd:#7F1D1D;
-  --bl:#3B82F6;--blb:#0C1A3A;--blbd:#1E3A6E;
-  --pu:#A78BFA;--pub:#1E1040;--pubd:#4C1D95;
-  --tl:#2DD4BF;--tlb:#021B18;--tlbd:#0F4440;
-  --or:#F97316;--orb:#1C0A00;--orbd:#7C2D12;
-  --sh:0 1px 3px rgba(0,0,0,.5);
-  --shm:0 4px 16px rgba(0,0,0,.6);
-  --shl:0 12px 32px rgba(0,0,0,.7);
+  --bg:#111009;--bg2:#181610;--bg3:#201E16;
+  --sur:#1C1A12;--sur2:#22201A;
+  --bd:#2A281E;--bd2:#343028;
+  --ink:#F0EDE4;--ink2:#C8C4B6;--ink3:#8A8474;--ink4:#5C5848;--ink5:#3A3828;--ink6:#242018;
+  --ac:#D4782A;--ac2:#E89050;--ac3:#F4A86A;--acb:#28200C;--acbd:#5A3C14;--actext:#F0C898;
+  --gn:#28A060;--gnb:#0C1E10;--gnbd:#1A4828;
+  --rd:#D84030;--rdb:#1E0C0A;--rdbd:#4A1814;
+  --bl:#4A7EE8;--blb:#0C1428;--blbd:#1C3060;
+  --pu:#9060E0;--pub:#140A28;--pubd:#341860;
+  --tl:#18A0A0;--tlb:#081818;--tlbd:#183838;
+  --sh:0 1px 2px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.2);
+  --shm:0 2px 12px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  --shl:0 8px 32px rgba(0,0,0,.5),0 24px 64px rgba(0,0,0,.4);
 }
 
 html,body{height:100%;overflow:hidden}
 body{
   font-family:var(--ff);background:var(--bg);color:var(--ink);
-  font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;
-  letter-spacing:-.01em;
+  font-size:13.5px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  transition:background .3s,color .3s;
 }
 
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:4px}
+/* Grain removed for cleaner look */
+
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
 ::-webkit-scrollbar-track{background:transparent}
 
-/* Animations */
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
-@keyframes scaleIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-@keyframes blink{0%,80%,100%{opacity:.15}40%{opacity:1}}
+@keyframes slideIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@keyframes blink{0%,80%,100%{opacity:.12}40%{opacity:1}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes progressFill{from{width:0}to{width:var(--w)}}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-@keyframes tickerScroll{0%{opacity:0;transform:translateY(4px)}10%,90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-4px)}}
+@keyframes tickerScroll{0%{opacity:0;transform:translateY(6px)}10%,90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-6px)}}
 
-.afu{animation:fadeUp .18s cubic-bezier(.22,1,.36,1)}
-.afi{animation:fadeIn .12s ease}
-.asi{animation:slideIn .18s cubic-bezier(.22,1,.36,1)}
-.asi2{animation:scaleIn .16s cubic-bezier(.22,1,.36,1)}
+.afu{animation:fadeUp .25s cubic-bezier(.22,1,.36,1)}
+.afi{animation:fadeIn .2s ease}
+.asi{animation:slideIn .25s cubic-bezier(.22,1,.36,1)}
+.asi2{animation:scaleIn .2s cubic-bezier(.22,1,.36,1)}
 
-/* Layout */
+/* ── Layout ── */
 .app{display:flex;height:100vh;overflow:hidden}
 
-/* Sidebar */
+/* ── Sidebar ── */
 .sidebar{
   width:var(--sw);min-width:var(--sw);
-  background:var(--sur);border-right:1px solid var(--bd);
+  background:var(--sur);
+  border-right:1px solid var(--bd);
   display:flex;flex-direction:column;flex-shrink:0;
+  transition:background .3s,border-color .3s;
 }
+
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 
-/* Topbar */
+/* ── Topbar ── */
 .topbar{
   height:var(--th);min-height:var(--th);
   background:var(--sur);border-bottom:1px solid var(--bd);
-  display:flex;align-items:center;padding:0 var(--sp5);gap:var(--sp2);flex-shrink:0;
+  display:flex;align-items:center;padding:0 20px;gap:10px;flex-shrink:0;
+  transition:background .3s,border-color .3s;
 }
-.content{flex:1;overflow-y:auto;padding:var(--sp5) var(--sp6) 48px}
 
-/* Logo */
-.logo{padding:var(--sp3) var(--sp3) var(--sp3);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:var(--sp2)}
-.lmark{width:26px;height:26px;border-radius:6px;background:var(--ac);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.lname{font-size:13.5px;font-weight:600;color:var(--ink);letter-spacing:-.3px;line-height:1}
-.lver{font-size:9px;color:var(--ink5);font-family:var(--fm);letter-spacing:.4px;margin-top:1px}
+.content{flex:1;overflow-y:auto;padding:24px 28px 40px}
 
-/* Nav — Linear-style */
-.sbody{flex:1;overflow-y:auto;padding:var(--sp2) var(--sp1) var(--sp2)}
-.nsec{font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink5);padding:var(--sp3) var(--sp2) var(--sp1);font-family:var(--fm)}
+/* ── Logo ── */
+.logo{
+  padding:18px 16px 16px;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;gap:10px;
+}
+.lmark{
+  width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--ac),var(--ac2));
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;box-shadow:0 2px 10px rgba(184,98,26,.3),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.lname{font-family:var(--fd);font-weight:400;font-style:italic;font-size:15px;color:var(--ink);letter-spacing:-.1px;line-height:1}
+.lver{font-size:9px;color:var(--ink5);font-family:var(--fm);letter-spacing:1px;margin-top:2px}
+
+/* ── Nav ── */
+.sbody{flex:1;overflow-y:auto;padding:8px 8px 6px}
+.nsec{
+  font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--ink6);padding:14px 8px 4px;font-family:var(--fm);
+}
 .ni{
-  display:flex;align-items:center;gap:var(--sp2);padding:5px var(--sp2);
-  border-radius:var(--r);cursor:pointer;font-size:13px;color:var(--ink4);
-  border:none;background:none;width:100%;text-align:left;font-family:var(--ff);font-weight:400;
-  transition:background .08s,color .08s;
+  display:flex;align-items:center;gap:8px;padding:7px 9px;
+  border-radius:var(--r);cursor:pointer;font-size:12.5px;color:var(--ink4);
+  transition:all .15s;border:none;background:none;width:100%;text-align:left;
+  font-family:var(--ff);font-weight:500;
 }
 .ni:hover{background:var(--bg2);color:var(--ink2)}
-.ni.on{background:var(--bg2);color:var(--ink);font-weight:500}
-.ni-ic{font-size:14px;width:18px;text-align:center;flex-shrink:0;opacity:.55}
-.ni.on .ni-ic{opacity:1}
-.ni-bd{margin-left:auto;background:var(--rd);color:#fff;font-size:8px;font-weight:600;padding:1px 5px;border-radius:10px;font-family:var(--fm);min-width:16px;text-align:center}
-.ni-soft{margin-left:auto;color:var(--ink5);font-size:10px;font-family:var(--fm)}
-.sfoot{padding:var(--sp2) var(--sp1) var(--sp3);border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:2px}
-.sfrow{display:flex;gap:var(--sp1)}
-
-/* Buttons */
-.btn{
-  display:inline-flex;align-items:center;gap:var(--sp1);
-  padding:5px 11px;border-radius:var(--r);
-  border:1px solid var(--bd);background:var(--sur);color:var(--ink3);
-  font-family:var(--ff);font-size:12.5px;font-weight:500;cursor:pointer;
-  transition:all .08s;white-space:nowrap;line-height:1.4;
+.ni.on{
+  background:var(--acb);
+  color:var(--ac);font-weight:600;
 }
-.btn:hover{background:var(--bg2);border-color:var(--bd2);color:var(--ink)}
-.btn:active{background:var(--bg3)}
+.ni.on::after{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:2.5px;height:60%;background:var(--ac);border-radius:0 2px 2px 0;position:relative;display:none}
+.ni-ic{font-size:13px;width:16px;text-align:center;flex-shrink:0;opacity:.7}
+.ni.on .ni-ic{opacity:1}
+.ni-bd{margin-left:auto;background:var(--rd);color:#fff;font-size:8.5px;font-weight:700;padding:1px 5px;border-radius:20px;font-family:var(--fm);min-width:16px;text-align:center}
+.ni-soft{margin-left:auto;background:var(--bg3);color:var(--ink5);font-size:9px;font-family:var(--fm);padding:1px 5px;border-radius:20px}
+
+/* ── Sidebar Footer ── */
+.sfoot{padding:8px 8px 12px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:3px}
+.sfrow{display:flex;gap:4px}
+
+/* ── Buttons ── */
+.btn{
+  display:inline-flex;align-items:center;gap:5px;padding:6.5px 13px;
+  border-radius:var(--r);border:1px solid var(--bd);background:var(--sur);color:var(--ink2);
+  font-family:var(--ff);font-size:12.5px;font-weight:500;cursor:pointer;
+  transition:all .15s;white-space:nowrap;line-height:1.4;
+  box-shadow:0 1px 2px rgba(24,22,15,.04);
+}
+.btn:hover{background:var(--bg3);border-color:var(--bd2);box-shadow:var(--sh)}
+.btn:active{box-shadow:none}
 .btn:disabled{opacity:.4;cursor:not-allowed}
-.btnp{background:var(--ac);color:#fff;border-color:var(--ac)}
-.btnp:hover{background:var(--ac2);border-color:var(--ac2);color:#fff}
-.btns{padding:4px 9px;font-size:12px}
+
+.btnp{
+  background:var(--ac);color:#fff;border-color:var(--ac);
+  box-shadow:0 1px 4px rgba(184,98,26,.3),inset 0 1px 0 rgba(255,255,255,.15);
+}
+.btnp:hover{background:var(--ac2);border-color:var(--ac2);box-shadow:0 2px 8px rgba(184,98,26,.35)}
+
+.btns{padding:5px 10px;font-size:11.5px}
 .btnxs{padding:2px 7px;font-size:11px;border-radius:4px}
-.btng{background:transparent;border-color:transparent;color:var(--ink4)}
-.btng:hover{background:var(--bg2);border-color:transparent;color:var(--ink)}
+.btng{background:transparent;border-color:transparent;color:var(--ink4);box-shadow:none}
+.btng:hover{background:var(--bg3);border-color:var(--bd);color:var(--ink);box-shadow:none;transform:none}
 .btnd{color:var(--rd);border-color:var(--rdbd);background:var(--rdb)}
 .btnd:hover{background:var(--rd);color:#fff;border-color:var(--rd)}
+
 .ibtn{
-  width:26px;height:26px;padding:0;display:flex;align-items:center;justify-content:center;
-  border-radius:var(--r);border:none;background:transparent;cursor:pointer;
-  color:var(--ink5);font-size:12px;transition:all .08s;flex-shrink:0;
+  width:28px;height:28px;padding:0;display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r);border:1px solid var(--bd);background:var(--sur);cursor:pointer;
+  color:var(--ink4);font-size:12px;transition:all .15s;flex-shrink:0;
 }
-.ibtn:hover{background:var(--bg2);color:var(--ink)}
+.ibtn:hover{background:var(--bg3);color:var(--ink);border-color:var(--bd2)}
 
-/* Cards */
-.card{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r3)}
-.cp{padding:var(--sp4) var(--sp5)}
+/* ── Cards ── */
+.card{
+  background:var(--sur);border:1px solid var(--bd);
+  border-radius:var(--r3);
+  box-shadow:var(--sh);
+  transition:background .3s,border-color .3s,box-shadow .2s;
+}
+.cp{padding:16px 18px}
 .ch{cursor:pointer}
-.ch:hover{border-color:var(--bd2);box-shadow:var(--sh)}
+.ch:hover{border-color:var(--bd2);box-shadow:var(--shm)}
 
-/* Stat card — clean numbers */
-.scard{padding:var(--sp4) var(--sp4)}
-.snum{font-size:24px;font-weight:600;line-height:1;margin-bottom:2px;letter-spacing:-.5px}
-.slbl{font-size:10px;color:var(--ink5);font-weight:500;text-transform:uppercase;letter-spacing:.06em;font-family:var(--fm);margin-top:3px}
+/* Stat card */
+.scard{padding:16px 18px}
+.snum{font-family:var(--fd);font-size:28px;line-height:1;font-style:italic;margin-bottom:2px}
+.slbl{font-size:9.5px;color:var(--ink4);font-weight:600;text-transform:uppercase;letter-spacing:1px;font-family:var(--fm);margin-top:4px}
 .sdesc{font-size:11px;color:var(--ink5);margin-top:2px}
 
-/* Tags */
-.tag{display:inline-flex;align-items:center;gap:2px;padding:1px 6px;border-radius:var(--r);font-size:11px;font-weight:500;background:var(--bg2);color:var(--ink4);border:1px solid var(--bd)}
+/* ── Tags ── */
+.tag{
+  display:inline-flex;align-items:center;gap:3px;padding:2px 7px;
+  border-radius:20px;font-size:10.5px;font-weight:500;
+  background:var(--bg3);color:var(--ink4);border:1px solid var(--bd);
+}
 .tg{background:var(--gnb);color:var(--gn);border-color:var(--gnbd)}
 .tr{background:var(--rdb);color:var(--rd);border-color:var(--rdbd)}
 .ta{background:var(--acb);color:var(--ac);border-color:var(--acbd)}
@@ -206,294 +236,396 @@ body{
 .tp{background:var(--pub);color:var(--pu);border-color:var(--pubd)}
 .tt{background:var(--tlb);color:var(--tl);border-color:var(--tlbd)}
 
-/* Forms */
-.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
-.field label{font-size:11px;font-weight:500;color:var(--ink4)}
+/* ── Form ── */
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:13px}
+.field label{font-size:10px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:1px;font-family:var(--fm)}
 input,textarea,select{
   background:var(--bg2);border:1px solid var(--bd);color:var(--ink);
-  font-family:var(--ff);border-radius:var(--r);padding:7px 10px;
+  font-family:var(--ff);border-radius:var(--r);padding:7.5px 11px;
   font-size:13px;outline:none;width:100%;
-  transition:border-color .08s,box-shadow .08s;
+  transition:border-color .15s,background .15s,box-shadow .15s;
   -webkit-appearance:none;
 }
 input:focus,textarea:focus,select:focus{
   border-color:var(--ac);background:var(--sur);
-  box-shadow:0 0 0 2px var(--acbd);
+  box-shadow:0 0 0 3px rgba(184,98,26,.1);
 }
 input::placeholder,textarea::placeholder{color:var(--ink5)}
 select option{background:var(--sur)}
-.fr2{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp2)}
-.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--sp2)}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .chk{
-  width:14px;height:14px;border-radius:3px;
+  width:15px;height:15px;border-radius:3px;
   border:1.5px solid var(--bd2);background:var(--sur);cursor:pointer;
-  appearance:none;flex-shrink:0;position:relative;transition:all .08s;
+  appearance:none;flex-shrink:0;position:relative;transition:all .12s;margin-top:1px;
 }
 .chk:checked{background:var(--ac);border-color:var(--ac)}
-.chk:checked::after{content:'✓';position:absolute;color:#fff;font-size:8px;font-weight:700;top:50%;left:50%;transform:translate(-50%,-50%)}
+.chk:checked::after{content:'✓';position:absolute;color:#fff;font-size:9px;font-weight:700;top:50%;left:50%;transform:translate(-50%,-50%)}
 
-/* Progress */
-.pb{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}
-.pf{height:100%;border-radius:2px;transition:width .4s cubic-bezier(.22,1,.36,1)}
+/* ── Progress Bar ── */
+.pb{height:4px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.pf{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.22,1,.36,1)}
 
-/* Modal */
-.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:300;display:flex;align-items:center;justify-content:center;padding:var(--sp5);backdrop-filter:blur(4px);animation:fadeIn .1s ease}
-.modal{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r4);width:100%;max-width:520px;box-shadow:var(--shl);max-height:90vh;display:flex;flex-direction:column;animation:scaleIn .16s cubic-bezier(.22,1,.36,1)}
-.mlg{max-width:640px}
-.mhd{padding:var(--sp3) var(--sp5);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.mtit{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-.2px}
-.mbd{padding:var(--sp4);overflow-y:auto;flex:1}
-.mft{padding:var(--sp3) var(--sp4);border-top:1px solid var(--bd);display:flex;gap:var(--sp2);justify-content:flex-end;flex-shrink:0}
+/* ── Modal ── */
+.backdrop{
+  position:fixed;inset:0;background:rgba(24,22,15,.45);z-index:300;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  backdrop-filter:blur(8px);animation:fadeIn .15s ease;
+}
+.modal{
+  background:var(--sur);border:1px solid var(--bd);border-radius:var(--r4);
+  width:100%;max-width:520px;box-shadow:var(--shl);
+  max-height:90vh;display:flex;flex-direction:column;
+  animation:scaleIn .2s cubic-bezier(.22,1,.36,1);
+}
+.mlg{max-width:660px}
+.mhd{
+  padding:18px 20px;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.mtit{font-family:var(--fd);font-style:italic;font-size:16px;color:var(--ink)}
+.mbd{padding:20px;overflow-y:auto;flex:1}
+.mft{padding:13px 20px;border-top:1px solid var(--bd);display:flex;gap:7px;justify-content:flex-end;flex-shrink:0}
 
-/* Drawer */
+/* ── Detail Drawer ── */
 .dover{position:fixed;inset:0;z-index:200;display:flex}
-.dbg{flex:1;background:rgba(0,0,0,.12);backdrop-filter:blur(2px)}
-.dpan{width:400px;background:var(--sur);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;animation:slideIn .18s cubic-bezier(.22,1,.36,1);box-shadow:var(--shl)}
-.dhd{padding:var(--sp3) var(--sp4);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.dpan-body{flex:1;overflow-y:auto;padding:var(--sp4)}
+.dbg{flex:1;background:rgba(24,22,15,.2);backdrop-filter:blur(3px)}
+.dpan{
+  width:440px;background:var(--sur);border-left:1px solid var(--bd);
+  display:flex;flex-direction:column;overflow:hidden;
+  animation:slideIn .25s cubic-bezier(.22,1,.36,1);
+  box-shadow:var(--shl);
+}
+.dhd{
+  padding:18px 20px;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.dpan-body{flex:1;overflow-y:auto;padding:18px 20px}
 
-/* Page headers */
-.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--sp4);gap:var(--sp3)}
-.ptit{font-size:18px;font-weight:600;color:var(--ink);line-height:1.2;letter-spacing:-.4px}
-.psub{font-size:12px;color:var(--ink5);margin-top:2px}
-.slbl2{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink5);margin-bottom:var(--sp2);font-family:var(--fm)}
+/* ── Page headers ── */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:10px}
+.ptit{font-family:var(--fd);font-size:24px;font-weight:400;font-style:italic;color:var(--ink);line-height:1.15;letter-spacing:-.3px}
+.psub{font-size:11.5px;color:var(--ink4);margin-top:3px;font-family:var(--fm)}
 
-/* Grids */
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp3)}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp3)}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp2)}
-.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--sp2)}
+/* ── Grids ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
 
-/* Filter bar */
-.fbar{display:flex;align-items:center;gap:var(--sp1);flex-wrap:wrap;margin-bottom:var(--sp3)}
-.chip{padding:3px 10px;border-radius:var(--r);font-size:12px;font-weight:500;border:1px solid var(--bd);background:var(--sur);cursor:pointer;transition:all .08s;color:var(--ink4);font-family:var(--ff)}
+/* ── Filter bar ── */
+.fbar{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.chip{
+  padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;
+  border:1px solid var(--bd);background:var(--sur);cursor:pointer;
+  transition:all .12s;color:var(--ink4);font-family:var(--ff);
+}
 .chip:hover{border-color:var(--bd2);color:var(--ink);background:var(--bg2)}
-.chip.on{background:var(--ink);color:var(--sur);border-color:var(--ink)}
-[data-dark] .chip.on{background:var(--sur2);color:var(--ink);border-color:var(--bd2)}
-.clbl{font-size:10px;color:var(--ink5);font-family:var(--fm)}
-.div{height:1px;background:var(--bd);margin:var(--sp4) 0}
-.empty{padding:40px var(--sp5);text-align:center;color:var(--ink5);font-size:13px}
-.empty-icon{font-size:24px;opacity:.3;margin-bottom:var(--sp2)}
+.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.clbl{font-size:10px;color:var(--ink5);font-family:var(--fm);letter-spacing:.5px}
+.slbl2{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--ink5);margin-bottom:9px;font-family:var(--fm)}
+
+/* ── Divider ── */
+.div{height:1px;background:var(--bd);margin:16px 0}
+
+/* ── Empty ── */
+.empty{padding:40px;text-align:center;color:var(--ink4);font-size:13px}
+.empty-icon{font-size:32px;opacity:.3;margin-bottom:8px}
+
+/* ── Mono / Serif ── */
 .mono{font-family:var(--fm)}
 .serif{font-family:var(--fd);font-style:italic}
 
-/* Table */
+/* ── Table ── */
 table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:7px var(--sp3);font-size:10px;font-weight:600;color:var(--ink5);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--bd);font-family:var(--fm)}
-td{padding:9px var(--sp3);border-bottom:1px solid var(--bg3);font-size:13px;vertical-align:middle}
+th{text-align:left;padding:9px 13px;font-size:9px;font-weight:700;color:var(--ink5);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--bd);font-family:var(--fm)}
+td{padding:10px 13px;border-bottom:1px solid var(--bg3);font-size:13px;vertical-align:middle}
 tr:last-child td{border:none}
+tbody tr{transition:background .1s}
 tbody tr:hover td{background:var(--bg2)}
 
-/* Priority flags */
-.flag{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:var(--r);font-size:11px;font-weight:500;border:1px solid}
+/* ── Priority flags ── */
+.flag{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10.5px;font-weight:600;border:1px solid}
 .flag-red{background:var(--rdb);color:var(--rd);border-color:var(--rdbd)}
-.flag-orange{background:var(--orb);color:var(--or);border-color:var(--orbd)}
+.flag-orange{background:var(--acb);color:var(--ac);border-color:var(--acbd)}
 .flag-blue{background:var(--blb);color:var(--bl);border-color:var(--blbd)}
-.flag-gray{background:var(--bg2);color:var(--ink5);border-color:var(--bd)}
+.flag-gray{background:var(--bg3);color:var(--ink4);border-color:var(--bd)}
 
-/* Timeline */
-.tl-wrap{position:relative;padding-left:22px}
-.tl-wrap::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:1px;background:var(--bd)}
-.tl-dot{position:absolute;left:0;width:14px;height:14px;border-radius:50%;background:var(--ac);border:2px solid var(--sur);z-index:1;top:4px}
-.tl-dot.done{background:var(--gn)}
-.rec-badge{display:inline-flex;align-items:center;gap:2px;padding:1px 6px;border-radius:var(--r);font-size:10px;font-family:var(--fm);background:var(--pub);color:var(--pu);border:1px solid var(--pubd)}
-.assignee-chip{display:inline-flex;align-items:center;gap:3px;padding:2px 6px;border-radius:var(--r);font-size:11px;background:var(--bg2);color:var(--ink4);border:1px solid var(--bd)}
+/* ── Timeline ── */
+.tl-wrap{position:relative;padding-left:26px}
+.tl-wrap::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:1.5px;background:linear-gradient(180deg,var(--ac),var(--bd))}
+.tl-dot{position:absolute;left:0;width:18px;height:18px;border-radius:50%;background:var(--ac);border:2.5px solid var(--sur);box-shadow:0 0 0 1px var(--ac);z-index:1;top:4px;transition:all .2s}
+.tl-dot.done{background:var(--gn);box-shadow:0 0 0 1px var(--gn)}
 
-/* Kanban */
-.kcol{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r3);padding:var(--sp3);min-height:200px}
-.kchd{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--sp3);padding-bottom:var(--sp2);border-bottom:1px solid var(--bd)}
-.kcard{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r2);padding:10px var(--sp3);margin-bottom:var(--sp2);cursor:grab;transition:border-color .08s;box-shadow:var(--sh)}
-.kcard:hover{border-color:var(--bd2);box-shadow:var(--shm)}
-.kcard:active{cursor:grabbing}
+/* ── Recurrence ── */
+.rec-badge{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;border-radius:20px;font-size:9.5px;font-family:var(--fm);background:var(--pub);color:var(--pu);border:1px solid var(--pubd)}
+
+/* ── Assignee ── */
+.assignee-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:20px;font-size:10.5px;background:var(--blb);color:var(--bl);border:1px solid var(--blbd)}
+
+/* ── Kanban ── */
+.kcol{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r3);padding:12px;min-height:200px}
+.kchd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:9px;border-bottom:1px solid var(--bd)}
+.kcard{
+  background:var(--sur);border:1px solid var(--bd);border-radius:var(--r2);
+  padding:11px 12px;margin-bottom:6px;cursor:grab;
+  transition:all .15s;box-shadow:var(--sh);
+}
+.kcard:hover{box-shadow:var(--shm);border-color:var(--bd2)}
+.kcard:active{cursor:grabbing;transform:rotate(.5deg)}
 .kcol.drag-over{border-color:var(--ac);background:var(--acb)}
 
-/* Rich editor */
+/* ── Rich editor ── */
 .ewrap{border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden;background:var(--sur)}
-.etbar{display:flex;align-items:center;gap:1px;padding:5px var(--sp2);border-bottom:1px solid var(--bd);background:var(--bg2);flex-wrap:wrap}
-.etbtn{padding:3px 6px;border-radius:var(--r);border:none;background:transparent;color:var(--ink4);cursor:pointer;font-size:12px;font-weight:600;transition:all .08s;font-family:var(--ff)}
+.etbar{display:flex;align-items:center;gap:1px;padding:6px 10px;border-bottom:1px solid var(--bd);background:var(--bg2);flex-wrap:wrap}
+.etbtn{padding:4px 7px;border-radius:4px;border:none;background:transparent;color:var(--ink3);cursor:pointer;font-size:12px;font-weight:600;transition:all .1s;font-family:var(--ff)}
 .etbtn:hover{background:var(--bg3);color:var(--ink)}
-.etsep{width:1px;height:14px;background:var(--bd);margin:0 3px;flex-shrink:0}
-.ebody{overflow-y:auto;max-height:400px}
-.ebody [contenteditable]{font-family:var(--fd);font-size:14px;font-style:italic;line-height:1.85;color:var(--ink);outline:none;min-height:240px;padding:var(--sp5) var(--sp6)}
+.etsep{width:1px;height:16px;background:var(--bd);margin:0 3px;flex-shrink:0}
+.ebody{overflow-y:auto;max-height:440px}
+.ebody [contenteditable]{font-family:var(--fd);font-size:15px;font-style:italic;line-height:1.9;color:var(--ink);outline:none;min-height:280px;padding:22px 26px}
 .ebody [contenteditable]:empty::before{content:attr(data-ph);color:var(--ink5);pointer-events:none}
-.ewc{padding:4px 10px;font-size:9px;color:var(--ink5);font-family:var(--fm);background:var(--bg2);border-top:1px solid var(--bd);text-align:right}
+.ewc{padding:5px 10px;font-size:9.5px;color:var(--ink5);font-family:var(--fm);background:var(--bg2);border-top:1px solid var(--bd);text-align:right;letter-spacing:.3px}
 
-/* Todo item */
-.todo-item{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r2);transition:border-color .08s}
-.todo-item:hover{border-color:var(--bd2)}
-.todo-hover-show{opacity:0;transition:opacity .1s}
+/* ── Todo item ── */
+.todo-item{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r3);box-shadow:var(--sh);transition:all .15s}
 .todo-item:hover .todo-hover-show{opacity:1}
+.todo-hover-show{opacity:0;transition:opacity .15s}
 
-/* Habit */
-.hdot{width:19px;height:19px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;background:var(--bg3);color:var(--ink5);transition:all .12s;flex-shrink:0}
-.hdot.done{color:#fff}
-.hdot.today:not(.done){border:1.5px dashed var(--bd2);cursor:pointer}
+/* ── Habit grid ── */
+.hdot{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;background:var(--bg3);color:var(--ink5);transition:all .2s;flex-shrink:0}
+.hdot.done{color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.hdot.today:not(.done){border:1.5px solid var(--bd2);cursor:pointer}
 .hdot.today:not(.done):hover{border-color:var(--ac);background:var(--acb)}
 
-/* Pomodoro */
+/* ── Pomodoro ── */
 .pom-ring{transition:stroke-dashoffset 1s linear}
 
-/* Calendar */
-.cal-ev{border-radius:3px;padding:2px 5px;font-size:11px;font-weight:500;margin-bottom:2px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .1s}
-.cal-ev:hover{opacity:.75}
+/* ── Cal ── */
+.cal-ev{border-radius:4px;padding:2px 6px;font-size:11px;font-weight:500;margin-bottom:2px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .1s}
+.cal-ev:hover{opacity:.8}
 
-/* Notes */
-.note-card{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r3);transition:border-color .08s}
-.note-card:hover{border-color:var(--bd2);box-shadow:var(--sh)}
+/* ── Note card ── */
+.note-card{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r3);transition:all .15s}
+.note-card:hover{border-color:var(--bd2);box-shadow:var(--shm)}
 
-/* Quote */
-.q-card{border-radius:var(--r3);padding:var(--sp4) var(--sp4);display:flex;flex-direction:column;justify-content:space-between;min-height:140px;cursor:pointer;transition:box-shadow .15s}
+/* ── Quote card ── */
+.q-card{border-radius:var(--r3);padding:22px 20px;display:flex;flex-direction:column;justify-content:space-between;min-height:160px;cursor:pointer;transition:all .2s}
 .q-card:hover{box-shadow:var(--shm)}
 
-/* Ticker */
-.ticker-wrap{flex:1;overflow:hidden;text-align:center;padding:0 var(--sp4)}
-.ticker-text{font-family:var(--fd);font-style:italic;font-size:12px;color:var(--ink5);display:inline-block;animation:tickerScroll 8s ease infinite}
+/* ── Ticker ── */
+.ticker-wrap{flex:1;overflow:hidden;text-align:center;padding:0 16px}
+.ticker-text{font-family:var(--fd);font-style:italic;font-size:12.5px;color:var(--ink4);display:inline-block;animation:tickerScroll 8s ease infinite}
 
-/* Print */
-.pbdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);animation:fadeIn .12s ease}
+/* ── Print quote ── */
+.pbdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);animation:fadeIn .15s ease}
 
-/* Quick note */
-.qwrap{position:fixed;bottom:var(--sp5);right:var(--sp5);z-index:100}
-.qpan{position:absolute;bottom:46px;right:0;width:268px;background:var(--sur);border:1px solid var(--bd);border-radius:var(--r3);box-shadow:var(--shl);padding:var(--sp3);animation:scaleIn .14s ease;transform-origin:bottom right}
+/* ── Quick note ── */
+.qwrap{position:fixed;bottom:20px;right:20px;z-index:100}
+.qpan{position:absolute;bottom:54px;right:0;width:300px;background:var(--sur);border:1px solid var(--bd);border-radius:var(--r3);box-shadow:var(--shl);padding:14px;animation:scaleIn .15s ease;transform-origin:bottom right}
 
-/* Bell */
+/* ── Bell ── */
 .bellw{position:relative;display:inline-flex}
-.bellb{position:absolute;top:-3px;right:-3px;background:var(--rd);color:#fff;font-size:8px;font-weight:600;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);border:1.5px solid var(--sur)}
+.bellb{position:absolute;top:-4px;right:-4px;background:var(--rd);color:#fff;font-size:8px;font-weight:700;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);border:2px solid var(--sur)}
 
-/* Timeline list */
-.tli{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--bg3)}
+/* ── Timeline list ── */
+.tli{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--bg3)}
 .tli:last-child{border:none}
-.tldot{width:6px;height:6px;border-radius:50%;background:var(--ink6);margin-top:5px;flex-shrink:0}
+.tldot{width:6px;height:6px;border-radius:50%;background:var(--ink6);margin-top:6px;flex-shrink:0}
 .tldot.g{background:var(--gn)}.tldot.b{background:var(--bl)}.tldot.a{background:var(--ac)}
 
-/* Mood */
-.mood-btn{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .1s;border:1.5px solid transparent}
-.mood-btn:hover{transform:scale(1.08)}
+/* ── Mood ── */
+.mood-btn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .15s;border:2px solid transparent}
+.mood-btn:hover{transform:scale(1.15)}
 .mood-btn.on{border-color:var(--ac);background:var(--acb)}
 
-/* Heatmap */
-.heat-cell{width:11px;height:11px;border-radius:2px;background:var(--bg3);transition:all .1s;cursor:default}
-.heat-cell:hover{transform:scale(1.2)}
+/* ── Score badge ── */
+.smart-score{display:inline-flex;flex-direction:column;align-items:center;padding:6px 10px;border-radius:var(--r2);background:var(--bg2);border:1px solid var(--bd)}
+.smart-n{font-family:var(--fd);font-size:20px;font-style:italic}
+.smart-l{font-size:8.5px;font-family:var(--fm);letter-spacing:.5px;color:var(--ink5)}
 
-/* Goals */
-.goal-card{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r3);transition:border-color .08s;cursor:pointer;overflow:hidden}
-.goal-card:hover{border-color:var(--bd2);box-shadow:var(--sh)}
-.goal-card-accent{height:2px;width:100%}
-.goal-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp2);margin-bottom:var(--sp3)}
-.goal-stat-box{padding:var(--sp2) var(--sp3);background:var(--bg2);border-radius:var(--r2);border:1px solid var(--bd);text-align:center}
-.goal-stat-val{font-size:20px;font-weight:600;color:var(--ink);line-height:1;letter-spacing:-.3px}
-.goal-stat-lbl{font-size:10px;color:var(--ink5);font-family:var(--fm);margin-top:2px;letter-spacing:.04em;text-transform:uppercase}
-.smart-pill{display:inline-flex;align-items:center;gap:3px;padding:2px 6px;border-radius:var(--r);font-size:10px;font-weight:600;font-family:var(--fm)}
+/* ── Top date ── */
+.topdate{
+  font-family:var(--fm);font-size:10.5px;color:var(--ink4);
+  white-space:nowrap;background:var(--bg2);
+  padding:4px 9px;border-radius:20px;border:1px solid var(--bd);
+}
+
+/* ── Search input ── */
+.search-wrap{position:relative}
+.search-wrap input{width:180px;padding-left:28px;font-size:12px;border-radius:20px;background:var(--bg2)}
+.search-wrap input:focus{width:220px;transition:width .2s}
+.search-ic{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--ink5);font-size:12px;pointer-events:none}
+
+/* ── Coaching card ── */
+.ccard{border-radius:var(--r3);padding:18px;border:1px solid var(--bd);background:var(--sur);transition:all .15s;cursor:pointer}
+.ccard:hover{border-color:var(--acbd);box-shadow:var(--shm)}
+
+/* ── AI Chat ── */
+.chat-bubble{padding:10px 14px;border-radius:12px;font-size:13.5px;line-height:1.75;max-width:78%;white-space:pre-wrap}
+.chat-user{background:var(--ac);color:#fff;border-radius:12px 12px 2px 12px;align-self:flex-end}
+.chat-bot{background:var(--bg2);color:var(--ink);border:1px solid var(--bd);border-radius:12px 12px 12px 2px;align-self:flex-start}
+.chat-avatar{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+
+/* ── Bookmark ── */
+.bm-card{padding:14px 15px;display:flex;flex-direction:column;gap:7px}
+.bm-favicon{width:20px;height:20px;border-radius:4px;object-fit:cover}
+
+/* ── Dashboard hero ── */
+.dash-hero{
+  background:var(--ink);
+  border-radius:var(--r4);padding:22px 26px;color:#fff;margin-bottom:14px;
+}
+.hero-greeting{font-family:var(--fd);font-style:italic;font-size:19px;opacity:.6;margin-bottom:4px}
+.hero-quote{font-family:var(--fd);font-style:italic;font-size:14.5px;line-height:1.7;opacity:.85;max-width:420px}
+.hero-author{font-size:11px;opacity:.4;font-family:var(--fm);margin-top:6px}
+
+/* ── Streak fire ── */
+.streak-fire{font-size:11px;font-weight:700;font-family:var(--fm)}
+
+/* ── Book spine ── */
+.book-spine{width:6px;min-height:64px;border-radius:3px;flex-shrink:0}
+
+/* ── AP step ── */
+.ap-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--bg3)}
+.ap-item:last-child{border:none}
+.ap-num{width:26px;height:26px;border-radius:50%;background:var(--ac);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--fm)}
+.ap-num.done{background:var(--gn)}
+
+/* ── Sub tasks ── */
+.sub-item{display:flex;gap:9px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--bg3)}
+.sub-item:last-child{border:none}
+
+/* ── Routines ── */
+.routine-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bg3);cursor:pointer;transition:background .1s;border-radius:5px;padding-left:5px}
+.routine-row:last-child{border:none}
+.routine-row:hover{background:var(--bg2)}
+.routine-row.done{opacity:.5}
+
+/* ── Tooltip ── */
+[data-tip]{position:relative}
+[data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);font-size:10px;padding:3px 7px;border-radius:4px;white-space:nowrap;z-index:50;font-family:var(--fm);letter-spacing:.3px;pointer-events:none}
+
+/* ── Focus ring on interactive ── */
+button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+
+/* ── Skeleton loader ── */
+.skel{background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px}
+
+/* ── Badge ── */
+.badge{display:inline-flex;align-items:center;padding:1px 6px;border-radius:20px;font-size:9px;font-weight:700;font-family:var(--fm);letter-spacing:.3px}
+.badge-new{background:var(--gnb);color:var(--gn);border:1px solid var(--gnbd)}
+.badge-hot{background:var(--rdb);color:var(--rd);border:1px solid var(--rdbd)}
+
+/* ── Weekly heatmap ── */
+.heat-cell{
+  width:12px;height:12px;border-radius:2px;
+  background:var(--bg3);transition:all .15s;cursor:default;
+}
+.heat-cell:hover{transform:scale(1.3)}
+
+/* ── Goals enhanced ── */
+.goal-card{background:var(--sur);border:1px solid var(--bd);border-radius:var(--r3);box-shadow:var(--sh);transition:all .18s;cursor:pointer;overflow:hidden}
+.goal-card:hover{box-shadow:var(--shm);border-color:var(--bd2);transform:translateY(-2px)}
+.goal-card-accent{height:3px;width:100%}
+.goal-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.goal-stat-box{padding:10px 12px;background:var(--bg2);border-radius:var(--r2);border:1px solid var(--bd);text-align:center}
+.goal-stat-val{font-family:var(--fd);font-style:italic;font-size:22px;color:var(--ink);line-height:1}
+.goal-stat-lbl{font-size:10px;color:var(--ink5);font-family:var(--fm);margin-top:3px;letter-spacing:.4px;text-transform:uppercase}
+.smart-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:10.5px;font-weight:600;font-family:var(--fm);letter-spacing:.2px}
 .smart-pill.met{background:var(--gnb);color:var(--gn);border:1px solid var(--gnbd)}
-.smart-pill.unmet{background:var(--bg2);color:var(--ink5);border:1px solid var(--bd)}
-.goal-filters{display:flex;gap:var(--sp2);flex-wrap:wrap;margin-bottom:var(--sp3);padding:var(--sp2) var(--sp3);background:var(--bg2);border-radius:var(--r2);border:1px solid var(--bd)}
-.goal-dash-hero{background:var(--ink);border-radius:var(--r3);padding:var(--sp4) var(--sp5);color:#fff;margin-bottom:var(--sp3);display:flex;align-items:center;gap:var(--sp4)}
-.step-timeline{position:relative;padding-left:24px}
-.step-timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:1px;background:var(--bd)}
-.step-node{position:absolute;left:0;top:4px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;font-family:var(--fm)}
-.step-node.pending{background:var(--bg2);border:1.5px solid var(--bd2);color:var(--ink5)}
-.step-node.done{background:var(--gn);border:1.5px solid var(--gnbd);color:#fff}
-.step-node.overdue{background:var(--rdb);border:1.5px solid var(--rdbd);color:var(--rd)}
-.step-row{position:relative;padding:0 0 var(--sp3) 0}
+.smart-pill.unmet{background:var(--bg3);color:var(--ink5);border:1px solid var(--bd)}
+.goal-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding:11px 14px;background:var(--bg2);border-radius:var(--r2);border:1px solid var(--bd)}
+.goal-dash-hero{background:linear-gradient(135deg,var(--ink) 0%,color-mix(in srgb,var(--ink) 80%,var(--ac)) 100%);border-radius:var(--r4);padding:20px 24px;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:20px;position:relative;overflow:hidden}
+.goal-dash-hero::after{content:'🎯';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:64px;opacity:.08;pointer-events:none}
+.step-timeline{position:relative;padding-left:28px}
+.step-timeline::before{content:'';position:absolute;left:9px;top:0;bottom:0;width:1.5px;background:var(--bd);border-radius:1px}
+.step-node{position:absolute;left:0;top:4px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:var(--fm);transition:all .15s}
+.step-node.pending{background:var(--bg2);border:2px solid var(--bd);color:var(--ink5)}
+.step-node.done{background:var(--gn);border:2px solid var(--gnbd);color:#fff}
+.step-node.overdue{background:var(--rdb);border:2px solid var(--rdbd);color:var(--rd)}
+.step-row{position:relative;padding:0 0 14px 0;margin-bottom:0}
 .step-row:last-child{padding-bottom:0}
-.cat-badge{display:inline-flex;align-items:center;padding:2px 6px;border-radius:var(--r);font-size:10px;font-weight:600;font-family:var(--fm)}
+.cat-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--fm);letter-spacing:.3px}
 .cat-is{background:var(--blb);color:var(--bl);border:1px solid var(--blbd)}
 .cat-health{background:var(--gnb);color:var(--gn);border:1px solid var(--gnbd)}
-.cat-finance{background:var(--orb);color:var(--or);border:1px solid var(--orbd)}
+.cat-finance{background:var(--acb);color:var(--ac);border:1px solid var(--acbd)}
 .cat-personal{background:var(--pub);color:var(--pu);border:1px solid var(--pubd)}
-.cat-other{background:var(--bg2);color:var(--ink4);border:1px solid var(--bd)}
-.smart-check-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp2)}
-.smart-check-item{padding:5px var(--sp2);border-radius:var(--r);font-size:12px;font-weight:500;display:flex;align-items:flex-start;gap:var(--sp2);border:1px solid var(--bd);background:var(--bg2)}
+.cat-other{background:var(--bg3);color:var(--ink4);border:1px solid var(--bd)}
+.smart-check-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.smart-check-item{padding:6px 10px;border-radius:var(--r);font-size:12px;font-weight:500;display:flex;align-items:flex-start;gap:6px;border:1px solid var(--bd);background:var(--bg2);transition:all .15s}
 .smart-check-item.met{background:var(--gnb);border-color:var(--gnbd);color:var(--gn)}
 .smart-check-item.unmet{color:var(--ink4)}
-.smart-check-label{font-weight:600;font-size:10px;font-family:var(--fm);margin-right:2px;opacity:.7}
-.goal-priority-bar{height:100%;border-radius:0 0 0 var(--r3);width:3px;position:absolute;left:0;top:0;bottom:0}
+.smart-check-label{font-weight:700;font-size:10px;font-family:var(--fm);margin-right:2px;opacity:.7}
+.goal-priority-bar{height:100%;border-radius:0 0 0 var(--r3);width:4px;position:absolute;left:0;top:0;bottom:0}
 .progress-ring-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center}
-.progress-ring-label{position:absolute;font-size:12px;font-weight:600;color:var(--ink)}
-.warning-banner{padding:7px var(--sp3);background:var(--rdb);border:1px solid var(--rdbd);border-radius:var(--r);font-size:12px;color:var(--rd);margin-bottom:var(--sp2);display:flex;align-items:center;gap:var(--sp2)}
+.progress-ring-label{position:absolute;font-family:var(--fd);font-style:italic;font-size:13px;font-weight:600;color:var(--ink)}
+.warning-banner{padding:8px 12px;background:var(--rdb);border:1px solid var(--rdbd);border-radius:var(--r);font-size:12px;color:var(--rd);margin-bottom:10px;display:flex;align-items:center;gap:6px}
 
-/* Status badge */
-.status-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:var(--r);font-size:10.5px;font-weight:500;flex-shrink:0}
-.status-wait{background:var(--bg2);color:var(--ink4);border:1px solid var(--bd)}
+/* ── Status badge ── */
+.status-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--fm);letter-spacing:.2px;flex-shrink:0}
+.status-wait{background:var(--bg3);color:var(--ink4);border:1px solid var(--bd)}
 .status-doing{background:var(--blb);color:var(--bl);border:1px solid var(--blbd)}
 .status-done{background:var(--gnb);color:var(--gn);border:1px solid var(--gnbd)}
 .status-cancel{background:var(--rdb);color:var(--rd);border:1px solid var(--rdbd)}
 
-/* Info tooltip */
+/* ── Info tooltip ── */
 .info-tip{position:relative;display:inline-flex;align-items:center;cursor:help}
-.info-tip .tip-bubble{visibility:hidden;opacity:0;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ink2);color:#fff;padding:8px 11px;border-radius:var(--r2);font-size:11.5px;font-family:var(--ff);font-weight:400;line-height:1.5;width:220px;z-index:9999;pointer-events:none;box-shadow:var(--shl);transition:opacity .1s,visibility .1s;white-space:normal}
-.info-tip .tip-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--ink2)}
+.info-tip .tip-bubble{
+  visibility:hidden;opacity:0;
+  position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:var(--ink);color:var(--bg);
+  padding:10px 13px;border-radius:var(--r2);
+  font-size:12px;font-family:var(--ff);font-weight:400;line-height:1.6;
+  width:240px;z-index:9999;pointer-events:none;
+  box-shadow:var(--shm);
+  transition:opacity .15s,visibility .15s;
+  white-space:normal;
+}
+.info-tip .tip-bubble::after{
+  content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-top-color:var(--ink);
+}
 .info-tip:hover .tip-bubble{visibility:visible;opacity:1}
-.info-tip .tip-icon{width:14px;height:14px;border-radius:50%;background:var(--bg2);color:var(--ink5);display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;font-family:var(--fm);margin-left:4px;border:1px solid var(--bd);flex-shrink:0;transition:all .08s}
+.info-tip .tip-icon{width:16px;height:16px;border-radius:50%;background:var(--bg3);color:var(--ink4);display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:var(--fm);margin-left:5px;border:1px solid var(--bd);flex-shrink:0;transition:all .12s}
 .info-tip:hover .tip-icon{background:var(--ac);color:#fff;border-color:var(--ac)}
 
-/* Weight badge */
-.weight-badge{display:inline-flex;align-items:center;padding:2px 6px;border-radius:var(--r);font-size:10px;font-family:var(--fm);background:var(--pub);color:var(--pu);border:1px solid var(--pubd)}
-.dep-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:var(--r);font-size:10px;font-family:var(--fm);background:var(--orb);color:var(--or);border:1px solid var(--orbd)}
+/* ── Weight badge ── */
+.weight-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:10px;font-family:var(--fm);background:var(--pub);color:var(--pu);border:1px solid var(--pubd)}
 
-/* Drag */
-.drag-handle{cursor:grab;color:var(--ink6);font-size:13px;padding:0 3px;flex-shrink:0;user-select:none;transition:color .08s}
+/* ── Dependency badge ── */
+.dep-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-family:var(--fm);background:var(--acb);color:var(--actext);border:1px solid var(--acbd)}
+
+/* ── Task drag handle ── */
+.drag-handle{cursor:grab;color:var(--ink6);font-size:14px;padding:0 4px;flex-shrink:0;user-select:none;transition:color .1s}
 .drag-handle:hover{color:var(--ink4)}
 .drag-handle:active{cursor:grabbing}
-.todo-item.dragging{opacity:.4}
+.todo-item.dragging{opacity:.4;transform:scale(.99)}
 
-/* Sub-step */
-.sub-step{display:flex;gap:var(--sp2);align-items:center;padding:4px 0;border-bottom:1px solid var(--bg3)}
+/* ── Sub-step ── */
+.sub-step{display:flex;gap:7px;align-items:center;padding:4px 0;border-bottom:1px solid var(--bg3)}
 .sub-step:last-child{border:none}
 
-/* Link chip */
-.link-chip{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:var(--r);font-size:10px;font-family:var(--fm);background:var(--blb);color:var(--bl);border:1px solid var(--blbd);text-decoration:none;transition:all .08s;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* ── Link chip ── */
+.link-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-family:var(--fm);background:var(--blb);color:var(--bl);border:1px solid var(--blbd);text-decoration:none;transition:all .1s;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .link-chip:hover{background:var(--bl);color:#fff}
 
-/* Progress weighted */
-.w-prog-bar{height:3px;border-radius:2px;background:var(--bg3);overflow:hidden}
-.w-prog-fill{height:100%;border-radius:2px;transition:width .4s ease}
+/* ── Weighted progress ── */
+.w-prog-bar{height:6px;border-radius:3px;background:var(--bg3);overflow:hidden;position:relative}
+.w-prog-fill{height:100%;border-radius:3px;transition:width .4s ease}
+
+/* ── Kanban status cols ── */
 .status-col{flex:1;min-width:160px}
-.drop-zone-active{border:1.5px dashed var(--ac)!important;background:var(--acb)!important}
 
-/* Dashboard hero */
-.dash-hero{background:var(--ink);border-radius:var(--r3);padding:var(--sp4) var(--sp5);color:#fff;margin-bottom:var(--sp3)}
-.hero-greeting{font-family:var(--fd);font-style:italic;font-size:17px;opacity:.5;margin-bottom:3px}
-.hero-quote{font-family:var(--fd);font-style:italic;font-size:13.5px;line-height:1.65;opacity:.8;max-width:400px}
-.hero-author{font-size:10px;opacity:.35;font-family:var(--fm);margin-top:4px}
+/* ── Reorder hint ── */
+.drop-zone-active{border:2px dashed var(--ac)!important;background:var(--acb)!important}
 
-/* Coaching */
-.ccard{border-radius:var(--r2);padding:var(--sp3);border:1px solid var(--bd);background:var(--sur);transition:border-color .08s;cursor:pointer}
-.ccard:hover{border-color:var(--bd2);box-shadow:var(--sh)}
 
-/* Chat */
-.chat-bubble{padding:8px 12px;border-radius:10px;font-size:13px;line-height:1.6;max-width:78%;white-space:pre-wrap}
-.chat-user{background:var(--ac);color:#fff;border-radius:10px 10px 2px 10px;align-self:flex-end}
-.chat-bot{background:var(--bg2);color:var(--ink);border:1px solid var(--bd);border-radius:10px 10px 10px 2px;align-self:flex-start}
-.chat-avatar{width:24px;height:24px;border-radius:6px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px}
-
-/* Bookmark */
-.bm-card{padding:var(--sp3);display:flex;flex-direction:column;gap:6px}
-.bm-favicon{width:16px;height:16px;border-radius:3px;object-fit:cover}
-.streak-fire{font-size:11px;font-weight:600;font-family:var(--fm)}
-.smart-score{display:inline-flex;flex-direction:column;align-items:center;padding:5px 10px;border-radius:var(--r2);background:var(--bg2);border:1px solid var(--bd)}
-.smart-n{font-size:19px;font-weight:600}
-.smart-l{font-size:8.5px;font-family:var(--fm);letter-spacing:.05em;color:var(--ink5)}
-.topdate{font-family:var(--fm);font-size:11px;color:var(--ink4);white-space:nowrap;background:var(--bg2);padding:3px 8px;border-radius:var(--r);border:1px solid var(--bd)}
-.search-wrap{position:relative}
-.search-wrap input{width:152px;padding-left:24px;font-size:12px;border-radius:var(--r2);background:var(--bg2)}
-.search-wrap input:focus{width:190px;transition:width .16s}
-.search-ic{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--ink5);font-size:12px;pointer-events:none}
 </style>
-
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-/* ═══════════════════════════════════════════════════════════════
-   GOOGLE APPS SCRIPT BAĞLANTISI
-   ───────────────────────────────────────────────────────────────
-   1. script.google.com'da Code.gs dosyasına backend kodunu yapıştır
-   2. Deploy → Web App → URL'yi buraya yapıştır
-   ═══════════════════════════════════════════════════════════════ */
-// Apps Script modu — google.script.run kullanılıyor
-const __GAS_URL__ = '';
-
+const GAS_URL = 'https://script.google.com/a/macros/duaycor.com/s/AKfycbwv9SWAdGTPMZaxAZp0F60IehBCrS2gGC8dkk7s5YGNQ6Pg7aZuSlAcvfHvtkW0pSJB/exec';
 
 const {useState,useEffect,useMemo,useCallback,useRef,Fragment}=React;
 
@@ -596,58 +728,9 @@ const INIT={
   ],
   todoCats:[...TODO_CATS_DEFAULT],
   books:[
-    {id:201,title:'Atomic Habits',author:'James Clear',week:1,startDate:'2026-01-06',endDate:'2026-01-12',status:'Bitti',rating:5,pagesTotal:320,pagesDone:320,notes:'',color:'#2563EB'},
-    {id:202,title:'Deep Work',author:'Cal Newport',week:2,startDate:'2026-01-13',endDate:'2026-01-19',status:'Bitti',rating:5,pagesTotal:296,pagesDone:296,notes:'',color:'#7C3AED'},
-    {id:203,title:'The Lean Startup',author:'Eric Ries',week:3,startDate:'2026-01-20',endDate:'2026-01-26',status:'Bitti',rating:4,pagesTotal:299,pagesDone:299,notes:'',color:'#C4873A'},
-    {id:204,title:'Thinking Fast and Slow',author:'Daniel Kahneman',week:4,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:499,pagesDone:0,notes:'',color:'#0D9488'},
-    {id:205,title:'Meditations',author:'Marcus Aurelius',week:5,startDate:'2026-02-03',endDate:'2026-02-09',status:'Okunuyor',rating:null,pagesTotal:254,pagesDone:120,notes:'',color:'#2D7A4F'},
-    {id:206,title:'Zero to One',author:'Peter Thiel',week:6,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:224,pagesDone:0,notes:'',color:'#DC2626'},
-    {id:207,title:'7 Habits of Highly Effective People',author:'Stephen Covey',week:7,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:432,pagesDone:0,notes:'',color:'#EA580C'},
-    {id:208,title:'Search for Meaning',author:'Viktor Frankl',week:8,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:165,pagesDone:0,notes:'',color:'#7C3AED'},
-    {id:209,title:'The Power of Now',author:'Eckhart Tolle',week:9,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:236,pagesDone:0,notes:'',color:'#16A34A'},
-    {id:210,title:'Sapiens',author:'Yuval Noah Harari',week:10,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:443,pagesDone:0,notes:'',color:'#2563EB'},
-    {id:211,title:'4-Hour Workweek',author:'Tim Ferriss',week:11,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:396,pagesDone:0,notes:'',color:'#DC2626'},
-    {id:212,title:'Good to Great',author:'Jim Collins',week:12,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#0D9488'},
-    {id:213,title:'The Hard Thing About Hard Things',author:'Ben Horowitz',week:13,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:304,pagesDone:0,notes:'',color:'#404040'},
-    {id:214,title:'Essentialism',author:'Greg McKeown',week:14,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#C4873A'},
-    {id:215,title:'Start with Why',author:'Simon Sinek',week:15,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#F59E0B'},
-    {id:216,title:'The Innovator Dilemma',author:'Clayton Christensen',week:16,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:336,pagesDone:0,notes:'',color:'#7C3AED'},
-    {id:217,title:'Mindset',author:'Carol Dweck',week:17,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#16A34A'},
-    {id:218,title:'The Obstacle Is the Way',author:'Ryan Holiday',week:18,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:224,pagesDone:0,notes:'',color:'#DC2626'},
-    {id:219,title:'Antifragile',author:'Nassim Taleb',week:19,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:544,pagesDone:0,notes:'',color:'#2D7A4F'},
-    {id:220,title:'The Art of War',author:'Sun Tzu',week:20,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:273,pagesDone:0,notes:'',color:'#404040'},
-    {id:221,title:'Think and Grow Rich',author:'Napoleon Hill',week:21,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#EA580C'},
-    {id:222,title:'Getting Things Done',author:'David Allen',week:22,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:352,pagesDone:0,notes:'',color:'#2563EB'},
-    {id:223,title:'The E-Myth Revisited',author:'Michael Gerber',week:23,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#C4873A'},
-    {id:224,title:'Principles',author:'Ray Dalio',week:24,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:592,pagesDone:0,notes:'',color:'#0D9488'},
-    {id:225,title:'Shoe Dog',author:'Phil Knight',week:25,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:400,pagesDone:0,notes:'',color:'#DC2626'},
-    {id:226,title:'The Alchemist',author:'Paulo Coelho',week:26,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:197,pagesDone:0,notes:'',color:'#F59E0B'},
-    {id:227,title:'Outliers',author:'Malcolm Gladwell',week:27,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:309,pagesDone:0,notes:'',color:'#7C3AED'},
-    {id:228,title:'How to Win Friends',author:'Dale Carnegie',week:28,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:291,pagesDone:0,notes:'',color:'#16A34A'},
-    {id:229,title:'The 48 Laws of Power',author:'Robert Greene',week:29,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:480,pagesDone:0,notes:'',color:'#404040'},
-    {id:230,title:'Rich Dad Poor Dad',author:'Robert Kiyosaki',week:30,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:336,pagesDone:0,notes:'',color:'#C4873A'},
-    {id:231,title:'The Psychology of Money',author:'Morgan Housel',week:31,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#2563EB'},
-    {id:232,title:'Never Split the Difference',author:'Chris Voss',week:32,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#DC2626'},
-    {id:233,title:'The Mom Test',author:'Rob Fitzpatrick',week:33,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:130,pagesDone:0,notes:'',color:'#0D9488'},
-    {id:234,title:'Sprint',author:'Jake Knapp',week:34,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#F59E0B'},
-    {id:235,title:'Hooked',author:'Nir Eyal',week:35,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#7C3AED'},
-    {id:236,title:'Startup Owner Manual',author:'Steve Blank',week:36,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:608,pagesDone:0,notes:'',color:'#EA580C'},
-    {id:237,title:'Traction',author:'Gabriel Weinberg',week:37,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:240,pagesDone:0,notes:'',color:'#16A34A'},
-    {id:238,title:'The Phoenix Project',author:'Gene Kim',week:38,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:432,pagesDone:0,notes:'',color:'#DC2626'},
-    {id:239,title:'Measure What Matters',author:'John Doerr',week:39,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#2563EB'},
-    {id:240,title:'High Output Management',author:'Andy Grove',week:40,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#404040'},
-    {id:241,title:'Five Dysfunctions of a Team',author:'Patrick Lencioni',week:41,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:240,pagesDone:0,notes:'',color:'#C4873A'},
-    {id:242,title:'Rework',author:'Jason Fried',week:42,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#0D9488'},
-    {id:243,title:'Lost and Founder',author:'Rand Fishkin',week:43,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:304,pagesDone:0,notes:'',color:'#F59E0B'},
-    {id:244,title:'The Personal MBA',author:'Josh Kaufman',week:44,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:464,pagesDone:0,notes:'',color:'#7C3AED'},
-    {id:245,title:'Influence',author:'Robert Cialdini',week:45,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:336,pagesDone:0,notes:'',color:'#DC2626'},
-    {id:246,title:'Thinking in Bets',author:'Annie Duke',week:46,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#16A34A'},
-    {id:247,title:'Predictably Irrational',author:'Dan Ariely',week:47,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:304,pagesDone:0,notes:'',color:'#2563EB'},
-    {id:248,title:'The Lean B2B',author:'Etienne Garbugli',week:48,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:202,pagesDone:0,notes:'',color:'#EA580C'},
-    {id:249,title:'Obviously Awesome',author:'April Dunford',week:49,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:198,pagesDone:0,notes:'',color:'#C4873A'},
-    {id:250,title:'Continuous Discovery Habits',author:'Teresa Torres',week:50,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:278,pagesDone:0,notes:'',color:'#0D9488'},
-    {id:251,title:'The Creative Act',author:'Rick Rubin',week:51,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:432,pagesDone:0,notes:'',color:'#404040'},
-    {id:252,title:'4000 Weeks',author:'Oliver Burkeman',week:52,startDate:'',endDate:'',status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#7C3AED'},
+    {id:201,title:'The Lean Startup',author:'Eric Ries',startDate:'2026-02-15',endDate:'2026-03-20',status:'Okunuyor',rating:null,pagesTotal:299,pagesDone:180,notes:'Doğrulanmış öğrenme.',color:'#C4873A'},
+    {id:202,title:'Meditations',author:'Marcus Aurelius',startDate:'',endDate:'2026-03-31',status:'Kuyruk',rating:null,pagesTotal:254,pagesDone:0,notes:'',color:'#2D7A4F'},
+    {id:203,title:'Atomic Habits',author:'James Clear',startDate:'2025-12-01',endDate:'2026-01-31',status:'Bitti',rating:5,pagesTotal:320,pagesDone:320,notes:'Uygulama niyetleri en iyi çerçeve.',color:'#2563EB'},
   ],
   habits:[
     {id:301,name:'Sabah günlüğü',emoji:'✍️',color:'#7c3aed',logs:mkLogs(22)},
@@ -714,7 +797,7 @@ const INIT={
     {id:3,text:'E-postayı her 30 dakikada bir kontrol etme'},
   ],
   timeBlocks:[
-    {id:1,start:'09:00',end:'10:30',label:'Deep Work — SaaS geliştirme',color:'#4F46E5'},
+    {id:1,start:'09:00',end:'10:30',label:'Deep Work — SaaS geliştirme',color:'#B8621A'},
     {id:2,start:'10:30',end:'11:00',label:'E-posta & iletişim',color:'#1A52B8'},
     {id:3,start:'14:00',end:'15:30',label:'Beta kullanıcı görüşmeleri',color:'#1F6B42'},
   ],
@@ -726,12 +809,6 @@ const INIT={
     {time:'Bugün 09:41',action:'Görev tamamlandı',type:'g'},
     {time:'Bugün 08:30',action:'Alışkanlıklar: Günlük, Egzersiz',type:'b'},
   ],
-  challenges:[
-    {id:601,title:"30 Gün Dijital Detoks",desc:"Sosyal medyayı tamamen kes. Sabahları telefona bakma. Saat 21:00 sonrası ekran yok. Kitap oku, yürü, düşün.",category:"Zihin",difficulty:4,quarter:"Q1 2026",startDate:"",endDate:"",status:"Bekliyor",reflection:"",badge:"🧘"},
-    {id:602,title:"Ultra Maraton Hazırlığı",desc:"3 ay içinde 50km koşmaya hazırlan. Haftada 5 gün antrenman. Kademeli mesafe artışı. Yarışa katıl.",category:"Beden",difficulty:5,quarter:"Q2 2026",startDate:"",endDate:"",status:"Bekliyor",reflection:"",badge:"🏃"},
-    {id:603,title:"Her Hafta 1 Konfor Kırıcı",desc:"Her hafta daha önce asla yapmadığın bir şey yap. Soğuk suya dal, yabancıyla konuş, sahneye çık, hayır iste.",category:"Cesaret",difficulty:4,quarter:"Q3 2026",startDate:"",endDate:"",status:"Bekliyor",reflection:"",badge:"⚡"},
-    {id:604,title:"Sıfırdan Bir Şey Sat",desc:"3 ayda sıfırdan bir ürün veya hizmet oluştur ve gerçek bir müşteriye sat. Fikir değil, somut sonuç.",category:"İnşa",difficulty:5,quarter:"Q4 2026",startDate:"",endDate:"",status:"Bekliyor",reflection:"",badge:"🏗"},
-  ],
   teamMembers:[...TEAM_MEMBERS],
 };
 
@@ -742,7 +819,7 @@ const exportTodosExcel=(todos)=>{
 };
 const exportTodosPDF=(todos)=>{
   const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Görevler</title>
-  <style>body{font-family:Georgia,serif;font-size:12px;color:#18160f;padding:24px}h1{font-size:20px;margin-bottom:16px;color:#4F46E5;font-style:italic}table{width:100%;border-collapse:collapse}th{background:#F7F7F8;padding:8px;text-align:left;border:1px solid #E5E5E5;font-size:10px;letter-spacing:.5px;text-transform:uppercase}td{padding:7px 8px;border:1px solid #E5E5E5;vertical-align:top}.done{color:#8c8674;text-decoration:line-through}</style></head><body>
+  <style>body{font-family:Georgia,serif;font-size:12px;color:#18160f;padding:24px}h1{font-size:20px;margin-bottom:16px;color:#B8621A;font-style:italic}table{width:100%;border-collapse:collapse}th{background:#f5f2ec;padding:8px;text-align:left;border:1px solid #ddd8ce;font-size:10px;letter-spacing:.5px;text-transform:uppercase}td{padding:7px 8px;border:1px solid #ddd8ce;vertical-align:top}.done{color:#8c8674;text-decoration:line-through}</style></head><body>
   <h1>Görevler — ${new Date().toLocaleDateString('tr-TR')}</h1>
   <table><thead><tr><th>Görev</th><th>Öncelik</th><th>Kategori</th><th>Sorumlu</th><th>Bitiş</th><th>Durum</th></tr></thead>
   <tbody>${todos.map(t=>`<tr><td class="${t.done?'done':''}">${t.text}</td><td>${t.priority}</td><td>${t.category}</td><td>${t.mainAssignee||'—'}</td><td>${t.end||'—'}</td><td>${t.done?'✓ Tamamlandı':'Bekliyor'}</td></tr>`).join('')}</tbody></table></body></html>`;
@@ -751,7 +828,7 @@ const exportTodosPDF=(todos)=>{
 const exportActionPlanPDF=(goal)=>{
   const steps=goal.actionPlan||[];
   const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Eylem Planı</title>
-  <style>body{font-family:Georgia,serif;font-size:12px;color:#18160f;padding:30px;max-width:700px;margin:0 auto}h1{font-size:22px;color:#4F46E5;font-style:italic;margin-bottom:4px}.sub{color:#8c8674;font-size:12px;margin-bottom:24px;font-family:monospace}.step{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #ddd8ce;display:flex;gap:16px}.num{width:32px;height:32px;border-radius:50%;background:#4F46E5;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;margin-top:2px;font-family:monospace}.done .num{background:#1F6B42}.action{font-weight:600;font-size:13px;margin-bottom:4px}.date{color:#8c8674;font-size:10px;font-family:monospace}.result{background:#EEF2FF;padding:6px 10px;border-radius:5px;font-size:11.5px;color:#5c5848;border-left:3px solid #4F46E5;margin-top:6px}</style></head><body>
+  <style>body{font-family:Georgia,serif;font-size:12px;color:#18160f;padding:30px;max-width:700px;margin:0 auto}h1{font-size:22px;color:#B8621A;font-style:italic;margin-bottom:4px}.sub{color:#8c8674;font-size:12px;margin-bottom:24px;font-family:monospace}.step{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #ddd8ce;display:flex;gap:16px}.num{width:32px;height:32px;border-radius:50%;background:#B8621A;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;margin-top:2px;font-family:monospace}.done .num{background:#1F6B42}.action{font-weight:600;font-size:13px;margin-bottom:4px}.date{color:#8c8674;font-size:10px;font-family:monospace}.result{background:#fbf2e8;padding:6px 10px;border-radius:5px;font-size:11.5px;color:#5c5848;border-left:3px solid #B8621A;margin-top:6px}</style></head><body>
   <h1>${goal.isFrog?'🐸 ':''}${goal.title}</h1>
   <div class="sub">${goal.desc||''} · Son tarih: ${goal.deadline||'—'}</div>
   ${steps.map((s,i)=>`<div class="step ${s.done?'done':''}"><div class="num">${i+1}</div><div style="flex:1"><div class="action">${s.action} ${s.done?'<span style="color:#1F6B42;font-size:10px">✓ Tamamlandı</span>':'<span style="color:#B8621A;font-size:10px">Bekliyor</span>'}</div><div class="date">📅 ${s.date||'—'}</div>${s.result?`<div class="result">${s.result}</div>`:''}</div></div>`).join('')}
@@ -769,271 +846,24 @@ function Fav({url,title,size=18}){
   return <img src={furl} alt="" style={{width:size,height:size,borderRadius:4,flexShrink:0}} onError={()=>setErr(true)}/>;
 }
 
-/* ── Studio Baran — Alıntı Tasarımcısı ── */
-function StudioModal({q, onClose, quotes, setD, D}){
-  const [selQ, setSelQ] = useState(q||quotes[0]||{text:'',author:''});
-  const [layout, setLayout] = useState('minimal');
-  const [fontStyle, setFontStyle] = useState('sans');
-  const [bg, setBg] = useState({type:'solid',value:'#18160F'});
-  const [textColor, setTextColor] = useState('#FAFAFA');
-  const [overlayOpacity, setOverlayOpacity] = useState(30);
-  const [search, setSearch] = useState('');
-  const [fontSize, setFontSize] = useState(28);
-  const [generating, setGenerating] = useState(false);
-  const cardRef = useRef(null);
-
-  const PALETTES = [
-    {bg:'#18160F', fg:'#FAFAFA', label:'Koyu'},
-    {bg:'#FAFAFA', fg:'#18160F', label:'Beyaz'},
-    {bg:'#1e3a5f', fg:'#FAFAFA', label:'Lacivert'},
-    {bg:'#1F6B42', fg:'#FAFAFA', label:'Orman'},
-    {bg:'#B52B1E', fg:'#FAFAFA', label:'Kırmızı'},
-    {bg:'linear-gradient(135deg,#1e3a5f,#4F46E5)', fg:'#FAFAFA', label:'Gradient'},
-    {bg:'linear-gradient(135deg,#1F6B42,#0D9488)', fg:'#FAFAFA', label:'Yeşil'},
-    {bg:'linear-gradient(135deg,#92400e,#C4873A)', fg:'#FAFAFA', label:'Amber'},
-  ];
-
-  const LAYOUTS = [
-    {id:'minimal', label:'Minimal', ic:'⊞'},
-    {id:'editorial', label:'Editorial', ic:'≡'},
-    {id:'focus', label:'Focus', ic:'▐'},
-    {id:'centered', label:'Büyük', ic:'◉'},
-  ];
-
-  const filteredQ = quotes.filter(x =>
-    x.text.toLowerCase().includes(search.toLowerCase()) ||
-    x.author.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const autoSize = (txt) => {
-    if(txt.length > 200) return 16;
-    if(txt.length > 120) return 20;
-    if(txt.length > 60) return 24;
-    return 28;
-  };
-
-  const cardStyle = {
-    width: 500, height: 500,
-    background: bg.value,
-    borderRadius: 32,
-    position: 'relative',
-    display: 'flex',
-    overflow: 'hidden',
-    flexShrink: 0,
-    boxShadow: '0 40px 80px rgba(0,0,0,.25)',
-    ...(layout==='minimal' && {alignItems:'center', justifyContent:'center', textAlign:'center', padding:60}),
-    ...(layout==='editorial' && {flexDirection:'column', justifyContent:'flex-end', padding:52, textAlign:'left'}),
-    ...(layout==='focus' && {alignItems:'center', justifyContent:'flex-start', padding:60, textAlign:'left', borderLeft:'10px solid rgba(255,255,255,.4)'}),
-    ...(layout==='centered' && {alignItems:'center', justifyContent:'center', textAlign:'center', padding:48}),
-  };
-
-  const textStyle = {
-    color: textColor,
-    fontFamily: fontStyle==='serif' ? "'Instrument Serif', Georgia, serif" : "'Cabinet Grotesk','Inter',sans-serif",
-    fontStyle: fontStyle==='serif' ? 'italic' : 'normal',
-    fontSize: fontSize || autoSize(selQ.text||''),
-    fontWeight: fontStyle==='serif' ? 400 : 700,
-    lineHeight: 1.3,
-    letterSpacing: fontStyle==='serif' ? '0px' : '-0.5px',
-    zIndex: 2,
-    position: 'relative',
-  };
-
-  const printCard = () => {
-    const txt = selQ.text;
-    const author = selQ.author;
-    const bgStyle = bg.value.includes('gradient') ? bg.value : bg.value;
-    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Alıntı</title>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-    <style>
-      @page{size:A4 portrait;margin:0}
-      *{box-sizing:border-box;margin:0;padding:0}
-      body{width:210mm;height:297mm;display:flex;align-items:center;justify-content:center;background:#f5f5f5}
-      .card{width:180mm;height:180mm;background:${bgStyle};border-radius:20mm;display:flex;
-        ${layout==='minimal'||layout==='centered'?'align-items:center;justify-content:center;text-align:center;':''}
-        ${layout==='editorial'?'flex-direction:column;justify-content:flex-end;':''}
-        ${layout==='focus'?'align-items:center;border-left:8mm solid rgba(255,255,255,.4);':''}
-        padding:20mm;position:relative;overflow:hidden}
-      .qt{color:${textColor};font-family:${fontStyle==='serif'?"'Instrument Serif',Georgia,serif":"Arial,sans-serif"};
-        font-style:${fontStyle==='serif'?'italic':'normal'};
-        font-size:${Math.round((fontSize||autoSize(txt))*0.75)}pt;
-        font-weight:${fontStyle==='serif'?400:700};line-height:1.35;letter-spacing:-0.3pt}
-      .au{color:${textColor};opacity:.55;font-size:10pt;margin-top:12mm;
-        font-family:${fontStyle==='serif'?"'Instrument Serif',Georgia,serif":"Arial,sans-serif"}}
-      .brand{position:absolute;bottom:10mm;width:100%;text-align:center;
-        font-size:7pt;font-weight:800;letter-spacing:3pt;opacity:.3;color:${textColor}}
-    </style></head><body>
-    <div class="card">
-      <div><div class="qt">${txt}</div><div class="au">— ${author}</div></div>
-      <div class="brand">FOCUSUP PRO</div>
-    </div>
-    </body></html>`;
-    const w = window.open('','_blank');
-    w.document.write(html);
-    w.document.close();
-    setTimeout(()=>w.print(), 600);
-  };
-
-  const saveImage = () => {
-    if(!window.html2canvas){
-      alert('html2canvas kütüphanesi yükleniyor, lütfen bir saniye bekleyin ve tekrar deneyin.');
-      const s=document.createElement('script');
-      s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-      document.head.appendChild(s);
-      return;
-    }
-    const card = cardRef.current;
-    window.html2canvas(card, {scale:3, useCORS:true}).then(canvas=>{
-      const a=document.createElement('a');
-      a.download='alınti-'+Date.now()+'.png';
-      a.href=canvas.toDataURL('image/png');
-      a.click();
-    });
-  };
-
+/* ── Print Quote Modal ── */
+function PrintModal({q,onClose}){
+  const [di,setDi]=useState(0);
+  const designs=[{bg:q.bg||'#18160F',fg:q.fg||'#F0EDE4',name:'Orijinal'},{bg:'#FBF2E8',fg:'#18160F',name:'Krem'},{bg:'#fff',fg:'#0A0908',name:'Minimal'}];
+  const d=designs[di];
   return(
-    <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.7)',backdropFilter:'blur(12px)',
-      display:'flex',alignItems:'center',justifyContent:'center',zIndex:9999,padding:20}}>
-      <div style={{background:'var(--bg)',borderRadius:'var(--r3)',boxShadow:'0 40px 80px rgba(0,0,0,.4)',
-        display:'flex',gap:0,maxWidth:1000,width:'100%',maxHeight:'92vh',overflow:'hidden',border:'1px solid var(--bd)'}}>
-
-        {/* LEFT: Controls */}
-        <div style={{width:300,borderRight:'1px solid var(--bd)',overflowY:'auto',padding:20,
-          display:'flex',flexDirection:'column',gap:16,background:'var(--bg2)',flexShrink:0}}>
-
-          {/* Header */}
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-            <div>
-              <div style={{fontWeight:700,fontSize:14,color:'var(--ink)'}}>🖼 Alıntı Tasarımcısı</div>
-              <div style={{fontSize:11,color:'var(--ink5)',marginTop:2}}>Studio Baran</div>
-            </div>
-            <button className="ibtn" style={{width:28,height:28,fontSize:16}} onClick={onClose}>×</button>
-          </div>
-
-          {/* Quote Selector */}
-          <div>
-            <div style={{fontSize:11,fontWeight:700,color:'var(--ink4)',letterSpacing:.8,marginBottom:8,textTransform:'uppercase'}}>Alıntı Seç</div>
-            <div className="search-wrap" style={{marginBottom:8}}>
-              <span className="search-ic">🔍</span>
-              <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Ara…" style={{width:'100%',paddingLeft:26,fontSize:12}}/>
-            </div>
-            <div style={{maxHeight:150,overflowY:'auto',display:'flex',flexDirection:'column',gap:4}}>
-              {filteredQ.map(x=>(
-                <div key={x.id} onClick={()=>{setSelQ(x);setFontSize(autoSize(x.text));}}
-                  style={{padding:'7px 10px',background:selQ.id===x.id?'var(--acb)':'var(--sur)',
-                    border:'1px solid '+(selQ.id===x.id?'var(--acbd)':'var(--bd)'),
-                    borderRadius:'var(--r)',cursor:'pointer',fontSize:11.5,lineHeight:1.4,
-                    color:selQ.id===x.id?'var(--actext)':'var(--ink)'}}>
-                  <div style={{fontWeight:600,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{x.author}</div>
-                  <div style={{opacity:.7,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{x.text.slice(0,50)}…</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Layout */}
-          <div>
-            <div style={{fontSize:11,fontWeight:700,color:'var(--ink4)',letterSpacing:.8,marginBottom:8,textTransform:'uppercase'}}>Düzen</div>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:5}}>
-              {LAYOUTS.map(l=>(
-                <button key={l.id} onClick={()=>setLayout(l.id)}
-                  style={{padding:'7px',borderRadius:'var(--r)',border:'1px solid '+(layout===l.id?'var(--ac)':'var(--bd)'),
-                    background:layout===l.id?'var(--acb)':'var(--sur)',color:layout===l.id?'var(--ac)':'var(--ink3)',
-                    cursor:'pointer',fontSize:12,fontWeight:600,fontFamily:'var(--ff)'}}>
-                  {l.ic} {l.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Font */}
-          <div>
-            <div style={{fontSize:11,fontWeight:700,color:'var(--ink4)',letterSpacing:.8,marginBottom:8,textTransform:'uppercase'}}>Font</div>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:5}}>
-              {[{id:'sans',label:'Sans-Serif'},{id:'serif',label:'Serif İtalik'}].map(f=>(
-                <button key={f.id} onClick={()=>setFontStyle(f.id)}
-                  style={{padding:'7px',borderRadius:'var(--r)',border:'1px solid '+(fontStyle===f.id?'var(--ac)':'var(--bd)'),
-                    background:fontStyle===f.id?'var(--acb)':'var(--sur)',color:fontStyle===f.id?'var(--ac)':'var(--ink3)',
-                    cursor:'pointer',fontSize:11.5,fontWeight:600,fontFamily:'var(--ff)'}}>
-                  {f.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Font Size */}
-          <div>
-            <div style={{fontSize:11,fontWeight:700,color:'var(--ink4)',letterSpacing:.8,marginBottom:6,textTransform:'uppercase'}}>
-              Yazı Boyutu: {fontSize}px
-            </div>
-            <input type="range" min={12} max={60} value={fontSize} onChange={e=>setFontSize(+e.target.value)}
-              style={{width:'100%',accentColor:'var(--ac)'}}/>
-          </div>
-
-          {/* Color Palettes */}
-          <div>
-            <div style={{fontSize:11,fontWeight:700,color:'var(--ink4)',letterSpacing:.8,marginBottom:8,textTransform:'uppercase'}}>Renk Paleti</div>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6}}>
-              {PALETTES.map((p,i)=>(
-                <div key={i} onClick={()=>{setBg({value:p.bg});setTextColor(p.fg);}}
-                  title={p.label}
-                  style={{height:32,borderRadius:8,background:p.bg,cursor:'pointer',
-                    border:'2px solid '+(bg.value===p.bg?'var(--ac)':'transparent'),
-                    transition:'border-color .12s'}}>
-                </div>
-              ))}
-            </div>
-            <div style={{display:'flex',gap:8,marginTop:8,alignItems:'center'}}>
-              <div style={{flex:1}}>
-                <div style={{fontSize:10,color:'var(--ink5)',marginBottom:4}}>Arka Plan</div>
-                <input type="color" value={bg.value.startsWith('#')?bg.value:'#18160F'}
-                  onChange={e=>setBg({value:e.target.value})}
-                  style={{width:'100%',height:32,borderRadius:6,border:'1px solid var(--bd)',cursor:'pointer',padding:2}}/>
-              </div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:10,color:'var(--ink5)',marginBottom:4}}>Yazı Rengi</div>
-                <input type="color" value={textColor.startsWith('#')?textColor:'#FAFAFA'}
-                  onChange={e=>setTextColor(e.target.value)}
-                  style={{width:'100%',height:32,borderRadius:6,border:'1px solid var(--bd)',cursor:'pointer',padding:2}}/>
-              </div>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div style={{display:'flex',flexDirection:'column',gap:6,marginTop:'auto',paddingTop:8}}>
-            <button className="btn btnp" style={{width:'100%',justifyContent:'center'}} onClick={printCard}>
-              🖨 PDF / Yazdır
-            </button>
-            <button className="btn btng" style={{width:'100%',justifyContent:'center',background:'var(--gnb)',color:'var(--gn)',border:'1px solid var(--gnbd)'}} onClick={saveImage}>
-              ⬇ PNG İndir
-            </button>
-          </div>
+    <div className="pbdrop" onClick={onClose}>
+      <div style={{display:'flex',flexDirection:'column',gap:12,alignItems:'center'}} onClick={e=>e.stopPropagation()}>
+        <div style={{display:'flex',gap:7,alignItems:'center'}}>
+          {designs.map((dd,i)=><button key={i} onClick={()=>setDi(i)} style={{padding:'4px 13px',borderRadius:20,border:`1.5px solid ${di===i?'var(--ac)':'rgba(255,255,255,.2)'}`,background:di===i?'var(--ac)':'rgba(255,255,255,.1)',color:'#fff',cursor:'pointer',fontFamily:'var(--ff)',fontSize:12}}>{dd.name}</button>)}
+          <button onClick={onClose} style={{width:28,height:28,borderRadius:'50%',border:'none',background:'rgba(255,255,255,.15)',color:'#fff',cursor:'pointer',fontSize:14,display:'flex',alignItems:'center',justifyContent:'center',marginLeft:4}}>×</button>
         </div>
-
-        {/* RIGHT: Preview */}
-        <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',
-          background:'radial-gradient(circle,#2a2a2a,#111)',padding:40,minHeight:400}}>
-          <div ref={cardRef} style={cardStyle}>
-            {/* Overlay for image backgrounds */}
-            <div style={{position:'absolute',inset:0,background:`rgba(0,0,0,${overlayOpacity/100})`,zIndex:1,pointerEvents:'none'}}/>
-            {/* Quote text */}
-            <div style={{zIndex:2,position:'relative',width:'100%'}}>
-              <div style={{...textStyle,fontSize:(fontSize||autoSize(selQ.text||''))+'px',marginBottom:18}}>
-                {selQ.text || 'Bir alıntı seçin…'}
-              </div>
-              <div style={{color:textColor,opacity:.55,fontSize:14,
-                fontFamily:fontStyle==='serif'?"'Instrument Serif',Georgia,serif":"'Cabinet Grotesk','Inter',sans-serif",
-                fontStyle:fontStyle==='serif'?'italic':'normal'}}>
-                — {selQ.author || ''}
-              </div>
-            </div>
-            {/* Brand watermark */}
-            <div style={{position:'absolute',bottom:24,width:'100%',textAlign:'center',
-              fontSize:10,fontWeight:800,letterSpacing:3,opacity:.2,color:textColor,
-              fontFamily:'var(--fm)',zIndex:2}}>FOCUSUP PRO</div>
-          </div>
+        <div style={{width:520,background:d.bg,color:d.fg,padding:'52px 48px',borderRadius:16,boxShadow:'0 24px 80px rgba(0,0,0,.4)'}}>
+          <div style={{fontSize:60,opacity:.1,fontFamily:'Instrument Serif',lineHeight:.8,marginBottom:20}}>"</div>
+          <p style={{fontFamily:'Instrument Serif',fontSize:17.5,lineHeight:1.85,fontStyle:'italic',marginBottom:28}}>{q.text}</p>
+          <div style={{display:'flex',alignItems:'center',gap:14}}><div style={{height:1,flex:1,background:d.fg,opacity:.2}}/><span style={{fontFamily:'Commit Mono',fontSize:11,opacity:.5}}>{q.author}</span><div style={{height:1,flex:1,background:d.fg,opacity:.2}}/></div>
         </div>
-
+        <button className="btn btnp btns" onClick={()=>window.print()}>🖨 Yazdır</button>
       </div>
     </div>
   );
@@ -1110,7 +940,6 @@ function Sparkline({data,color='var(--ac)',height=32,width=120}){
   );
 }
 
-
 /* ── MAIN APP ── */
 /* ── Live Clock — isolated component, no App re-renders ── */
 function Clock({style={}}){
@@ -1133,7 +962,7 @@ function TimeBlockTab({D,setD}){
   const[tbStart,setTbStart]=useState('09:00');
   const[tbEnd,setTbEnd]=useState('10:00');
   const[tbLabel,setTbLabel]=useState('');
-  const[tbColor,setTbColor]=useState('#4F46E5');
+  const[tbColor,setTbColor]=useState('#B8621A');
   const addBlock=()=>{
     if(!tbStart||!tbEnd||!tbLabel.trim())return;
     setD(prev=>({...prev,timeBlocks:[...(prev.timeBlocks||[]),{id:uid(),start:tbStart,end:tbEnd,label:tbLabel.trim(),color:tbColor}]}));
@@ -1189,11 +1018,9 @@ function TimeBlockTab({D,setD}){
 }
 
 function App(){
-  const GAS_URL = typeof __GAS_URL__ !== 'undefined' ? __GAS_URL__ : '';
-  const GAS_MODE = typeof google !== 'undefined' && google.script && google.script.run;
   const [D,setD]=useState(INIT);
-  const [gasStatus,setGasStatus]=useState((GAS_URL||GAS_MODE) ? 'loading' : 'idle');
-  const [gasReady,setGasReady]=useState(!(GAS_URL||GAS_MODE));
+  const [gasStatus,setGasStatus]=useState(GAS_URL?'loading':'idle');
+  const [gasReady,setGasReady]=useState(!GAS_URL);
   const [tab,setTab]=useState('dashboard');
   const [modal,setModal]=useState(null);
   const [detail,setDetail]=useState(null);
@@ -1230,6 +1057,46 @@ function App(){
   const chatEnd=useRef(null);
   const dragItem=useRef(null);
 
+
+  // GAS: Veri yükle
+  useEffect(()=>{
+    if(!GAS_URL) return;
+    fetch(GAS_URL)
+      .then(r=>r.json())
+      .then(saved=>{
+        if(saved && saved.todos) setD({...INIT,...saved});
+        setGasStatus('idle');
+        setGasReady(true);
+      })
+      .catch(()=>{
+        // Hata olursa localStorage'dan yükle
+        try {
+          const local = localStorage.getItem('focusup_data');
+          if(local) setD({...INIT,...JSON.parse(local)});
+        } catch(e){}
+        setGasStatus('error');
+        setGasReady(true);
+      });
+  },[]);
+
+  // GAS: Otomatik kaydet
+  const gasTimer=useRef(null);
+  useEffect(()=>{
+    if(!gasReady) return;
+    // localStorage'a her zaman kaydet
+    try { localStorage.setItem('focusup_data', JSON.stringify(D)); } catch(e){}
+    // GAS'a kaydet
+    if(!GAS_URL) return;
+    if(gasTimer.current) clearTimeout(gasTimer.current);
+    gasTimer.current=setTimeout(()=>{
+      setGasStatus('saving');
+      fetch(GAS_URL,{method:'POST',body:JSON.stringify(D),headers:{'Content-Type':'text/plain'}})
+        .then(()=>setGasStatus('saved'))
+        .catch(()=>setGasStatus('error'));
+    },2000);
+    return()=>{if(gasTimer.current)clearTimeout(gasTimer.current);};
+  },[D,gasReady]);
+
   useEffect(()=>{document.documentElement.toggleAttribute('data-dark',dark);},[dark]);
   useEffect(()=>{chatEnd.current?.scrollIntoView({behavior:'smooth'});},[chatHist,chatWait]);
   useEffect(()=>{const i=setInterval(()=>setQuoteIdx(x=>(x+1)%(D.quotes.length||1)),8000);return()=>clearInterval(i);},[D.quotes]);
@@ -1239,67 +1106,6 @@ function App(){
     else if(tLeft===0&&tOn){setTOn(false);if(tMode==='focus')setPoms(p=>p+1);}
     return()=>clearInterval(iv);
   },[tOn,tLeft,tMode]);
-
-  // ── GAS: Load on mount ──
-  useEffect(()=>{
-    if(GAS_MODE){
-      // Apps Script iframe modu
-      try {
-        google.script.run
-          .withSuccessHandler((jsonStr)=>{
-            try {
-              const saved = jsonStr ? JSON.parse(jsonStr) : null;
-              if(saved && saved.todos) setD({...INIT,...saved});
-            } catch(e){}
-            setGasStatus('idle');
-            setGasReady(true);
-          })
-          .withFailureHandler(()=>{
-            setGasStatus('error');
-            setGasReady(true);
-          })
-          .loadData();
-      } catch(e){
-        setGasStatus('error');
-        setGasReady(true);
-      }
-    } else if(GAS_URL){
-      fetch(GAS_URL)
-        .then(r=>r.json())
-        .then(saved=>{
-          if(saved && saved.todos) setD({...INIT,...saved});
-          setGasStatus('idle');
-          setGasReady(true);
-        })
-        .catch(()=>{
-          setGasStatus('error');
-          setGasReady(true);
-        });
-    }
-  },[]);
-
-  // ── GAS: Auto-save ──
-  const gasTimer=useRef(null);
-  useEffect(()=>{
-    if(!(GAS_URL||GAS_MODE)||!gasReady) return;
-    if(gasTimer.current) clearTimeout(gasTimer.current);
-    gasTimer.current=setTimeout(()=>{
-      setGasStatus('saving');
-      if(GAS_MODE){
-        try {
-          google.script.run
-            .withSuccessHandler(()=>setGasStatus('saved'))
-            .withFailureHandler(()=>setGasStatus('error'))
-            .saveData(JSON.stringify(D));
-        } catch(e){ setGasStatus('error'); }
-      } else {
-        fetch(GAS_URL,{method:'POST',body:JSON.stringify(D),headers:{'Content-Type':'text/plain'}})
-          .then(()=>setGasStatus('saved'))
-          .catch(()=>setGasStatus('error'));
-      }
-    },1500);
-    return()=>{if(gasTimer.current)clearTimeout(gasTimer.current);};
-  },[D,gasReady]);
 
   const upd=useCallback((next,msg='',type='')=>{
     const log={time:new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}),action:msg,type};
@@ -1353,7 +1159,6 @@ function App(){
       const{gid,sid}=modal;
       upd({...D,goals:D.goals.map(g=>g.id===gid?{...g,actionPlan:(g.actionPlan||[]).map(s=>s.id===sid?{...s,...v,priority:v.priority||s.priority}:s)}:g)},'Eylem adımı güncellendi','b');
     }
-    else if(t==='challenge'){const newC={id,title:v.challenge_title||'Challenge',desc:v.challenge_desc||'',category:v.challenge_cat||'Zihin',difficulty:parseInt(v.challenge_diff)||4,quarter:v.challenge_quarter||'',startDate:v.challenge_start||'',endDate:v.challenge_end||'',status:'Bekliyor',reflection:'',badge:v.challenge_badge||'⚡'};upd({...D,challenges:[...(D.challenges||[]),newC]},'Challenge eklendi','b');}
     if(t!=='journal'&&t!=='note')setModal(null);else setModal(null);
   };
 
@@ -2017,44 +1822,26 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
                 );
               })()}
 
-              {/* Compact Filter Bar */}
-              {(()=>{
-                const activeOther=[fPri!=='Tümü',fCat!=='Tümü',fAssignee!=='Tümü'].some(Boolean);
-                return(
-                  <div style={{marginBottom:12,display:'flex',gap:6,alignItems:'center',flexWrap:'wrap'}}>
-                    <div style={{display:'flex',gap:3,flexWrap:'wrap'}}>
-                      {['Tümü','Bekliyor','Yapılıyor','Tamamlandı','İptal'].map(f=>(
-                        <button key={f} onClick={()=>setFSt(f)} style={{padding:'4px 12px',borderRadius:20,
-                          border:'1px solid '+(fSt===f?'var(--ink)':'var(--bd)'),
-                          background:fSt===f?'var(--ink)':'transparent',
-                          color:fSt===f?'var(--bg)':'var(--ink4)',
-                          fontSize:11.5,fontWeight:fSt===f?600:400,cursor:'pointer',
-                          fontFamily:'var(--ff)',whiteSpace:'nowrap',transition:'all .12s'}}>
-                          {f}
-                        </button>
-                      ))}
-                    </div>
-                    <div style={{display:'flex',gap:5,marginLeft:'auto',alignItems:'center'}}>
-                      {activeOther&&<button onClick={()=>{setFPri('Tümü');setFCat('Tümü');setFAssignee('Tümü');}} style={{fontSize:10,padding:'3px 8px',borderRadius:20,border:'1px solid var(--rdbd)',background:'var(--rdb)',color:'var(--rd)',cursor:'pointer',fontFamily:'var(--ff)',fontWeight:600}}>× Temizle</button>}
-                      <select value={fPri} onChange={e=>setFPri(e.target.value)} style={{fontSize:11,padding:'4px 8px',borderRadius:7,border:'1px solid '+(fPri!=='Tümü'?'var(--ac)':'var(--bd)'),background:fPri!=='Tümü'?'var(--acb)':'var(--sur)',color:fPri!=='Tümü'?'var(--ac)':'var(--ink3)',fontFamily:'var(--ff)',cursor:'pointer'}}>
-                        <option value="Tümü">Öncelik</option>
-                        {['Acil & Önemli','Önemli','Normal','Düşük'].map(p=><option key={p}>{p}</option>)}
-                      </select>
-                      <select value={fCat} onChange={e=>setFCat(e.target.value)} style={{fontSize:11,padding:'4px 8px',borderRadius:7,border:'1px solid '+(fCat!=='Tümü'?'var(--ac)':'var(--bd)'),background:fCat!=='Tümü'?'var(--acb)':'var(--sur)',color:fCat!=='Tümü'?'var(--ac)':'var(--ink3)',fontFamily:'var(--ff)',cursor:'pointer'}}>
-                        <option value="Tümü">Kategori</option>
-                        {cats.filter(c=>c!=='Tümü').map(c=><option key={c}>{c}</option>)}
-                      </select>
-                      <select value={fAssignee} onChange={e=>setFAssignee(e.target.value)} style={{fontSize:11,padding:'4px 8px',borderRadius:7,border:'1px solid '+(fAssignee!=='Tümü'?'var(--ac)':'var(--bd)'),background:fAssignee!=='Tümü'?'var(--acb)':'var(--sur)',color:fAssignee!=='Tümü'?'var(--ac)':'var(--ink3)',fontFamily:'var(--ff)',cursor:'pointer'}}>
-                        <option value="Tümü">Sorumlu</option>
-                        {allAssignees.filter(a=>a!=='Tümü').map(a=><option key={a}>{a}</option>)}
-                      </select>
-                      <button className="btn btnxs btng" onClick={()=>setModal({type:'todoCat'})}>⚙</button>
-                    </div>
-                  </div>
-                );
-              })()}
+              {/* Filters */}
+              <div style={{display:'flex',flexDirection:'column',gap:6,marginBottom:14,padding:'12px 14px',background:'var(--bg2)',borderRadius:'var(--r2)',border:'1px solid var(--bd)'}}>
+                <div className="fbar" style={{marginBottom:0}}>
+                  <span className="clbl">Durum:</span>
+                  {['Tümü','Bekliyor','Yapılıyor','Tamamlandı','İptal'].map(f=><button key={f} className={`chip${fSt===f?' on':''}`} onClick={()=>setFSt(f)} style={{padding:'3px 10px',fontSize:11}}>{f}</button>)}
+                </div>
+                <div className="fbar" style={{marginBottom:0}}>
+                  <span className="clbl">Öncelik:</span>
+                  {['Tümü','Acil & Önemli','Önemli','Normal','Düşük'].map(f=><button key={f} className={`chip${fPri===f?' on':''}`} onClick={()=>setFPri(f)} style={{padding:'3px 10px',fontSize:11}}>{f==='Tümü'?'Tümü':f==='Acil & Önemli'?'🚩 Acil':f==='Önemli'?'🟠 Önemli':f==='Normal'?'🔵 Normal':'⚪ Düşük'}</button>)}
+                  <span className="clbl" style={{marginLeft:8}}>Kategori:</span>
+                  {cats.slice(0,5).map(f=><button key={f} className={`chip${fCat===f?' on':''}`} onClick={()=>setFCat(f)} style={{padding:'3px 10px',fontSize:11}}>{f}</button>)}
+                </div>
+                <div className="fbar" style={{marginBottom:0}}>
+                  <span className="clbl">Sorumlu:</span>
+                  {allAssignees.slice(0,7).map(a=><button key={a} className={`chip${fAssignee===a?' on':''}`} onClick={()=>setFAssignee(a)} style={{padding:'3px 10px',fontSize:11}}>{a==='Tümü'?'Tümü':'👤 '+a}</button>)}
+                  <button className="btn btnxs btng" style={{marginLeft:'auto'}} onClick={()=>setModal({type:'todoCat'})}>⚙ Kategori</button>
+                </div>
+              </div>
 
-                            {/* Task list with drag-to-reorder */}
+              {/* Task list with drag-to-reorder */}
               <div style={{display:'flex',flexDirection:'column',gap:5}}>
                 {sorted.map((t,idx)=>{
                   const over=isOverdue(t.end,t.done);const dl=daysLeft(t.end);
@@ -2084,7 +1871,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
                           return{...prev,todos:ts};
                         });
                       }}>
-                      <div style={{padding:'10px 14px',display:'flex',alignItems:'center',gap:8,cursor:'pointer',minHeight:52}} onClick={()=>setExpTask(exp?null:t.id)} tabIndex={0} onKeyDown={ev=>{if(ev.key===' '||ev.key==='Enter'){ev.preventDefault();setExpTask(exp?null:t.id);}}}>
+                      <div style={{padding:'10px 14px',display:'flex',alignItems:'center',gap:8,cursor:'pointer',minHeight:52}} onClick={()=>setExpTask(exp?null:t.id)}>
                         {/* Drag handle */}
                         <span className="drag-handle" title="Sürükle ile yeniden sırala" onClick={ev=>ev.stopPropagation()} style={{fontSize:13,color:'var(--ink6)',flexShrink:0}}>⠿</span>
                         <input type="checkbox" className="chk" checked={!!t.done} onChange={()=>togTodo(t.id)} onClick={ev=>ev.stopPropagation()} style={{flexShrink:0}}/>
@@ -2120,7 +1907,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
                             <option value="Tamamlandı">✅</option>
                             <option value="İptal">🚫</option>
                           </select>
-                          <span style={{fontSize:11,color:'var(--ink4)',flexShrink:0,display:'inline-block',transition:'transform .18s',transform:exp?'rotate(180deg)':'rotate(0)'}}>▾</span>
+                          <span style={{fontSize:10,color:'var(--ink6)',flexShrink:0}}>▾</span>
                           <button className="ibtn" style={{width:24,height:24,fontSize:10,flexShrink:0,background:'var(--acb)',color:'var(--ac)',border:'1px solid var(--acbd)'}} title="Düzenle" onClick={ev=>{ev.stopPropagation();setModal({type:'todoEdit',tid:t.id,item:t});}}>✏</button>
                           <button className="ibtn" style={{width:22,height:22,fontSize:10,flexShrink:0}} onClick={ev=>{ev.stopPropagation();delItem(t,'todos');}}>×</button>
                         </div>
@@ -2467,64 +2254,40 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
 
     /* ── BOOKS ── */
     case 'books':{
-      const booksAll=fl(D.books,['title','author','notes']);
-      const booksFiltered=booksAll.filter(b=>fSt==='Tümü'||b.status===fSt);
-      const doneCnt=D.books.filter(b=>b.status==='Bitti').length;
-      const readCnt=D.books.filter(b=>b.status==='Okunuyor').length;
-      const curWeek=Math.ceil((new Date()-new Date(new Date().getFullYear(),0,1))/6048e5);
-      const weekBook=D.books.find(b=>b.week===curWeek);
+      const books=fl(D.books,['title','author','notes']);
+      const filtered=books.filter(b=>fSt==='Tümü'||b.status===fSt);
       return(
         <div className="afu">
-          <div className="ph">
-            <div><div className="ptit">Okuma Listesi</div><div className="psub">1 Yılda 52 Kitap · Haftada 1 Kitap</div></div>
-            <button className="btn btnp" onClick={()=>setModal({type:'book'})}>+ Kitap</button>
-          </div>
-          <div className="g4" style={{marginBottom:14}}>
-            {[
-              {ic:'✅',v:doneCnt,l:'Okunan',c:'var(--gn)',s:'/52 kitap'},
-              {ic:'📖',v:readCnt,l:'Okunuyor',c:'var(--bl)',s:'şu an'},
-              {ic:'📄',v:D.books.reduce((s,b)=>s+(b.status==='Bitti'?b.pagesTotal||0:0),0).toLocaleString('tr-TR'),l:'Toplam Sayfa',c:'var(--pu)',s:'tamamlanan'},
-              {ic:'🗓',v:'Hafta '+curWeek,l:'Bu Hafta',c:'var(--ac)',s:weekBook?weekBook.title.slice(0,20):'—'},
-            ].map(s=>(
-              <div key={s.l} className="card scard">
-                <div style={{fontSize:18,marginBottom:3,opacity:.6}}>{s.ic}</div>
-                <div className="snum" style={{color:s.c,fontSize:20}}>{s.v}</div>
-                <div className="slbl">{s.l}</div>
-                <div style={{fontSize:10,color:'var(--ink5)',marginTop:2,fontFamily:'var(--fm)',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{s.s}</div>
-              </div>
-            ))}
-          </div>
-          <div className="card" style={{padding:'9px 14px',marginBottom:12,display:'flex',alignItems:'center',gap:12}}>
-            <span style={{fontSize:12,fontWeight:600,color:'var(--ink4)',whiteSpace:'nowrap'}}>Yıllık İlerleme</span>
-            <div style={{flex:1}}><div className="pb" style={{height:5}}><div className="pf" style={{width:pct(doneCnt,52)+'%',background:'var(--gn)'}}/></div></div>
-            <span className="mono" style={{fontSize:11,color:'var(--ink5)',whiteSpace:'nowrap'}}>{doneCnt}/52 · {pct(doneCnt,52)}%</span>
-          </div>
+          <div className="ph"><div><div className="ptit">Okuma Listesi</div><div className="psub">{D.books.filter(b=>b.status==='Okunuyor').length} okunuyor</div></div><button className="btn btnp" onClick={()=>setModal({type:'book'})}>+ Kitap</button></div>
           <div className="fbar">{['Tümü',...BOOK_ST].map(f=><button key={f} className={`chip${fSt===f?' on':''}`} onClick={()=>setFSt(f)}>{f}</button>)}</div>
-          <div style={{display:'flex',flexDirection:'column',gap:6}}>
-            {booksFiltered.map(b=>{const p=b.pagesTotal?pct(b.pagesDone,b.pagesTotal):0;const isNow=b.week===curWeek;return(
-              <div key={b.id} className="card ch" style={{padding:'11px 15px',borderLeft:isNow?'3px solid var(--ac)':'3px solid transparent'}} onClick={()=>setDetail({type:'book',item:b})}>
-                <div style={{display:'flex',gap:10,alignItems:'flex-start'}}>
-                  {b.week&&<div className="mono" style={{width:26,height:26,borderRadius:5,background:b.status==='Bitti'?b.color||'var(--ac)':'var(--bg2)',color:b.status==='Bitti'?'#fff':'var(--ink5)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:9,fontWeight:700,flexShrink:0,border:'1px solid var(--bd)',marginTop:2}}>W{b.week}</div>}
+          <div style={{display:'flex',flexDirection:'column',gap:8}}>
+            {filtered.map(b=>{const p=b.pagesTotal?pct(b.pagesDone,b.pagesTotal):0;return(
+              <div key={b.id} className="card ch" style={{padding:'15px 18px'}} onClick={()=>setDetail({type:'book',item:b})}>
+                <div style={{display:'flex',gap:13,alignItems:'flex-start'}}>
+                  <div className="book-spine" style={{background:b.color||'var(--ac)',minHeight:72}}/>
                   <div style={{flex:1,minWidth:0}}>
-                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:3}}>
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:5}}>
                       <div>
-                        <div style={{fontWeight:500,fontSize:13.5,marginBottom:1,color:'var(--ink)'}}>{b.title}{isNow&&<span className="tag ta" style={{marginLeft:6,fontSize:9,verticalAlign:'middle'}}>Bu Hafta</span>}</div>
-                        <div style={{fontSize:11.5,color:'var(--ink4)'}}>— {b.author}</div>
+                        <div style={{fontFamily:'var(--fd)',fontStyle:'italic',fontWeight:400,fontSize:15.5,marginBottom:1,color:'var(--ink)'}}>{b.title}</div>
+                        <div style={{fontSize:12,color:'var(--ink4)'}}>— {b.author}</div>
                       </div>
-                      <div style={{display:'flex',gap:5,alignItems:'center',flexShrink:0,marginLeft:8}}>
-                        {b.status==='Bitti'&&b.rating&&<span style={{color:b.color||'var(--ac)',fontSize:11}}>{'★'.repeat(b.rating)+'☆'.repeat(5-b.rating)}</span>}
-                        <select value={b.status} style={{width:'auto',fontSize:11,padding:'2px 6px',borderRadius:'var(--r)'}} onClick={ev=>ev.stopPropagation()} onChange={ev=>{ev.stopPropagation();setD(prev=>({...prev,books:prev.books.map(x=>x.id===b.id?{...x,status:ev.target.value}:x)}))}}>
+                      <div style={{display:'flex',gap:6,alignItems:'center',flexShrink:0,marginLeft:10}}>
+                        <select value={b.status} style={{width:'auto',fontSize:11.5,padding:'3px 8px',borderRadius:20}} onClick={ev=>ev.stopPropagation()} onChange={ev=>{ev.stopPropagation();setD(prev=>({...prev,books:prev.books.map(x=>x.id===b.id?{...x,status:ev.target.value}:x)}))}}>
                           {BOOK_ST.map(s=><option key={s}>{s}</option>)}
                         </select>
                         <button className="ibtn" onClick={ev=>{ev.stopPropagation();delItem(b,'books');}}>×</button>
                       </div>
                     </div>
                     {b.pagesTotal>0&&(
-                      <div style={{display:'flex',alignItems:'center',gap:8}}>
-                        <div className="pb" style={{flex:1,height:3}}><div className="pf" style={{width:p+'%',background:b.color||'var(--ac)'}}/></div>
-                        <span className="mono" style={{fontSize:10,color:'var(--ink5)',flexShrink:0}}>{b.pagesDone}/{b.pagesTotal}s · {p}%</span>
+                      <div style={{marginBottom:5}}>
+                        <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+                          <span className="mono" style={{fontSize:11,color:'var(--ink4)'}}>{b.pagesDone}/{b.pagesTotal} sayfa</span>
+                          <span className="mono" style={{fontSize:11,color:b.color||'var(--ac)',fontWeight:700}}>{p}%</span>
+                        </div>
+                        <div className="pb" style={{height:4}}><div className="pf" style={{width:p+'%',background:b.color||'var(--ac)'}}/></div>
                       </div>
                     )}
+                    {b.status==='Bitti'&&b.rating&&<span style={{color:b.color||'var(--ac)',fontSize:14}}>{'\u2605'.repeat(b.rating)+'\u2606'.repeat(5-b.rating)}</span>}
                   </div>
                 </div>
               </div>
@@ -2533,6 +2296,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
         </div>
       );
     }
+
     /* ── JOURNAL ── */
     case 'journal':{
       const entries=fl(D.journal,['content','category']);
@@ -2571,65 +2335,12 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
 
     /* ── QUOTES ── */
     case 'quotes':{
-      const qAll=fl(D.quotes,['text','author','category']);
-      const qCats=['Tümü',...new Set((D.quotes||[]).map(q=>q.category))].filter(Boolean);
-      const qFiltered=fCat==='Tümü'?qAll:qAll.filter(q=>q.category===fCat);
-      const doImportQuotes=(e)=>{
-        const file=e.target.files[0];if(!file)return;
-        const ext=file.name.split('.').pop().toLowerCase();
-        if(ext==='json'){
-          const r=new FileReader();
-          r.onload=ev=>{try{
-            const parsed=JSON.parse(ev.target.result);
-            const arr=Array.isArray(parsed)?parsed:parsed.quotes||[];
-            const newQ=arr.map(q=>({id:uid(),text:q.text||q.quote||'',author:q.author||q.yazar||'',category:q.category||q.kategori||'Genel',bg:q.bg||'#111111',fg:q.fg||'#FFFFFF'})).filter(q=>q.text);
-            setD(prev=>({...prev,quotes:[...prev.quotes,...newQ]}));
-            alert(newQ.length+' alıntı eklendi!');
-          }catch{alert('JSON formatı hatalı!');}};
-          r.readAsText(file);
-        }else if(ext==='xlsx'||ext==='xls'||ext==='csv'){
-          const r=new FileReader();
-          r.onload=ev=>{try{
-            const wb=XLSX.read(ev.target.result,{type:'binary'});
-            const ws=wb.Sheets[wb.SheetNames[0]];
-            const data=XLSX.utils.sheet_to_json(ws);
-            const newQ=data.map(row=>({id:uid(),text:row['Аlıntı']||row['text']||row['quote']||'',author:row['Yazar']||row['author']||'',category:row['Kategori']||row['category']||'Genel',bg:row['bg']||'#111111',fg:row['fg']||'#FFFFFF'})).filter(q=>q.text);
-            setD(prev=>({...prev,quotes:[...prev.quotes,...newQ]}));
-            alert(newQ.length+' alıntı eklendi!');
-          }catch{alert('Dosya okunamadı!');}};
-          r.readAsBinaryString(file);
-        }
-        e.target.value='';
-      };
-      const exportQExcel=()=>{
-        const rows=D.quotes.map(q=>({'Alinti':q.text,'Yazar':q.author,'Kategori':q.category,'bg':q.bg||'','fg':q.fg||''}));
-        const ws=XLSX.utils.json_to_sheet(rows);const wb=XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb,'Alıntilar',ws);XLSX.writeFile(wb,'Alıntilar.xlsx');
-      };
-      const exportQJSON=()=>{
-        const bl=new Blob([JSON.stringify(D.quotes,null,2)],{type:'application/json'});
-        const u=URL.createObjectURL(bl);const a=document.createElement('a');
-        a.href=u;a.download='alıntilar.json';a.click();URL.revokeObjectURL(u);
-      };
+      const quotes=fl(D.quotes,['text','author','category']);
       return(
         <div className="afu">
-          <div className="ph">
-            <div><div className="ptit">Alıntılar</div><div className="psub">{D.quotes.length} alıntı · {new Set(D.quotes.map(q=>q.category)).size} kategori</div></div>
-            <div style={{display:'flex',gap:6,flexWrap:'wrap',alignItems:'center'}}>
-              <input id="q-file-in" type="file" accept=".json,.xlsx,.xls,.csv" style={{display:'none'}} onChange={doImportQuotes}/>
-              <button className="btn btns btng" onClick={()=>document.getElementById('q-file-in').click()}>⬆ İçe Aktar</button>
-              <button className="btn btns btng" onClick={exportQExcel}>⬇ Excel</button>
-              <button className="btn btns btng" onClick={exportQJSON}>⬇ JSON</button>
-              <button className="btn btnp btns" onClick={()=>setModal({type:'quote'})}>+ Ekle</button>
-              <button className="btn btns" style={{background:'var(--pu)',color:'#fff',border:'none'}} onClick={()=>setPrintQ(D.quotes[0]||{text:'',author:''})}>🖼 Tasarımcı</button>
-            </div>
-          </div>
-          <div style={{padding:'7px 12px',background:'var(--acb)',border:'1px solid var(--acbd)',borderRadius:'var(--r)',marginBottom:10,fontSize:11.5,color:'var(--actext)'}}>
-            <strong>Dış Veri:</strong> JSON veya Excel aktar. Excel kolonları: <code style={{fontFamily:'var(--fm)',fontSize:11}}>Alinti</code>, <code style={{fontFamily:'var(--fm)',fontSize:11}}>Yazar</code>, <code style={{fontFamily:'var(--fm)',fontSize:11}}>Kategori</code>
-          </div>
-          <div className="fbar">{qCats.map(c=><button key={c} className={`chip${fCat===c?' on':''}`} onClick={()=>setFCat(c)}>{c}</button>)}</div>
+          <div className="ph"><div><div className="ptit">Alıntılar</div></div><div style={{display:'flex',gap:7}}><button className="btn btnp btns" onClick={()=>setModal({type:'quote'})}>+ Ekle</button></div></div>
           <div className="g3">
-            {qFiltered.map(q=>(
+            {quotes.map(q=>(
               <div key={q.id} className="q-card" style={{background:q.bg||'#18160F',color:q.fg||'#F0EDE4'}}>
                 <div>
                   <div className="mono" style={{fontSize:9,letterSpacing:2,opacity:.4,marginBottom:10,textTransform:'uppercase'}}>{q.category}</div>
@@ -2648,6 +2359,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
         </div>
       );
     }
+
     /* ── ROUTINES ── */
     case 'routines':{
       const PICS={daily:'☀️',weekly:'📅',monthly:'🗓️',quarterly:'🔭'};
@@ -2719,116 +2431,56 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
     /* ── BOOKMARKS ── */
     case 'bookmarks':{
       const bms=D.bookmarks||[];
-      const bmAll=fl(bms,['title','url','purpose','notes','category']);
-      const bmCats=['Tümü',...new Set(bms.map(b=>b.category))].filter(Boolean);
-      const bmFiltered=fCat==='Tümü'?bmAll:bmAll.filter(b=>b.category===fCat);
-      const catCounts=bmCats.filter(c=>c!=='Tümü').map(c=>({c,n:bms.filter(b=>b.category===c).length})).sort((a,b)=>b.n-a.n);
-      const doImportBM=(e)=>{
-        const file=e.target.files[0];if(!file)return;
-        const ext=file.name.split('.').pop().toLowerCase();
-        if(ext==='json'){
-          const r=new FileReader();
-          r.onload=ev=>{try{
-            const arr=JSON.parse(ev.target.result);
-            const items=Array.isArray(arr)?arr:arr.bookmarks||[];
-            const newBM=items.map(b=>({id:uid(),url:b.url||b.URL||b.link||'',title:b.title||b.baslik||getDomain(b.url||''),category:b.category||b.kategori||'Genel',purpose:b.purpose||b.amac||'',notes:b.notes||'',addedAt:today()})).filter(b=>b.url);
-            setD(prev=>({...prev,bookmarks:[...prev.bookmarks,...newBM]}));
-            alert(newBM.length+' yer imi eklendi!');
-          }catch{alert('JSON formatı hatalı!');}};
-          r.readAsText(file);
-        }else if(ext==='xlsx'||ext==='xls'||ext==='csv'){
-          const r=new FileReader();
-          r.onload=ev=>{try{
-            const wb=XLSX.read(ev.target.result,{type:'binary'});
-            const ws=wb.Sheets[wb.SheetNames[0]];
-            const data=XLSX.utils.sheet_to_json(ws);
-            const newBM=data.map(row=>({id:uid(),url:row['URL']||row['url']||row['Link']||'',title:row['Baslik']||row['Title']||getDomain(row['URL']||row['url']||''),category:row['Kategori']||row['Category']||'Genel',purpose:row['Amac']||row['Purpose']||'',notes:row['Notlar']||row['Notes']||'',addedAt:today()})).filter(b=>b.url);
-            setD(prev=>({...prev,bookmarks:[...prev.bookmarks,...newBM]}));
-            alert(newBM.length+' yer imi eklendi!');
-          }catch{alert('Dosya okunamadı!');}};
-          r.readAsBinaryString(file);
-        }
-        e.target.value='';
-      };
-      const exportBMExcel=()=>{
-        const rows=bms.map(b=>({'Baslik':b.title,'URL':b.url,'Kategori':b.category,'Amac':b.purpose||'','Notlar':b.notes||'','Ekleme':b.addedAt||''}));
-        const ws=XLSX.utils.json_to_sheet(rows);const wb=XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb,'YerImleri',ws);XLSX.writeFile(wb,'YerImleri.xlsx');
-      };
-      const exportBMJSON=()=>{
-        const bl=new Blob([JSON.stringify(bms,null,2)],{type:'application/json'});
-        const u=URL.createObjectURL(bl);const a=document.createElement('a');
-        a.href=u;a.download='yer-imleri.json';a.click();URL.revokeObjectURL(u);
-      };
+      const cats=['Tümü',...new Set(bms.map(b=>b.category))].filter(Boolean);
+      let filtered=fl(bms,['title','url','purpose','notes','category']);
+      if(fCat!=='Tümü')filtered=filtered.filter(b=>b.category===fCat);
       return(
         <div className="afu">
           <div className="ph">
-            <div><div className="ptit">Yer İmleri</div><div className="psub">{bms.length} site · {bmCats.length-1} kategori</div></div>
-            <div style={{display:'flex',gap:6,flexWrap:'wrap',alignItems:'center'}}>
-              <input id="bm-file-in" type="file" accept=".json,.xlsx,.xls,.csv" style={{display:'none'}} onChange={doImportBM}/>
-              <button className="btn btns btng" onClick={()=>document.getElementById('bm-file-in').click()}>⬆ İçe Aktar</button>
-              <button className="btn btns btng" onClick={exportBMExcel}>⬇ Excel</button>
-              <button className="btn btns btng" onClick={exportBMJSON}>⬇ JSON</button>
+            <div><div className="ptit">Yer İmleri</div><div className="psub">{bms.length} site</div></div>
+            <div style={{display:'flex',gap:7}}>
               <button className={`btn btns${bmView==='grid'?' btnp':''}`} onClick={()=>setBmView('grid')}>⊞</button>
               <button className={`btn btns${bmView==='list'?' btnp':''}`} onClick={()=>setBmView('list')}>≡</button>
               <button className="btn btnp btns" onClick={()=>setModal({type:'bookmark'})}>+ Ekle</button>
             </div>
           </div>
-          <div className="g4" style={{marginBottom:12}}>
-            <div className="card scard"><div style={{fontSize:18,opacity:.6,marginBottom:3}}>🔖</div><div className="snum" style={{fontSize:22,color:'var(--bl)'}}>{bms.length}</div><div className="slbl">Toplam Site</div></div>
-            <div className="card scard"><div style={{fontSize:18,opacity:.6,marginBottom:3}}>📂</div><div className="snum" style={{fontSize:22,color:'var(--pu)'}}>{bmCats.length-1}</div><div className="slbl">Kategori</div></div>
-            <div className="card scard" style={{gridColumn:'span 2',padding:'10px 14px'}}>
-              <div style={{fontSize:11,fontWeight:600,color:'var(--ink4)',marginBottom:6,fontFamily:'var(--fm)',letterSpacing:.5}}>KATEGORİLER</div>
-              <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
-                {catCounts.slice(0,8).map(({c,n})=>(
-                  <button key={c} className={`chip${fCat===c?' on':''}`} style={{fontSize:11,padding:'2px 8px'}} onClick={()=>setFCat(fCat===c?'Tümü':c)}>{c} <span className="mono">{n}</span></button>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div style={{padding:'7px 12px',background:'var(--acb)',border:'1px solid var(--acbd)',borderRadius:'var(--r)',marginBottom:10,fontSize:11.5,color:'var(--actext)'}}>
-            <strong>Dış Veri:</strong> Excel/JSON aktar. Kolonlar: <code style={{fontFamily:'var(--fm)',fontSize:11}}>URL</code>, <code style={{fontFamily:'var(--fm)',fontSize:11}}>Baslik</code>, <code style={{fontFamily:'var(--fm)',fontSize:11}}>Kategori</code>, <code style={{fontFamily:'var(--fm)',fontSize:11}}>Amac</code>
-          </div>
-          <div className="fbar">{bmCats.map(c=><button key={c} className={`chip${fCat===c?' on':''}`} onClick={()=>setFCat(c)}>{c}</button>)}</div>
+          <div className="fbar">{cats.map(c=><button key={c} className={`chip${fCat===c?' on':''}`} onClick={()=>setFCat(c)}>{c}</button>)}</div>
           {bmView==='grid'?(
-            <div className="g3">
-              {bmFiltered.map(b=>(
-                <div key={b.id} className="card bm-card ch">
-                  <div style={{display:'flex',gap:9,alignItems:'center',marginBottom:6}}>
-                    <Fav url={b.url} title={b.title} size={18}/>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:11}}>
+              {filtered.map(bm=>(
+                <div key={bm.id} className="card bm-card">
+                  <div style={{display:'flex',alignItems:'center',gap:9}}>
+                    <Fav url={bm.url} title={bm.title} size={20}/>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontWeight:500,fontSize:13,color:'var(--ink)',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{b.title}</div>
-                      <div className="mono" style={{fontSize:10,color:'var(--ink5)',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{getDomain(b.url)}</div>
+                      <div style={{fontWeight:600,fontSize:13,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',color:'var(--ink)'}}>{bm.title}</div>
+                      <div className="mono" style={{fontSize:9.5,color:'var(--ink5)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{getDomain(bm.url)}</div>
                     </div>
-                    <button className="ibtn" onClick={ev=>{ev.stopPropagation();delItem(b,'bookmarks');}}>×</button>
+                    <span className="tag" style={{fontSize:9.5,flexShrink:0}}>{bm.category}</span>
                   </div>
-                  <span className="tag" style={{fontSize:10,marginBottom:4}}>{b.category}</span>
-                  {b.purpose&&<div style={{fontSize:11.5,color:'var(--ink4)',lineHeight:1.5,marginTop:4}}>{b.purpose}</div>}
-                  <a href={ensureHttp(b.url)} target="_blank" rel="noreferrer" onClick={ev=>ev.stopPropagation()} style={{display:'block',marginTop:8,fontSize:11,color:'var(--ac)',fontFamily:'var(--fm)',textDecoration:'none',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>↗ {b.url}</a>
+                  {bm.purpose&&<div style={{fontSize:12.5,color:'var(--ink3)',paddingTop:6,borderTop:'1px solid var(--bg3)',marginTop:5}}>{bm.purpose}</div>}
+                  <div style={{display:'flex',alignItems:'center',gap:6,marginTop:6}}>
+                    <a href={ensureHttp(bm.url)} target="_blank" rel="noopener noreferrer" style={{padding:'4px 11px',borderRadius:20,border:'none',background:'var(--ac)',color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer',textDecoration:'none',fontFamily:'var(--ff)'}}>↗ Aç</a>
+                    <button className="ibtn" style={{marginLeft:'auto',width:22,height:22,fontSize:10}} onClick={()=>delItem(bm,'bookmarks')}>×</button>
+                  </div>
                 </div>
               ))}
             </div>
           ):(
-            <div className="card" style={{overflow:'hidden'}}>
-              <table>
-                <thead><tr><th>Site</th><th>Kategori</th><th>Amaç</th><th>Eklenme</th><th></th></tr></thead>
-                <tbody>
-                  {bmFiltered.map(b=>(
-                    <tr key={b.id}>
-                      <td><div style={{display:'flex',gap:8,alignItems:'center'}}><Fav url={b.url} title={b.title} size={16}/><div><div style={{fontWeight:500,fontSize:13}}>{b.title}</div><a href={ensureHttp(b.url)} target="_blank" rel="noreferrer" style={{fontSize:10.5,color:'var(--ac)',fontFamily:'var(--fm)',textDecoration:'none'}}>{getDomain(b.url)}</a></div></div></td>
-                      <td><span className="tag" style={{fontSize:10}}>{b.category}</span></td>
-                      <td style={{fontSize:12.5,color:'var(--ink3)',maxWidth:200}}>{b.purpose}</td>
-                      <td><span className="mono" style={{fontSize:11,color:'var(--ink5)'}}>{b.addedAt||'—'}</span></td>
-                      <td><button className="ibtn" onClick={()=>delItem(b,'bookmarks')}>×</button></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <div className="card"><table><thead><tr><th></th><th>Site</th><th>Kategori</th><th>Amaç</th><th></th></tr></thead><tbody>
+              {filtered.map(bm=>(
+                <tr key={bm.id}><td style={{padding:'7px 7px 7px 13px'}}><Fav url={bm.url} title={bm.title} size={17}/></td>
+                <td><div style={{fontWeight:500,fontSize:13}}>{bm.title}</div><div className="mono" style={{fontSize:10,color:'var(--ink5)'}}>{getDomain(bm.url)}</div></td>
+                <td><span className="tag">{bm.category}</span></td>
+                <td style={{maxWidth:180,fontSize:12.5,color:'var(--ink3)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{bm.purpose||'—'}</td>
+                <td><div style={{display:'flex',gap:5}}><a href={ensureHttp(bm.url)} target="_blank" rel="noopener noreferrer" style={{padding:'3px 9px',borderRadius:20,background:'var(--ac)',color:'#fff',fontSize:11,fontWeight:600,textDecoration:'none',fontFamily:'var(--ff)'}}>↗</a><button className="ibtn" style={{width:24,height:24}} onClick={()=>delItem(bm,'bookmarks')}>×</button></div></td>
+                </tr>
+              ))}
+            </tbody></table></div>
           )}
         </div>
       );
     }
+
     /* ── AI COACH ── */
     case 'coach':{
       return(
@@ -2923,196 +2575,236 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
       );
     }
 
-
-    /* ── SETTINGS ── */
-    case 'settings':{
-      const members = D.teamMembers || TEAM_MEMBERS;
-      const addMember = () => {
-        const name = prompt('Yeni ekip üyesi adı:');
-        if(!name || !name.trim()) return;
-        if(members.includes(name.trim())){alert('Bu isim zaten mevcut!');return;}
-        setD(prev=>({...prev, teamMembers:[...(prev.teamMembers||TEAM_MEMBERS), name.trim()]}));
-      };
-      const removeMember = (name) => {
-        if(!confirm(name+' çıkarılsın mı?')) return;
-        setD(prev=>({...prev, teamMembers:(prev.teamMembers||TEAM_MEMBERS).filter(m=>m!==name)}));
-      };
-      const resetMembers = () => {
-        if(!confirm('Varsayılan ekip listesine dön?')) return;
-        setD(prev=>({...prev, teamMembers:[...TEAM_MEMBERS]}));
-      };
-      const exportAll = () => exportJSON(D);
-      const importAll = (e) => {
-        const file = e.target.files[0]; if(!file) return;
-        const r = new FileReader();
-        r.onload = ev => {
-          try {
-            const parsed = JSON.parse(ev.target.result);
-            if(parsed.todos && parsed.goals && parsed.habits) {
-              if(confirm('Tüm veriler yüklenmiş dosyayla değiştirilecek. Emin misiniz?')) {
-                setD(parsed); alert('Veri başarıyla geri yüklendi!');
-              }
-            } else { alert('Geçersiz FocusUp yedek dosyası!'); }
-          } catch { alert('JSON okunamadı!'); }
-        };
-        r.readAsText(file);
-        e.target.value = '';
-      };
+    /* ── GUIDE ── */
+    case 'guide':{
+      const sections=[
+        {id:'overview',ic:'🗺',title:'Genel Bakış',color:'var(--ac)',content:[
+          {type:'intro',text:'FocusUp Pro, hedeften günlük göreve kadar tüm üretkenlik sisteminizi tek bir yerde yönetmenizi sağlar. Bu rehber her modülü adım adım açıklamaktadır.'},
+          {type:'arch',items:[
+            {ic:'🎯',t:'Smart Hedefler',d:'Uzun vadeli hedefler → Eylem planları → Alt adımlar hiyerarşisi'},
+            {ic:'☐',t:'Görev Yönetimi',d:'Günlük görevler, durum takibi, ağırlık ve bağımlılık sistemi'},
+            {ic:'◐',t:'Alışkanlıklar',d:'Günlük rutinler, seri takibi, 30 günlük ısı haritası'},
+            {ic:'⊞',t:'Kanban Tahtası',d:'Görsel iş akışı: Yapılacak → Devam → İnceleme → Bitti'},
+            {ic:'📅',t:'Takvim',d:'Etkinlikler, tekrarlı rutinler, haftalık ve aylık görünüm'},
+            {ic:'🧠',t:'AI Koç',d:'Tüm verilerinizi bilen kişisel Claude koçu'},
+          ]},
+        ]},
+        {id:'goals',ic:'🎯',title:'Smart Hedefler',color:'var(--rd)',content:[
+          {type:'steps',title:'Yeni Hedef Oluşturma',steps:[
+            'Sol menüden "Smart Hedefler" sayfasını açın',
+            '"+ Yeni Hedef" butonuna tıklayın — modal form açılır',
+            'Hedef başlığı ve açıklamasını net biçimde yazın',
+            'SMART kriterlerini doldurun: S (özgül ne?), M (nasıl ölçeceğiz?), A (ulaşılabilir mi?), R (neden önemli?), T otomatik son tarihten gelir',
+            'Mevcut değer (ör. 49$ MRR) ve hedef değer (ör. 500$ MRR) girin — ilerleme çubuğu bunu kullanır',
+            '"Kaydet" butonuyla hedef oluşturulur ve listede görünür',
+          ]},
+          {type:'steps',title:'Hedefi Düzenleme',steps:[
+            'Herhangi bir hedef kartına tıklayın — sağ panelde detay açılır',
+            'Panelin üst kısmındaki "✏ Düzenle" butonuna tıklayın',
+            'Açılan formda tüm alanları güncelleyebilirsiniz',
+            '"Kaydet" ile değişiklikler anında uygulanır',
+          ]},
+          {type:'steps',title:'Eylem Planı ve Alt Adımlar (3 Katman)',steps:[
+            'Hedef detay panelinde "+ Adım" ile yeni eylem adımı ekleyin',
+            'Her adımın yanında ✏ butonu vardır — adımı düzenlemek için tıklayın',
+            'Eylem adımının altındaki "alt adım ekle… (Enter)" alanına yazıp Enter\'a basın',
+            'Alt adımların checkbox\'ları ile mini ilerleme çubuğu otomatik güncellenir',
+            'Alt adım yanındaki ✏ ile adı ve tarihini değiştirebilirsiniz',
+          ]},
+          {type:'example',title:'3 Katmanlı Yapı Örneği',rows:[
+            ['Hedef (1. Katman)','SaaS MVP Lansmanı — 500$ MRR'],
+            ['Eylem Adımı (2. Katman)','Stripe entegrasyonu — Son: 01.05'],
+            ['Alt Adım (3. Katman)','• Stripe hesabı aç ✓'],
+            ['Alt Adım (3. Katman)','• Webhook entegre et (devam)'],
+            ['Alt Adım (3. Katman)','• Test ödemeleri çalıştır'],
+          ]},
+          {type:'tip',text:'💡 SMART İpucu: "Satışları artır" değil, "Q2 sonuna kadar aylık yinelenen geliri 500$\'a çıkar" yazın. Ölçülebilir ve tarihli hedefler %42 daha yüksek başarı oranına sahiptir.'},
+        ]},
+        {id:'todos',ic:'☐',title:'Görev Yönetimi',color:'var(--bl)',content:[
+          {type:'steps',title:'Görev Oluşturma',steps:[
+            '"+ Yeni Görev" butonuna tıklayın',
+            'Görev adı, öncelik (🚩 Acil / 🟠 Önemli / 🔵 Normal / ⚪ Düşük), durum ve kategori seçin',
+            'Ağırlık % alanına görevin önemini girin — CRM kurmak %30, toplantı notu %5 gibi',
+            'Başlangıç ve bitiş tarihi ile tahmini süreyi (sa) belirtin',
+            '"Kaydet" ile görev oluşturulur',
+          ]},
+          {type:'steps',title:'Görev Düzenleme',steps:[
+            'Görev kartının sağ üstündeki ✏ butonuna tıklayın',
+            'Açılan formda tüm alanları (ad, durum, öncelik, tarih, ağırlık) güncelleyin',
+            '"Kaydet" ile değişiklikler anında uygulanır',
+            'Durum için hızlı güncelleme: Kart sağındaki dropdown (⏳/⚙️/✅/🚫)',
+          ]},
+          {type:'steps',title:'Alt Görev Yönetimi',steps:[
+            'Görev kartına tıklayın — kart genişler',
+            '"Alt Görevler" bölümünde "+ Ekle" butonuna tıklayın',
+            'Alt görev adı ve sorumlusunu girin, kaydedin',
+            'Her alt görevin yanındaki ✏ butonu ile adı/sorumluyu güncelleyebilirsiniz',
+            '× ile sil, checkbox ile tamamla',
+          ]},
+          {type:'steps',title:'Bağımlılık & Sıralama',steps:[
+            'Görevi genişletin → "🔗 Bağımlılık Ekle" bölümünden önce bitmesi gereken görevi seçin',
+            'Bağımlı görev tamamlanmadan bu görev turuncu uyarı gösterir',
+            'Sıralamak için: soldaki ⠿ simgesini tutup sürükleyin, istenen konuma bırakın',
+          ]},
+          {type:'example',title:'Ağırlıklı İlerleme Örneği',rows:[
+            ['CRM sistemi kur','%30 ağırlık → Tamamlanınca çubuk çok ilerler'],
+            ['Veri aktarımı','%20 ağırlık → Orta katkı'],
+            ['Toplantı notu yaz','%5 ağırlık → Küçük katkı'],
+            ['Sonuç','Ağırlıklı çubuk gerçek ilerlemeyi gösterir'],
+          ]},
+          {type:'tip',text:'💡 The One Thing: Her sabah "Bugünün tek en kritik görevi nedir?" sorusunu sorun. Bunu yaparsanız günü kazanmış sayılırsınız. Görevler → The One Thing sekmesinden yönetin.'},
+        ]},
+        {id:'habits',ic:'◐',title:'Alışkanlık Takibi',color:'var(--gn)',content:[
+          {type:'steps',title:'Alışkanlık Ekle ve Takip Et',steps:[
+            '"Alışkanlıklar" sayfasından "+ Yeni Alışkanlık" butonuna tıklayın',
+            'İsim (ör. Meditasyon), emoji ve renk seçin, kaydedin',
+            'Bugünün kutucuğuna tıklayarak o günü işaretleyin',
+            'Seri (streak) otomatik hesaplanır — üst üste işaretlediğiniz gün sayısı',
+            'Isı haritasında son 30 günlük tutarlılığınızı görün',
+          ]},
+          {type:'example',title:'Örnek Alışkanlık Sistemi',rows:[
+            ['Sabah rutini','🌅 Meditasyon + Günlük hedef belirleme'],
+            ['Sağlık','💪 Egzersiz (haftada 3x) + Su içme'],
+            ['Öğrenme','📚 15 dk okuma + Yeni kelime'],
+            ['Akşam rutini','📝 Günlük review + Yarını planla'],
+          ]},
+          {type:'tip',text:'💡 Seri Psikolojisi: Zincirinizi kırmayın! 21 günlük seri sonrası alışkanlık otomatik hale gelir. Kaçırırsanız hemen ertesi gün geri dönün.'},
+        ]},
+        {id:'ai',ic:'🧠',title:'AI Koç Kullanımı',color:'var(--pu)',content:[
+          {type:'steps',title:'AI Koç ile Verimli Çalışma',steps:[
+            '"AI Koç" sayfasında Claude ile sohbet edin — tüm verilerinizi biliyor',
+            'Hazır sorular butonlarını kullanın ya da kendi sorunuzu yazın',
+            'Shift+Enter ile çok satırlı mesaj, Enter ile gönder',
+            '"Temizle" ile yeni konuşma başlatın',
+          ]},
+          {type:'example',title:'Etkili AI Koç Soruları',rows:[
+            ['Önceliklendirme','Bugün 8 görevim var. Hangisinden başlamalıyım ve neden?'],
+            ['Analiz','Bu hafta hedeflerimde ne kadar ilerleme kaydettim?'],
+            ['Strateji','Q2 SaaS hedefime 3 ayda ulaşmak için plan öner'],
+            ['Sorun Çözme','Stripe entegrasyonunda takıldım, nasıl ilerlemeliyim?'],
+            ['Motivasyon','Yoruldum ama hedeflerimden vazgeçmek istemiyorum'],
+          ]},
+          {type:'tip',text:'💡 Bağlam Verin: "Pazartesi koçluk seansı" gibi açılış yapın. Koç zaten verilerinizi biliyor ama ne hissettiğinizi siz söylemelisiniz.'},
+        ]},
+        {id:'shortcuts',ic:'⌨',title:'Kısayollar & İpuçları',color:'var(--tl)',content:[
+          {type:'shortcuts',items:[
+            {k:'✏ Butonu',d:'Hedef / Adım / Görev / Alt Görevi düzenle'},
+            {k:'× Butonu',d:'Öğeyi sil (onay sorulur)'},
+            {k:'⠿ Sürükle',d:'Görev listesinde sırayı değiştir'},
+            {k:'▾ Ok',d:'Görev kartını genişlet / daralt'},
+            {k:'Enter',d:'Yeni alt adım / bağlantı / alt görev ekle'},
+            {k:'Status Dropdown',d:'Görev durumunu anında değiştir'},
+            {k:'Checkbox',d:'Görev veya adımı tamamlandı işaretle'},
+          ]},
+          {type:'example',title:'Veri Yedekleme',rows:[
+            ['JSON Yedek','Haftalık Review → "Yedek Al" → tüm veri JSON olarak iner'],
+            ['Excel Export','Görevler → "⬇ Excel" → tablo formatında indir'],
+            ['PDF','Görevler → "🖨 PDF" → yazdır veya kaydet'],
+          ]},
+          {type:'tip',text:'💡 Altın Kural: Her Cuma 10 dakika Haftalık Review yapın, her Pazartesi 5 dakika haftalık planı kurun. Bu 15 dakika haftanızı dönüştürür.'},
+        ]},
+      ];
+      const[activeSection,setActiveSection]=React.useState('overview');
+      const sec=sections.find(s=>s.id===activeSection)||sections[0];
       return(
-        <div className="afu">
-          <div className="ph">
-            <div><div className="ptit">⚙ Ayarlar</div><div className="psub">Ekip, veri ve uygulama ayarları</div></div>
+        <div className="afu" style={{padding:0}}>
+          <div className="ph" style={{padding:'14px 22px',marginBottom:0,borderBottom:'1px solid var(--bd)'}}>
+            <div><div className="ptit">📖 Kullanım Rehberi</div><div className="psub">Her özelliği adım adım öğrenin</div></div>
           </div>
-
-          {/* Team Members */}
-          <div className="card cp" style={{marginBottom:14}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
-              <div>
-                <div style={{fontWeight:700,fontSize:14,color:'var(--ink)'}}>👥 Ekip Üyeleri</div>
-                <div style={{fontSize:12,color:'var(--ink4)',marginTop:2}}>Görev atamalarında bu liste kullanılır</div>
-              </div>
-              <div style={{display:'flex',gap:6}}>
-                <button className="btn btns" style={{fontSize:11,padding:'5px 10px'}} onClick={resetMembers}>↺ Sıfırla</button>
-                <button className="btn btnp btns" onClick={addMember}>+ Ekle</button>
-              </div>
+          <div style={{display:'grid',gridTemplateColumns:'190px 1fr',height:'calc(100vh - 170px)',overflow:'hidden'}}>
+            {/* Section nav */}
+            <div style={{borderRight:'1px solid var(--bd)',overflowY:'auto',padding:'8px 0',background:'var(--bg2)'}}>
+              {sections.map(s=>(
+                <button key={s.id} onClick={()=>setActiveSection(s.id)}
+                  style={{width:'100%',display:'flex',gap:9,alignItems:'center',padding:'10px 14px',border:'none',
+                    background:activeSection===s.id?'var(--sur)':'transparent',
+                    cursor:'pointer',fontFamily:'var(--ff)',fontSize:12.5,
+                    fontWeight:activeSection===s.id?600:400,
+                    color:activeSection===s.id?s.color:'var(--ink3)',
+                    borderLeft:`3px solid ${activeSection===s.id?s.color:'transparent'}`,
+                    transition:'all .12s',textAlign:'left'}}>
+                  <span style={{fontSize:15}}>{s.ic}</span>
+                  <span>{s.title}</span>
+                </button>
+              ))}
             </div>
-            <div style={{display:'flex',flexWrap:'wrap',gap:7}}>
-              {members.map(m=>(
-                <div key={m} style={{display:'flex',alignItems:'center',gap:6,padding:'7px 12px',
-                  background:'var(--sur)',border:'1px solid var(--bd)',borderRadius:'var(--r)',fontSize:13}}>
-                  <div style={{width:26,height:26,borderRadius:'50%',background:'var(--acb)',
-                    border:'1px solid var(--acbd)',display:'flex',alignItems:'center',justifyContent:'center',
-                    fontSize:11,fontWeight:700,color:'var(--ac)',flexShrink:0}}>
-                    {m.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}
+            {/* Content */}
+            <div style={{overflowY:'auto',padding:'28px 32px'}}>
+              <div style={{display:'flex',gap:12,alignItems:'center',marginBottom:24,paddingBottom:16,borderBottom:'2px solid var(--bd)'}}>
+                <span style={{fontSize:30}}>{sec.ic}</span>
+                <div>
+                  <div style={{fontFamily:'var(--fd)',fontStyle:'italic',fontSize:22,color:'var(--ink)'}}>{sec.title}</div>
+                  <div style={{fontSize:10.5,color:sec.color,fontFamily:'var(--fm)',letterSpacing:.8,marginTop:3,fontWeight:700}}>KULLANIM REHBERİ</div>
+                </div>
+              </div>
+              {sec.content.map((block,bi)=>{
+                if(block.type==='intro')return(
+                  <div key={bi} style={{padding:'14px 18px',background:'var(--acb)',border:'1px solid var(--acbd)',borderRadius:'var(--r2)',marginBottom:20,fontSize:13.5,color:'var(--ink2)',lineHeight:1.9}}>{block.text}</div>
+                );
+                if(block.type==='arch')return(
+                  <div key={bi} style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:10,marginBottom:20}}>
+                    {block.items.map((it,i)=>(
+                      <div key={i} style={{padding:'14px 16px',background:'var(--sur)',border:'1px solid var(--bd)',borderRadius:'var(--r2)',transition:'all .15s'}}
+                        onMouseEnter={ev=>{ev.currentTarget.style.borderColor='var(--ac)';ev.currentTarget.style.transform='translateY(-2px)';ev.currentTarget.style.boxShadow='var(--shm)';}}
+                        onMouseLeave={ev=>{ev.currentTarget.style.borderColor='var(--bd)';ev.currentTarget.style.transform='none';ev.currentTarget.style.boxShadow='none';}}>
+                        <div style={{fontSize:22,marginBottom:8}}>{it.ic}</div>
+                        <div style={{fontWeight:700,fontSize:13,marginBottom:5,color:'var(--ink)'}}>{it.t}</div>
+                        <div style={{fontSize:12,color:'var(--ink4)',lineHeight:1.6}}>{it.d}</div>
+                      </div>
+                    ))}
                   </div>
-                  <span style={{fontWeight:500,color:'var(--ink)'}}>{m}</span>
-                  <button onClick={()=>removeMember(m)} style={{width:18,height:18,borderRadius:4,border:'none',
-                    background:'var(--rdb)',color:'var(--rd)',cursor:'pointer',fontSize:11,
-                    display:'flex',alignItems:'center',justifyContent:'center',marginLeft:2}}>×</button>
-                </div>
-              ))}
-            </div>
-            {members.length===0&&<div style={{fontSize:13,color:'var(--ink5)',padding:'12px 0'}}>Henüz ekip üyesi yok.</div>}
-          </div>
-
-          {/* Data Management */}
-          <div className="card cp" style={{marginBottom:14}}>
-            <div style={{fontWeight:700,fontSize:14,color:'var(--ink)',marginBottom:14}}>💾 Veri Yönetimi</div>
-            <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-              <button className="btn btng btns" style={{fontSize:12}} onClick={exportAll}>⬇ JSON Yedek Al</button>
-              <label style={{cursor:'pointer'}}>
-                <input type="file" accept=".json" style={{display:'none'}} onChange={importAll}/>
-                <span className="btn btns" style={{fontSize:12,display:'inline-flex',alignItems:'center',gap:5,
-                  padding:'7px 13px',borderRadius:'var(--r)',border:'1px solid var(--bd)',
-                  background:'var(--sur)',color:'var(--ink)',fontFamily:'var(--ff)',fontWeight:600,cursor:'pointer'}}>⬆ JSON Geri Yükle</span>
-              </label>
-            </div>
-            <div style={{marginTop:10,padding:'9px 12px',background:'var(--rdb)',border:'1px solid var(--rdbd)',
-              borderRadius:'var(--r)',fontSize:12,color:'#7f1d1d'}}>
-              ⚠ Geri yükleme tüm mevcut veriyi değiştirir. Önce yedek almayı unutmayın.
-            </div>
-          </div>
-
-          {/* GAS Connection */}
-          <div className="card cp" style={{marginBottom:14}}>
-            <div style={{fontWeight:700,fontSize:14,color:'var(--ink)',marginBottom:10}}>☁️ Google Apps Script Bağlantısı</div>
-            {(GAS_URL||GAS_MODE)?(
-              <div>
-                <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}>
-                  <span style={{fontSize:13,color:'var(--gn)',fontWeight:600}}>✅ Bağlı</span>
-                  <span style={{fontSize:11,color:'var(--ink5)',fontFamily:'var(--fm)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:300}}>Apps Script (GAS Mode)</span>
-                </div>
-                <div style={{fontSize:12,color:'var(--ink4)'}}>Veriler otomatik olarak Google Sheets'e kaydediliyor.</div>
-              </div>
-            ):(
-              <div>
-                <div style={{fontSize:12,color:'var(--ink3)',lineHeight:1.7,marginBottom:10}}>
-                  Google Sheets database bağlamak için:<br/>
-                  1. <strong>script.google.com</strong> → Yeni proje<br/>
-                  2. Aşağıdaki <code style={{fontFamily:'var(--fm)',background:'var(--bg2)',padding:'1px 5px',borderRadius:4}}>Code.gs</code> kodunu yapıştır<br/>
-                  3. <strong>Deploy → Web App</strong> → URL'yi kopyala<br/>
-                  4. Bu dosyayı açın → <code style={{fontFamily:'var(--fm)',background:'var(--bg2)',padding:'1px 5px',borderRadius:4}}>Index.html olarak Apps Script'e yükleyin
-                </div>
-                <div style={{padding:'10px 13px',background:'var(--bg2)',borderRadius:'var(--r)',fontSize:11,fontFamily:'var(--fm)',color:'var(--ink3)',lineHeight:1.6,border:'1px solid var(--bd)'}}>
-                  Dosyanızın başında şunu bulun:<br/>
-                  <code style={{color:'var(--ac)'}}>{'// Apps Script otomatik çalışıyor'}</code><br/>
-                  ve URL satırını güncelleyin.
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* App Info */}
-          <div className="card" style={{padding:'14px 18px'}}>
-            <div style={{fontSize:12,color:'var(--ink4)',lineHeight:1.8}}>
-              <div style={{fontWeight:700,fontSize:13,color:'var(--ink)',marginBottom:6}}>FocusUp Pro</div>
-              <div>Versiyon: v8 · Tüm veriler tarayıcıda saklanır</div>
-              <div style={{marginTop:4,fontSize:11,color:'var(--ink5)'}}>Görevler: {D.todos.length} · Hedefler: {D.goals.length} · Alışkanlıklar: {D.habits.length} · Alıntılar: {D.quotes.length} · Yer İmleri: {(D.bookmarks||[]).length}</div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    /* ── CHALLENGES ── */
-    case 'challenges':{
-      const chs=D.challenges||[];
-      const DIFF={1:'★☆☆☆☆',2:'★★☆☆☆',3:'★★★☆☆',4:'★★★★☆',5:'★★★★★'};
-      const DC={1:'var(--gn)',2:'#65a30d',3:'#d97706',4:'#ea580c',5:'var(--rd)'};
-      const curQStr=(()=>{const m=new Date().getMonth();return 'Q'+Math.ceil((m+1)/3)+' '+new Date().getFullYear();})();
-      return(
-        <div className="afu">
-          <div className="ph">
-            <div><div className="ptit">⚡ Challenges</div><div className="psub">3 Ayda 1 · Sınırları Aş · Her çeyrek yeni bir meydan okuma</div></div>
-            <button className="btn btnp" onClick={()=>setModal({type:'challenge'})}>+ Challenge</button>
-          </div>
-          <div style={{background:'linear-gradient(135deg,#0f0c1a,#1a0a2e)',borderRadius:'var(--r3)',padding:'24px 28px',marginBottom:16,position:'relative',overflow:'hidden'}}>
-            <div style={{position:'absolute',top:-50,right:-50,width:220,height:220,borderRadius:'50%',background:'rgba(139,92,246,.1)',pointerEvents:'none'}}/>
-            <div style={{position:'absolute',bottom:-30,left:60,width:140,height:140,borderRadius:'50%',background:'rgba(79,70,229,.08)',pointerEvents:'none'}}/>
-            <div style={{fontSize:9,fontFamily:'var(--fm)',letterSpacing:3,color:'rgba(255,255,255,.3)',textTransform:'uppercase',marginBottom:10}}>{curQStr} · Aktif Çeyrek</div>
-            <div style={{fontFamily:'var(--fd)',fontStyle:'italic',fontSize:20,color:'rgba(255,255,255,.9)',lineHeight:1.4,marginBottom:16,maxWidth:460}}>
-              "Büyüme daima konforsuzluğun tam sınırında gerçekleşir."
-            </div>
-            <div style={{display:'flex',gap:20}}>
-              {[{ic:'✅',v:chs.filter(c=>c.status==='Tamamlandı').length,l:'Tamamlanan'},{ic:'🔥',v:chs.filter(c=>c.status==='Devam Ediyor').length,l:'Aktif'},{ic:'⏳',v:chs.filter(c=>c.status==='Bekliyor').length,l:'Sırada'}].map(s=>(
-                <div key={s.l}><div style={{fontSize:20,fontWeight:700,color:'#fff'}}>{s.ic} {s.v}</div><div style={{fontSize:9,color:'rgba(255,255,255,.4)',fontFamily:'var(--fm)',letterSpacing:.5,marginTop:3}}>{s.l}</div></div>
-              ))}
-            </div>
-          </div>
-          <div style={{display:'flex',flexDirection:'column',gap:10}}>
-            {chs.map(ch=>{
-              const isActive=ch.status==='Devam Ediyor',isDone=ch.status==='Tamamlandı';
-              return(
-                <div key={ch.id} className="card" style={{padding:'18px 20px',borderLeft:'4px solid '+(isDone?'var(--gn)':isActive?'#8b5cf6':'var(--bd)')}}>
-                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:12}}>
-                    <div style={{flex:1}}>
-                      <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
-                        <span style={{fontSize:26,flexShrink:0}}>{ch.badge||'⚡'}</span>
-                        <div>
-                          <div style={{fontWeight:700,fontSize:14,color:'var(--ink)'}}>{ch.title}</div>
-                          <div style={{fontSize:10,color:'var(--ink5)',fontFamily:'var(--fm)',marginTop:2}}>{ch.quarter} · {ch.category}</div>
+                );
+                if(block.type==='steps')return(
+                  <div key={bi} style={{marginBottom:22}}>
+                    <div style={{fontWeight:700,fontSize:14,color:'var(--ink)',marginBottom:11,display:'flex',alignItems:'center',gap:9}}>
+                      <span style={{width:4,height:18,background:sec.color,borderRadius:2,flexShrink:0,display:'inline-block'}}/>
+                      {block.title}
+                    </div>
+                    <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                      {block.steps.map((step,si)=>(
+                        <div key={si} style={{display:'flex',gap:12,alignItems:'flex-start',padding:'10px 14px',background:'var(--sur)',border:'1px solid var(--bd)',borderRadius:'var(--r)',transition:'border-color .12s'}}
+                          onMouseEnter={ev=>ev.currentTarget.style.borderColor='var(--bd2)'}
+                          onMouseLeave={ev=>ev.currentTarget.style.borderColor='var(--bd)'}>
+                          <div style={{width:22,height:22,borderRadius:'50%',background:sec.color,color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,fontFamily:'var(--fm)',flexShrink:0,marginTop:1}}>{si+1}</div>
+                          <span style={{fontSize:13,color:'var(--ink)',lineHeight:1.7}}>{step}</span>
                         </div>
-                      </div>
-                      <div style={{fontSize:12.5,color:'var(--ink3)',lineHeight:1.65,marginBottom:10}}>{ch.desc}</div>
-                      <div style={{display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}}>
-                        <span style={{fontSize:14,color:DC[ch.difficulty]||'var(--rd)',letterSpacing:2}}>{DIFF[ch.difficulty]}</span>
-                        <span style={{fontSize:10,color:'var(--ink5)',fontFamily:'var(--fm)'}}>Zorluk {ch.difficulty}/5</span>
-                        {isActive&&<span style={{fontSize:11,fontWeight:600,color:'#8b5cf6',background:'rgba(139,92,246,.1)',padding:'2px 9px',borderRadius:12}}>🔥 Devam Ediyor</span>}
-                        {isDone&&<span style={{fontSize:11,fontWeight:600,color:'var(--gn)',background:'var(--gnb)',padding:'2px 9px',borderRadius:12}}>✅ Tamamlandı!</span>}
-                      </div>
-                      {ch.reflection&&<div style={{marginTop:10,padding:'9px 12px',background:'var(--gnb)',border:'1px solid var(--gnbd)',borderRadius:'var(--r)',fontSize:12,color:'var(--ink3)',fontStyle:'italic',lineHeight:1.55}}>💬 {ch.reflection}</div>}
-                    </div>
-                    <div style={{display:'flex',flexDirection:'column',gap:5,flexShrink:0,alignItems:'flex-end'}}>
-                      <select value={ch.status} onChange={ev=>setD(prev=>({...prev,challenges:prev.challenges.map(x=>x.id===ch.id?{...x,status:ev.target.value}:x)}))} style={{fontSize:11,padding:'4px 8px',borderRadius:'var(--r)',border:'1px solid var(--bd)',background:'var(--sur)',fontFamily:'var(--ff)',cursor:'pointer'}}>
-                        <option>Bekliyor</option><option>Devam Ediyor</option><option>Tamamlandı</option><option>Bırakıldı</option>
-                      </select>
-                      <button className="ibtn" style={{width:22,height:22,fontSize:11}} onClick={()=>setD(prev=>({...prev,challenges:prev.challenges.filter(x=>x.id!==ch.id)}))}>×</button>
+                      ))}
                     </div>
                   </div>
-                </div>
-              );
-            })}
-            {chs.length===0&&<div className="card empty"><div className="empty-icon">⚡</div><div style={{fontWeight:600,marginBottom:4}}>İlk Challenge'ını Oluştur</div><div style={{fontSize:12,color:'var(--ink5)'}}>3 ayda bir kendini zorlayan, konfor alanının dışında bir meydan okuma belirle.</div></div>}
+                );
+                if(block.type==='example')return(
+                  <div key={bi} style={{marginBottom:22}}>
+                    <div style={{fontWeight:700,fontSize:13,color:'var(--ink3)',marginBottom:9,display:'flex',alignItems:'center',gap:6}}>
+                      <span style={{fontSize:15}}>📋</span>{block.title}
+                    </div>
+                    <div style={{border:'1px solid var(--bd)',borderRadius:'var(--r2)',overflow:'hidden',boxShadow:'var(--shs)'}}>
+                      {block.rows.map((row,ri)=>(
+                        <div key={ri} style={{display:'grid',gridTemplateColumns:'160px 1fr',borderBottom:ri<block.rows.length-1?'1px solid var(--bd)':'none',background:ri%2===0?'var(--sur)':'var(--bg2)'}}>
+                          <div style={{padding:'9px 13px',fontSize:11.5,fontWeight:700,color:'var(--ink3)',fontFamily:'var(--fm)',borderRight:'1px solid var(--bd)',lineHeight:1.5}}>{row[0]}</div>
+                          <div style={{padding:'9px 13px',fontSize:12.5,color:'var(--ink)',lineHeight:1.5}}>{row[1]}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+                if(block.type==='tip')return(
+                  <div key={bi} style={{padding:'13px 17px',background:'var(--gnb)',border:'1px solid var(--gnbd)',borderLeft:'4px solid var(--gn)',borderRadius:'var(--r2)',marginBottom:20,fontSize:13,color:'#1a4a2a',lineHeight:1.8,fontWeight:500}}>{block.text}</div>
+                );
+                if(block.type==='shortcuts')return(
+                  <div key={bi} style={{marginBottom:20,display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:8}}>
+                    {block.items.map((it,i)=>(
+                      <div key={i} style={{display:'flex',gap:11,alignItems:'center',padding:'11px 14px',background:'var(--sur)',border:'1px solid var(--bd)',borderRadius:'var(--r)',transition:'border-color .12s'}}
+                        onMouseEnter={ev=>ev.currentTarget.style.borderColor='var(--bd2)'}
+                        onMouseLeave={ev=>ev.currentTarget.style.borderColor='var(--bd)'}>
+                        <code style={{padding:'4px 10px',background:'var(--ink)',border:'1px solid var(--ink2)',borderBottom:'3px solid var(--ink2)',borderRadius:6,fontFamily:'var(--fm)',fontSize:10.5,fontWeight:700,color:'var(--bg)',flexShrink:0,minWidth:90,textAlign:'center'}}>{it.k}</code>
+                        <span style={{fontSize:12.5,color:'var(--ink3)',lineHeight:1.5}}>{it.d}</span>
+                      </div>
+                    ))}
+                  </div>
+                );
+                return null;
+              })}
+            </div>
           </div>
         </div>
       );
@@ -3388,10 +3080,10 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
   const modalEl=()=>{
     if(!modal)return null;
     const t=modal.type;
-    const TITLES={goal:'Yeni SMART Hedef',goalEdit:'✏ Hedefi Düzenle',todo:'Yeni Görev',todoEdit:'✏ Görevi Düzenle',challenge:'⚡ Yeni Challenge',subtask:'Alt Görev Ekle',subtaskEdit:'✏ Alt Görevi Düzenle',book:'Kitap Ekle',habit:'Yeni Alışkanlık',kanban:'Yeni Kart',journal:'Journal Girişi',quote:'Alıntı Ekle',coaching:'Koçluk İçeriği',bookmark:'Yer İmi Ekle',note:'Yeni Not',calEvent:'Yeni Etkinlik',todoCat:'Kategori Yönet',apStep:'Eylem Adımı Ekle',apStepEdit:'✏ Eylem Adımı Düzenle'};
+    const TITLES={goal:'Yeni SMART Hedef',goalEdit:'✏ Hedefi Düzenle',todo:'Yeni Görev',todoEdit:'✏ Görevi Düzenle',subtask:'Alt Görev Ekle',subtaskEdit:'✏ Alt Görevi Düzenle',book:'Kitap Ekle',habit:'Yeni Alışkanlık',kanban:'Yeni Kart',journal:'Journal Girişi',quote:'Alıntı Ekle',coaching:'Koçluk İçeriği',bookmark:'Yer İmi Ekle',note:'Yeni Not',calEvent:'Yeni Etkinlik',todoCat:'Kategori Yönet',apStep:'Eylem Adımı Ekle',apStepEdit:'✏ Eylem Adımı Düzenle'};
     return(
       <div className="backdrop" onClick={ev=>{if(ev.target===ev.currentTarget)setModal(null);}}>
-        <div className={`modal${t==='goal'||t==='coaching'||t==='todo'||t==='challenge'?' mlg':''}`}>
+        <div className={`modal${t==='goal'||t==='coaching'||t==='todo'?' mlg':''}`}>
           <div className="mhd">
             <span className="mtit">{TITLES[t]||t}</span>
             <button className="ibtn" onClick={()=>setModal(null)}>×</button>
@@ -3428,11 +3120,11 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
                 <div className="field"><label>Başlık *</label><input name="title" required/></div>
                 <div className="fr2"><div className="field"><label>Yazar</label><input name="author"/></div><div className="field"><label>Sayfa Sayısı</label><input type="number" name="pagesTotal"/></div></div>
                 <div className="fr2"><div className="field"><label>Başlangıç</label><input type="date" name="startDate"/></div><div className="field"><label>Hedef Bitiş</label><input type="date" name="endDate"/></div></div>
-                <div className="field"><label>Renk</label><input type="color" name="color" defaultValue="#4F46E5" style={{height:38,borderRadius:'var(--r)',cursor:'pointer'}}/></div>
+                <div className="field"><label>Renk</label><input type="color" name="color" defaultValue="#B8621A" style={{height:38,borderRadius:'var(--r)',cursor:'pointer'}}/></div>
               </>}
               {t==='habit'&&<>
                 <div className="field"><label>Ad *</label><input name="name" required placeholder="Alışkanlık adı"/></div>
-                <div className="fr2"><div className="field"><label>Emoji</label><input name="emoji" placeholder="🎯" maxLength={2}/></div><div className="field"><label>Renk</label><input type="color" name="color" defaultValue="#4F46E5" style={{height:38,borderRadius:'var(--r)',cursor:'pointer'}}/></div></div>
+                <div className="fr2"><div className="field"><label>Emoji</label><input name="emoji" placeholder="🎯" maxLength={2}/></div><div className="field"><label>Renk</label><input type="color" name="color" defaultValue="#B8621A" style={{height:38,borderRadius:'var(--r)',cursor:'pointer'}}/></div></div>
               </>}
               {t==='kanban'&&<>
                 <div className="field"><label>Kart *</label><input name="text" required/></div>
@@ -3565,25 +3257,6 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
                   <div className="field"><label>Alt Sorumlular (virgülle)</label><input name="subAssignees" defaultValue={(td.subAssignees||[]).join(', ')}/></div>
                 </div>
               </>);})()}
-              {t==='challenge'&&(()=>{
-                const curQ2=(()=>{const m=new Date().getMonth();return 'Q'+Math.ceil((m+1)/3)+' '+new Date().getFullYear();})();
-                return(<>
-                  <div className="field"><label>Başlık *</label><input name="challenge_title" placeholder="3 ayda 50km koş…" required/></div>
-                  <div className="field"><label>Açıklama / Kurallar</label><textarea name="challenge_desc" rows={3} placeholder="Detaylar, kurallar, nasıl ölçeceğiz…"/></div>
-                  <div className="fr2">
-                    <div className="field"><label>Kategori</label><select name="challenge_cat"><option>Zihin</option><option>Beden</option><option>Cesaret</option><option>İnşa</option><option>Sosyal</option><option>Yaratıcı</option></select></div>
-                    <div className="field"><label>Zorluk</label><select name="challenge_diff"><option value="3">3 — Orta</option><option value="4">4 — Zor</option><option value="5">5 — Çılgın</option><option value="2">2 — Kolay</option></select></div>
-                  </div>
-                  <div className="fr2">
-                    <div className="field"><label>Çeyrek</label><input name="challenge_quarter" defaultValue={curQ2}/></div>
-                    <div className="field"><label>Badge Emoji</label><input name="challenge_badge" placeholder="⚡" maxLength={2}/></div>
-                  </div>
-                  <div className="fr2">
-                    <div className="field"><label>Başlangıç</label><input name="challenge_start" type="date"/></div>
-                    <div className="field"><label>Bitiş</label><input name="challenge_end" type="date"/></div>
-                  </div>
-                </>);
-              })()}
             </div>
             <div className="mft">
               <button type="button" className="btn btng" onClick={()=>setModal(null)}>İptal</button>
@@ -3615,23 +3288,20 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
           <Nav id="dashboard" label="Dashboard" ic="◈"/>
           <Nav id="review" label="Haftalık İnceleme" ic="↗"/>
           <Nav id="coach" label="AI Koç" ic="🧠"/>
-          
+          <Nav id="guide" label="Kullanım Rehberi" ic="📖"/>
           <div className="nsec">Planlama</div>
           <Nav id="goals" label="Smart Hedefler" ic="🎯"/>
           <Nav id="todos" label="Görevler & Takvim" ic="☐" badge={overdue}/>
           <Nav id="kanban" label="Kanban" ic="⊞"/>
           <Nav id="habits" label="Alışkanlıklar" ic="◐" soft={`${todayH}/${D.habits.length}`}/>
+          <Nav id="bookmarks" label="Yer İmleri" ic="🔖" soft={(D.bookmarks||[]).length}/>
           <div className="nsec">Bilgi & İçerik</div>
           <Nav id="notes" label="Notlar" ic="📝" soft={(D.notes||[]).length}/>
           <Nav id="books" label="Okuma Listesi" ic="📚"/>
           <Nav id="journal" label="Journal" ic="✍️"/>
           <Nav id="quotes" label="Alıntılar" ic="❝"/>
           <Nav id="routines" label="Rutinler" ic="🔄"/>
-          <Nav id="bookmarks" label="Yer İmleri" ic="🔖" soft={(D.bookmarks||[]).length}/>
-          <div className="nsec">Gelişim</div>
-          <Nav id="challenges" label="Challenges" ic="⚡"/>
           <Nav id="coaching" label="Koçluk Merkezi" ic="🧭"/>
-          <Nav id="settings" label="Ayarlar" ic="⚙"/>
         </div>
         <div className="sfoot">
           <button style={{display:'flex',alignItems:'center',gap:7,padding:'7px 10px',borderRadius:'var(--r)',cursor:'pointer',width:'100%',border:'none',background:'none',color:'var(--ink4)',fontSize:12.5,fontFamily:'var(--ff)',transition:'all .15s'}}
@@ -3661,15 +3331,6 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
           <div className="ticker-wrap">
             {curQ&&<span key={quoteIdx} className="ticker-text">"{curQ.text.slice(0,80)}{curQ.text.length>80?'…':''}" — {curQ.author}</span>}
           </div>
-          {(GAS_URL||GAS_MODE)&&(
-            <div style={{display:'flex',alignItems:'center',gap:5,fontSize:10.5,fontFamily:'var(--fm)',letterSpacing:.3,
-              color:gasStatus==='error'?'var(--rd)':gasStatus==='saving'?'var(--ac)':gasStatus==='saved'?'var(--gn)':'var(--ink5)',
-              padding:'3px 8px',borderRadius:20,border:'1px solid var(--bd)',background:'var(--sur)',cursor:'default',flexShrink:0}}
-              title={gasStatus==='error'?'Bağlantı hatası - veriler kaydedilemiyor':gasStatus==='loading'?'Yükleniyor...':gasStatus==='saving'?'Kaydediliyor...':gasStatus==='saved'?'Kaydedildi':'Bağlı'}>
-              <span>{gasStatus==='loading'?'⏳':gasStatus==='saving'?'💾':gasStatus==='saved'?'✅':gasStatus==='error'?'⚠️':'☁️'}</span>
-              <span>{gasStatus==='loading'?'Yükleniyor':gasStatus==='saving'?'Kaydediyor':gasStatus==='saved'?'Kaydedildi':gasStatus==='error'?'Hata':'Bağlı'}</span>
-            </div>
-          )}
           <div className="bellw">
             <button className="ibtn" onClick={()=>setTab('todos')} title="Gecikmiş görevler">🔔</button>
             {overdue>0&&<div className="bellb">{overdue}</div>}
@@ -3717,7 +3378,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
 
       {detailPanel()}
       {modalEl()}
-      {printQ&&<StudioModal q={printQ} quotes={D.quotes||[]} onClose={()=>setPrintQ(null)} D={D} setD={setD}/>}
+      {printQ&&<PrintModal q={printQ} onClose={()=>setPrintQ(null)}/>}
     </div>
   );
 }
