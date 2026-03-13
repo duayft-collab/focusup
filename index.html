@@ -620,15 +620,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:
 .drop-zone-active{border:2px dashed var(--ac)!important;background:var(--acb)!important}
 
 
-
-.subtask-toggle{cursor:pointer;font-size:12px;color:var(--ink3);padding:4px 0;display:flex;align-items:center;gap:4px;border:none;background:none;font-family:var(--ff);}
-.subtask-toggle:hover{color:var(--ink);}
-.subtask-list{overflow:hidden;transition:max-height .25s ease;}
-.subtask-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12.5px;}
-
 </style>
-
-
 </head>
 <body>
 <style>
@@ -638,7 +630,6 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:
 .lb input{padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:15px;outline:none;width:100%;box-sizing:border-box}
 .lb input:focus{border-color:#6c63ff}
 .lb button{padding:11px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
-.lb button:hover{background:#5a52d5}
 #lerr{color:red;font-size:13px;text-align:center;display:none}
 </style>
 <div id="ls">
@@ -652,36 +643,29 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:
 </div>
 <script>
 (function(){
-  var USERS = {'baran202690':'HeZ*202690'};
+  var USERS={'baran202690':'HeZ*202690'};
   function tryLogin(){
-    var u = document.getElementById('lu').value.trim();
-    var p = document.getElementById('lp').value;
-    if(USERS[u] && USERS[u]===p){
+    var u=document.getElementById('lu').value.trim();
+    var p=document.getElementById('lp').value;
+    if(USERS[u]&&USERS[u]===p){
       document.getElementById('ls').remove();
       sessionStorage.setItem('_fa','1');
-    } else {
+    }else{
       document.getElementById('lerr').style.display='block';
     }
   }
-  document.getElementById('lbtn').addEventListener('click', tryLogin);
-  document.getElementById('lp').addEventListener('keydown', function(e){
-    if(e.key==='Enter') tryLogin();
-  });
-  document.getElementById('lu').addEventListener('keydown', function(e){
-    if(e.key==='Enter') document.getElementById('lp').focus();
-  });
+  document.getElementById('lbtn').addEventListener('click',tryLogin);
+  document.getElementById('lp').addEventListener('keydown',function(e){if(e.key==='Enter')tryLogin();});
+  document.getElementById('lu').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('lp').focus();});
   if(sessionStorage.getItem('_fa')==='1'){
-    document.getElementById('ls').remove();
+    window.addEventListener('DOMContentLoaded',function(){var s=document.getElementById('ls');if(s)s.remove();});
+    var s=document.getElementById('ls');if(s)s.remove();
   }
 })();
 </script>
-
-
-
 <div id="root"></div>
 <script type="text/babel">
 const GAS_URL = 'https://focusup-879b7-default-rtdb.europe-west1.firebasedatabase.app/data.json';
-
 const {useState,useEffect,useMemo,useCallback,useRef,Fragment}=React;
 
 /* ── Helpers ── */
@@ -783,58 +767,9 @@ const INIT={
   ],
   todoCats:[...TODO_CATS_DEFAULT],
   books:[
-    {id:201,title:'Atomik Alışkanlıklar',author:'James Clear',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#6C63FF'},
-    {id:202,title:'Dünyanın En İyi Satış Görevlisi',author:'Og Mandino',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:224,pagesDone:0,notes:'',color:'#FF6584'},
-    {id:203,title:'Düşün ve Zengin Ol',author:'Napoleon Hill',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#43B89C'},
-    {id:204,title:'Sapiens',author:'Yuval Noah Harari',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:512,pagesDone:0,notes:'',color:'#F7B731'},
-    {id:205,title:'Derin Çalışma',author:'Cal Newport',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:296,pagesDone:0,notes:'',color:'#4A90E2'},
-    {id:206,title:'Mindset',author:'Carol Dweck',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#E74C3C'},
-    {id:207,title:'The Lean Startup',author:'Eric Ries',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:299,pagesDone:0,notes:'',color:'#2ECC71'},
-    {id:208,title:'Zero to One',author:'Peter Thiel',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:224,pagesDone:0,notes:'',color:'#9B59B6'},
-    {id:209,title:'Odak',author:'Daniel Goleman',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#1ABC9C'},
-    {id:210,title:'Savaş Sanatı',author:'Sun Tzu',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#E67E22'},
-    {id:211,title:'Ikigai',author:'Héctor García',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:208,pagesDone:0,notes:'',color:'#FF6B6B'},
-    {id:212,title:'Başlamak İçin Doğru Zaman',author:'Daniel Pink',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#45B7D1'},
-    {id:213,title:'Grit',author:'Angela Duckworth',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:352,pagesDone:0,notes:'',color:'#96CEB4'},
-    {id:214,title:'İnsanın Anlam Arayışı',author:'Viktor Frankl',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:200,pagesDone:0,notes:'',color:'#FFEAA7'},
-    {id:215,title:'Tek Önemli Şey',author:'Gary Keller',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:240,pagesDone:0,notes:'',color:'#DDA0DD'},
-    {id:216,title:'Hızlı ve Yavaş Düşünme',author:'Daniel Kahneman',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:499,pagesDone:0,notes:'',color:'#20B2AA'},
-    {id:217,title:'Etki',author:'Robert Cialdini',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:336,pagesDone:0,notes:'',color:'#8B0000'},
-    {id:218,title:'Outliers',author:'Malcolm Gladwell',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:336,pagesDone:0,notes:'',color:'#556B2F'},
-    {id:219,title:'Antifragile',author:'Nassim Taleb',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:519,pagesDone:0,notes:'',color:'#B8860B'},
-    {id:220,title:'Essentialism',author:'Greg McKeown',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#2F4F4F'},
-    {id:221,title:'The Hard Thing About Hard Things',author:'Ben Horowitz',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:304,pagesDone:0,notes:'',color:'#DC143C'},
-    {id:222,title:'Principles',author:'Ray Dalio',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:592,pagesDone:0,notes:'',color:'#00CED1'},
-    {id:223,title:'Shoe Dog',author:'Phil Knight',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:400,pagesDone:0,notes:'',color:'#FF4500'},
-    {id:224,title:'Elon Musk',author:'Walter Isaacson',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:688,pagesDone:0,notes:'',color:'#708090'},
-    {id:225,title:'Good to Great',author:'Jim Collins',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#6495ED'},
-    {id:226,title:'Never Split the Difference',author:'Chris Voss',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#CD853F'},
-    {id:227,title:'Dört Anlaşma',author:'Don Miguel Ruiz',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:160,pagesDone:0,notes:'',color:'#8B4513'},
-    {id:228,title:'Ego Düşmandır',author:'Ryan Holiday',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#2F4F4F'},
-    {id:229,title:'High Output Management',author:'Andy Grove',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#191970'},
-    {id:230,title:'The Mom Test',author:'Rob Fitzpatrick',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:144,pagesDone:0,notes:'',color:'#FF69B4'},
-    {id:231,title:'Hooked',author:'Nir Eyal',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#20B2AA'},
-    {id:232,title:'Start with Why',author:'Simon Sinek',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#FFD700'},
-    {id:233,title:'Etkili İnsanların 7 Alışkanlığı',author:'Stephen Covey',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:432,pagesDone:0,notes:'',color:'#008B8B'},
-    {id:234,title:'Rich Dad Poor Dad',author:'Robert Kiyosaki',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:336,pagesDone:0,notes:'',color:'#B8860B'},
-    {id:235,title:'The Alchemist',author:'Paulo Coelho',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:208,pagesDone:0,notes:'',color:'#DAA520'},
-    {id:236,title:'Meditations',author:'Marcus Aurelius',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:254,pagesDone:0,notes:'',color:'#696969'},
-    {id:237,title:"Can't Hurt Me",author:'David Goggins',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:364,pagesDone:0,notes:'',color:'#1C1C1C'},
-    {id:238,title:'Linchpin',author:'Seth Godin',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#7B68EE'},
-    {id:239,title:'4 Saatlik İş Haftası',author:'Tim Ferriss',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:416,pagesDone:0,notes:'',color:'#3CB371'},
-    {id:240,title:'Inspired',author:'Marty Cagan',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:368,pagesDone:0,notes:'',color:'#4682B4'},
-    {id:241,title:'Building a StoryBrand',author:'Donald Miller',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:240,pagesDone:0,notes:'',color:'#FF7F50'},
-    {id:242,title:'Contagious',author:'Jonah Berger',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#FF6347'},
-    {id:243,title:'Traction',author:'Gabriel Weinberg',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:240,pagesDone:0,notes:'',color:'#32CD32'},
-    {id:244,title:'Crossing the Chasm',author:'Geoffrey Moore',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#DAA520'},
-    {id:245,title:'Product-Led Growth',author:'Wes Bush',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:246,pagesDone:0,notes:'',color:'#9370DB'},
-    {id:246,title:'Bilinçdışı Markalama',author:'Douglas Van Praet',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#9932CC'},
-    {id:247,title:'Hayatını Tasarla',author:'Bill Burnett',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#4169E1'},
-    {id:248,title:'Antikırılgan',author:'Nassim Taleb',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:544,pagesDone:0,notes:'',color:'#8FBC8F'},
-    {id:249,title:'Mavi Okyanus Stratejisi',author:'W. Chan Kim',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#4169E1'},
-    {id:250,title:'The Power of Now',author:'Eckhart Tolle',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:236,pagesDone:0,notes:'',color:'#66CDAA'},
-    {id:251,title:'Yaratıcılık Inc.',author:'Ed Catmull',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:368,pagesDone:0,notes:'',color:'#FF8C00'},
-    {id:252,title:'Zero to One (Türkçe)',author:'Peter Thiel',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:224,pagesDone:0,notes:'',color:'#8B008B'}
+    {id:201,title:'The Lean Startup',author:'Eric Ries',startDate:'2026-02-15',endDate:'2026-03-20',status:'Okunuyor',rating:null,pagesTotal:299,pagesDone:180,notes:'Doğrulanmış öğrenme.',color:'#C4873A'},
+    {id:202,title:'Meditations',author:'Marcus Aurelius',startDate:'',endDate:'2026-03-31',status:'Kuyruk',rating:null,pagesTotal:254,pagesDone:0,notes:'',color:'#2D7A4F'},
+    {id:203,title:'Atomic Habits',author:'James Clear',startDate:'2025-12-01',endDate:'2026-01-31',status:'Bitti',rating:5,pagesTotal:320,pagesDone:320,notes:'Uygulama niyetleri en iyi çerçeve.',color:'#2563EB'},
   ],
   habits:[
     {id:301,name:'Sabah günlüğü',emoji:'✍️',color:'#7c3aed',logs:mkLogs(22)},
@@ -913,7 +848,6 @@ const INIT={
     {time:'Bugün 09:41',action:'Görev tamamlandı',type:'g'},
     {time:'Bugün 08:30',action:'Alışkanlıklar: Günlük, Egzersiz',type:'b'},
   ],
-  challenges:[],
   teamMembers:[...TEAM_MEMBERS],
 };
 
@@ -924,12 +858,7 @@ const exportTodosExcel=(todos)=>{
 };
 const exportTodosPDF=(todos)=>{
   const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Görevler</title>
-  <style>body{font-family:Georgia,serif;font-size:12px;color:#18160f;padding:24px}h1{font-size:20px;margin-bottom:16px;color:#B8621A;font-style:italic}table{width:100%;border-collapse:collapse}th{background:#f5f2ec;padding:8px;text-align:left;border:1px solid #ddd8ce;font-size:10px;letter-spacing:.5px;text-transform:uppercase}td{padding:7px 8px;border:1px solid #ddd8ce;vertical-align:top}.done{color:#8c8674;text-decoration:line-through}</style>
-
-</head><body>
-
-
-
+  <style>body{font-family:Georgia,serif;font-size:12px;color:#18160f;padding:24px}h1{font-size:20px;margin-bottom:16px;color:#B8621A;font-style:italic}table{width:100%;border-collapse:collapse}th{background:#f5f2ec;padding:8px;text-align:left;border:1px solid #ddd8ce;font-size:10px;letter-spacing:.5px;text-transform:uppercase}td{padding:7px 8px;border:1px solid #ddd8ce;vertical-align:top}.done{color:#8c8674;text-decoration:line-through}</style></head><body>
   <h1>Görevler — ${new Date().toLocaleDateString('tr-TR')}</h1>
   <table><thead><tr><th>Görev</th><th>Öncelik</th><th>Kategori</th><th>Sorumlu</th><th>Bitiş</th><th>Durum</th></tr></thead>
   <tbody>${todos.map(t=>`<tr><td class="${t.done?'done':''}">${t.text}</td><td>${t.priority}</td><td>${t.category}</td><td>${t.mainAssignee||'—'}</td><td>${t.end||'—'}</td><td>${t.done?'✓ Tamamlandı':'Bekliyor'}</td></tr>`).join('')}</tbody></table></body></html>`;
@@ -938,12 +867,7 @@ const exportTodosPDF=(todos)=>{
 const exportActionPlanPDF=(goal)=>{
   const steps=goal.actionPlan||[];
   const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Eylem Planı</title>
-  <style>body{font-family:Georgia,serif;font-size:12px;color:#18160f;padding:30px;max-width:700px;margin:0 auto}h1{font-size:22px;color:#B8621A;font-style:italic;margin-bottom:4px}.sub{color:#8c8674;font-size:12px;margin-bottom:24px;font-family:monospace}.step{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #ddd8ce;display:flex;gap:16px}.num{width:32px;height:32px;border-radius:50%;background:#B8621A;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;margin-top:2px;font-family:monospace}.done .num{background:#1F6B42}.action{font-weight:600;font-size:13px;margin-bottom:4px}.date{color:#8c8674;font-size:10px;font-family:monospace}.result{background:#fbf2e8;padding:6px 10px;border-radius:5px;font-size:11.5px;color:#5c5848;border-left:3px solid #B8621A;margin-top:6px}</style>
-
-</head><body>
-
-
-
+  <style>body{font-family:Georgia,serif;font-size:12px;color:#18160f;padding:30px;max-width:700px;margin:0 auto}h1{font-size:22px;color:#B8621A;font-style:italic;margin-bottom:4px}.sub{color:#8c8674;font-size:12px;margin-bottom:24px;font-family:monospace}.step{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #ddd8ce;display:flex;gap:16px}.num{width:32px;height:32px;border-radius:50%;background:#B8621A;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;margin-top:2px;font-family:monospace}.done .num{background:#1F6B42}.action{font-weight:600;font-size:13px;margin-bottom:4px}.date{color:#8c8674;font-size:10px;font-family:monospace}.result{background:#fbf2e8;padding:6px 10px;border-radius:5px;font-size:11.5px;color:#5c5848;border-left:3px solid #B8621A;margin-top:6px}</style></head><body>
   <h1>${goal.isFrog?'🐸 ':''}${goal.title}</h1>
   <div class="sub">${goal.desc||''} · Son tarih: ${goal.deadline||'—'}</div>
   ${steps.map((s,i)=>`<div class="step ${s.done?'done':''}"><div class="num">${i+1}</div><div style="flex:1"><div class="action">${s.action} ${s.done?'<span style="color:#1F6B42;font-size:10px">✓ Tamamlandı</span>':'<span style="color:#B8621A;font-size:10px">Bekliyor</span>'}</div><div class="date">📅 ${s.date||'—'}</div>${s.result?`<div class="result">${s.result}</div>`:''}</div></div>`).join('')}
@@ -1150,7 +1074,6 @@ function App(){
   const [printQ,setPrintQ]=useState(null);
   const [bmView,setBmView]=useState('grid');
   const [expTask,setExpTask]=useState(null);
-  const [showPwModal,setShowPwModal]=useState(false);
   const [quoteIdx,setQuoteIdx]=useState(0);
   const [chatIn,setChatIn]=useState('');
   const [chatWait,setChatWait]=useState(false);
@@ -1174,43 +1097,34 @@ function App(){
   const dragItem=useRef(null);
 
 
-  // GAS: Veri yükle
   useEffect(()=>{
-    if(!GAS_URL) return;
-    fetch('https://focusup-879b7-default-rtdb.europe-west1.firebasedatabase.app/data.json')
+    if(!GAS_URL){setGasReady(true);return;}
+    fetch(GAS_URL)
       .then(r=>r.json())
       .then(saved=>{
-        if(saved && saved.todos) setD({...INIT,...saved});
-        setGasStatus('idle');
-        setGasReady(true);
+        if(saved&&saved.todos)setD({...INIT,...saved});
+        try{localStorage.setItem('focusup_bak',JSON.stringify(saved));}catch(e){}
+        setGasStatus('idle');setGasReady(true);
       })
       .catch(()=>{
-        // Hata olursa localStorage'dan yükle
-        try {
-          const local = localStorage.getItem('focusup_data');
-          if(local) setD({...INIT,...JSON.parse(local)});
-        } catch(e){}
-        setGasStatus('error');
-        setGasReady(true);
+        try{const b=localStorage.getItem('focusup_bak');if(b)setD({...INIT,...JSON.parse(b)});}catch(e){}
+        setGasStatus('error');setGasReady(true);
       });
   },[]);
 
-  // GAS: Otomatik kaydet
-  const gasTimer=useRef(null);
+  const _gasTimer=useRef(null);
   useEffect(()=>{
-    if(!gasReady) return;
-    // localStorage'a her zaman kaydet
-    try { localStorage.setItem('focusup_data', JSON.stringify(D)); } catch(e){}
-    // GAS'a kaydet
-    if(!GAS_URL) return;
-    if(gasTimer.current) clearTimeout(gasTimer.current);
-    gasTimer.current=setTimeout(()=>{
+    if(!gasReady)return;
+    try{localStorage.setItem('focusup_bak',JSON.stringify(D));}catch(e){}
+    if(!GAS_URL)return;
+    if(_gasTimer.current)clearTimeout(_gasTimer.current);
+    _gasTimer.current=setTimeout(()=>{
       setGasStatus('saving');
-      fetch('https://focusup-879b7-default-rtdb.europe-west1.firebasedatabase.app/data.json',{method:'PUT',body:JSON.stringify(D),headers:{'Content-Type':'application/json'}})
+      fetch(GAS_URL,{method:'PUT',body:JSON.stringify(D),headers:{'Content-Type':'application/json'}})
         .then(()=>setGasStatus('saved'))
         .catch(()=>setGasStatus('error'));
     },2000);
-    return()=>{if(gasTimer.current)clearTimeout(gasTimer.current);};
+    return()=>{if(_gasTimer.current)clearTimeout(_gasTimer.current);};
   },[D,gasReady]);
 
   useEffect(()=>{document.documentElement.toggleAttribute('data-dark',dark);},[dark]);
@@ -1259,10 +1173,6 @@ function App(){
     else if(t==='subtaskEdit'){
       const{tid,sid}=modal;
       upd({...D,todos:D.todos.map(todo=>todo.id===tid?{...todo,subtasks:(todo.subtasks||[]).map(s=>s.id===sid?{...s,text:v.text,assignee:v.assignee||'',updatedAt:now_ts()}:s)}:todo)},'Alt görev güncellendi');
-    }
-    else if(t==='challenge'){
-      const {title,category,description,difficulty,endDate,notes}=v;
-      save(prev=>({...prev,challenges:[...(prev.challenges||[]),{id,title,category:category||'Fiziksel',description,difficulty:parseInt(difficulty)||3,status:'Aktif',startDate:today(),endDate:endDate||'',notes:notes||'',createdAt:today()}]}),'Meydan okuma eklendi');
     }
     else if(t==='book'){upd({...D,books:[{id,...v,status:'Kuyruk',rating:null,pagesTotal:parseInt(v.pagesTotal)||0,pagesDone:0,notes:''},...D.books]},'Kitap eklendi','b');}
     else if(t==='habit'){upd({...D,habits:[{id,name:v.name,emoji:v.emoji||'✅',color:v.color||'#B8621A',logs:[]},...D.habits]},'Alışkanlık eklendi','b');}
@@ -2011,7 +1921,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
                           </div>
                           {/* Sub-task progress bar */}
                           {(t.subtasks||[]).length>0&&(
-                            <div style={{marginTop:3,display:'flex',gap:6,alignItems:'center',cursor:'pointer'}} onClick={e=>{e.stopPropagation();setExpTask(expTask===t.id?null:t.id);}}>
+                            <div style={{marginTop:3,display:'flex',gap:6,alignItems:'center'}}>
                               <div className="pb" style={{flex:1,height:2}}><div className="pf" style={{width:subPct+'%',background:subPct===100?'var(--gn)':'var(--ac)'}}/></div>
                             </div>
                           )}
@@ -2378,22 +2288,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
       const filtered=books.filter(b=>fSt==='Tümü'||b.status===fSt);
       return(
         <div className="afu">
-          <div className="ph">
-            <div>
-              <div className="ptit">Okuma Listesi</div>
-              <div className="psub">📚 Haftada 1 kitap · {D.books.filter(b=>b.status==='Okunuyor').length} okunuyor · {D.books.filter(b=>b.status==='Bitti').length}/{D.books.length} tamamlandı</div>
-            </div>
-            <div style={{display:'flex',gap:7}}>
-              <button className="btn btns" onClick={()=>{
-                const txt=prompt('Kitap adı ve yazar (her satıra bir kitap):\nKitap Adı — Yazar');
-                if(!txt)return;
-                const lines=txt.split('\n').filter(Boolean);
-                const newBooks=lines.map((l,i)=>{const[t,a]=l.split('—');return{id:uid(),title:t?.trim()||l,author:a?.trim()||'',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:0,pagesDone:0,notes:'',color:'#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0')};});
-                setD(p=>({...p,books:[...p.books,...newBooks]}));
-              }}>+ Toplu Ekle</button>
-              <button className="btn btnp" onClick={()=>setModal({type:'book'})}>+ Kitap</button>
-            </div>
-          </div>
+          <div className="ph"><div><div className="ptit">Okuma Listesi</div><div className="psub">{D.books.filter(b=>b.status==='Okunuyor').length} okunuyor</div></div><button className="btn btnp" onClick={()=>setModal({type:'book'})}>+ Kitap</button></div>
           <div className="fbar">{['Tümü',...BOOK_ST].map(f=><button key={f} className={`chip${fSt===f?' on':''}`} onClick={()=>setFSt(f)}>{f}</button>)}</div>
           <div style={{display:'flex',flexDirection:'column',gap:8}}>
             {filtered.map(b=>{const p=b.pagesTotal?pct(b.pagesDone,b.pagesTotal):0;return(
@@ -2473,28 +2368,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
       const quotes=fl(D.quotes,['text','author','category']);
       return(
         <div className="afu">
-          <div className="ph">
-            <div><div className="ptit">Alıntılar</div><div style={{fontSize:12,color:'var(--ink3)'}}>Haftada 1 kitap · {D.quotes.length} alıntı</div></div>
-            <div style={{display:'flex',gap:7,alignItems:'center'}}>
-              <input type="text" placeholder="Ara..." value={search} onChange={e=>setSearch(e.target.value)}
-                style={{padding:'6px 10px',border:'1px solid var(--bd)',borderRadius:'var(--r)',fontSize:13,background:'var(--bg)',color:'var(--ink)',width:160}}/>
-              <button className="btn btns" onClick={()=>{
-                const txt=prompt('JSON veya metin yapıştır:\n[{"text":"...","author":"..."}]\nveya\nMetin — Yazar');
-                if(!txt)return;
-                try{
-                  let items=JSON.parse(txt);
-                  if(!Array.isArray(items))items=[items];
-                  const newQ=items.map((q,i)=>({id:uid(),text:q.text||q,author:q.author||'Bilinmiyor',category:q.category||'Genel',bg:'#18160F',fg:'#F0EDE4'}));
-                  setD(p=>({...p,quotes:[...p.quotes,...newQ]}));
-                }catch(e){
-                  const lines=txt.split('\n').filter(Boolean);
-                  const newQ=lines.map(l=>{const[t,a]=l.split('—');return{id:uid(),text:t?.trim()||l,author:a?.trim()||'Bilinmiyor',category:'Genel',bg:'#18160F',fg:'#F0EDE4'};});
-                  setD(p=>({...p,quotes:[...p.quotes,...newQ]}));
-                }
-              }}>⬆ İçe Aktar</button>
-              <button className="btn btnp btns" onClick={()=>setModal({type:'quote'})}>+ Ekle</button>
-            </div>
-          </div>
+          <div className="ph"><div><div className="ptit">Alıntılar</div></div><div style={{display:'flex',gap:7}}><button className="btn btnp btns" onClick={()=>setModal({type:'quote'})}>+ Ekle</button></div></div>
           <div className="g3">
             {quotes.map(q=>(
               <div key={q.id} className="q-card" style={{background:q.bg||'#18160F',color:q.fg||'#F0EDE4'}}>
@@ -2587,53 +2461,14 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
     /* ── BOOKMARKS ── */
     case 'bookmarks':{
       const bms=D.bookmarks||[];
-      const last7=new Date(Date.now()-7*24*60*60*1000).toISOString().split('T')[0];
       const cats=['Tümü',...new Set(bms.map(b=>b.category))].filter(Boolean);
       let filtered=fl(bms,['title','url','purpose','notes','category']);
       if(fCat!=='Tümü')filtered=filtered.filter(b=>b.category===fCat);
       return(
         <div className="afu">
-          <div>
-            {/* İstatistikler */}
-            <div style={{display:'flex',gap:12,marginBottom:12,flexWrap:'wrap'}}>
-              {[
-                {l:'Toplam',v:bms.length,ic:'🔖'},
-                {l:'Kategori',v:cats.length-1,ic:'📁'},
-                {l:'Bu Hafta',v:bms.filter(b=>b.addedAt&&b.addedAt>=last7).length,ic:'📅'},
-              ].map(s=>(
-                <div key={s.l} style={{background:'var(--sur)',border:'1px solid var(--bd)',borderRadius:10,padding:'10px 16px',display:'flex',alignItems:'center',gap:8}}>
-                  <span style={{fontSize:18}}>{s.ic}</span>
-                  <div><div style={{fontSize:20,fontWeight:700,color:'var(--ink)'}}>{s.v}</div><div style={{fontSize:11,color:'var(--ink3)'}}>{s.l}</div></div>
-                </div>
-              ))}
-            </div>
-            <div className="ph" style={{marginBottom:0}}>
-            <div><div className="ptit">Yer İmleri</div><div className="psub">{bms.length} site · {cats.length-1} kategori</div></div>
+          <div className="ph">
+            <div><div className="ptit">Yer İmleri</div><div className="psub">{bms.length} site</div></div>
             <div style={{display:'flex',gap:7}}>
-              <button className="btn btns" onClick={()=>{
-                if(!window.XLSX)return alert('XLSX kütüphanesi yükleniyor...');
-                const ws=window.XLSX.utils.json_to_sheet(bms.map(b=>({Başlık:b.title,URL:b.url,Kategori:b.category,Amaç:b.purpose,Notlar:b.notes})));
-                const wb=window.XLSX.utils.book_new();
-                window.XLSX.utils.book_append_sheet(wb,ws,'Yer İmleri');
-                window.XLSX.writeFile(wb,'yer-imleri.xlsx');
-              }}>⬇ Excel</button>
-              <label className="btn btns" style={{cursor:'pointer'}}>
-                ⬆ Excel
-                <input type="file" accept=".xlsx,.xls,.csv" style={{display:'none'}} onChange={e=>{
-                  const f=e.target.files[0];if(!f)return;
-                  const reader=new FileReader();
-                  reader.onload=ev=>{
-                    const data=new Uint8Array(ev.target.result);
-                    const wb=window.XLSX.read(data,{type:'array'});
-                    const ws=wb.Sheets[wb.SheetNames[0]];
-                    const rows=window.XLSX.utils.sheet_to_json(ws);
-                    const newBms=rows.map(r=>({id:uid(),title:r['Başlık']||r.title||'',url:r['URL']||r.url||'',category:r['Kategori']||r.category||'Genel',purpose:r['Amaç']||r.purpose||'',notes:r['Notlar']||r.notes||'',addedAt:today()}));
-                    setD(p=>({...p,bookmarks:[...p.bookmarks,...newBms]}));
-                  };
-                  reader.readAsArrayBuffer(f);
-                  e.target.value='';
-                }}/>
-              </label>
               <button className={`btn btns${bmView==='grid'?' btnp':''}`} onClick={()=>setBmView('grid')}>⊞</button>
               <button className={`btn btns${bmView==='list'?' btnp':''}`} onClick={()=>setBmView('list')}>≡</button>
               <button className="btn btnp btns" onClick={()=>setModal({type:'bookmark'})}>+ Ekle</button>
@@ -2770,7 +2605,240 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
       );
     }
 
-
+    /* ── GUIDE ── */
+    case 'guide':{
+      const sections=[
+        {id:'overview',ic:'🗺',title:'Genel Bakış',color:'var(--ac)',content:[
+          {type:'intro',text:'FocusUp Pro, hedeften günlük göreve kadar tüm üretkenlik sisteminizi tek bir yerde yönetmenizi sağlar. Bu rehber her modülü adım adım açıklamaktadır.'},
+          {type:'arch',items:[
+            {ic:'🎯',t:'Smart Hedefler',d:'Uzun vadeli hedefler → Eylem planları → Alt adımlar hiyerarşisi'},
+            {ic:'☐',t:'Görev Yönetimi',d:'Günlük görevler, durum takibi, ağırlık ve bağımlılık sistemi'},
+            {ic:'◐',t:'Alışkanlıklar',d:'Günlük rutinler, seri takibi, 30 günlük ısı haritası'},
+            {ic:'⊞',t:'Kanban Tahtası',d:'Görsel iş akışı: Yapılacak → Devam → İnceleme → Bitti'},
+            {ic:'📅',t:'Takvim',d:'Etkinlikler, tekrarlı rutinler, haftalık ve aylık görünüm'},
+            {ic:'🧠',t:'AI Koç',d:'Tüm verilerinizi bilen kişisel Claude koçu'},
+          ]},
+        ]},
+        {id:'goals',ic:'🎯',title:'Smart Hedefler',color:'var(--rd)',content:[
+          {type:'steps',title:'Yeni Hedef Oluşturma',steps:[
+            'Sol menüden "Smart Hedefler" sayfasını açın',
+            '"+ Yeni Hedef" butonuna tıklayın — modal form açılır',
+            'Hedef başlığı ve açıklamasını net biçimde yazın',
+            'SMART kriterlerini doldurun: S (özgül ne?), M (nasıl ölçeceğiz?), A (ulaşılabilir mi?), R (neden önemli?), T otomatik son tarihten gelir',
+            'Mevcut değer (ör. 49$ MRR) ve hedef değer (ör. 500$ MRR) girin — ilerleme çubuğu bunu kullanır',
+            '"Kaydet" butonuyla hedef oluşturulur ve listede görünür',
+          ]},
+          {type:'steps',title:'Hedefi Düzenleme',steps:[
+            'Herhangi bir hedef kartına tıklayın — sağ panelde detay açılır',
+            'Panelin üst kısmındaki "✏ Düzenle" butonuna tıklayın',
+            'Açılan formda tüm alanları güncelleyebilirsiniz',
+            '"Kaydet" ile değişiklikler anında uygulanır',
+          ]},
+          {type:'steps',title:'Eylem Planı ve Alt Adımlar (3 Katman)',steps:[
+            'Hedef detay panelinde "+ Adım" ile yeni eylem adımı ekleyin',
+            'Her adımın yanında ✏ butonu vardır — adımı düzenlemek için tıklayın',
+            'Eylem adımının altındaki "alt adım ekle… (Enter)" alanına yazıp Enter\'a basın',
+            'Alt adımların checkbox\'ları ile mini ilerleme çubuğu otomatik güncellenir',
+            'Alt adım yanındaki ✏ ile adı ve tarihini değiştirebilirsiniz',
+          ]},
+          {type:'example',title:'3 Katmanlı Yapı Örneği',rows:[
+            ['Hedef (1. Katman)','SaaS MVP Lansmanı — 500$ MRR'],
+            ['Eylem Adımı (2. Katman)','Stripe entegrasyonu — Son: 01.05'],
+            ['Alt Adım (3. Katman)','• Stripe hesabı aç ✓'],
+            ['Alt Adım (3. Katman)','• Webhook entegre et (devam)'],
+            ['Alt Adım (3. Katman)','• Test ödemeleri çalıştır'],
+          ]},
+          {type:'tip',text:'💡 SMART İpucu: "Satışları artır" değil, "Q2 sonuna kadar aylık yinelenen geliri 500$\'a çıkar" yazın. Ölçülebilir ve tarihli hedefler %42 daha yüksek başarı oranına sahiptir.'},
+        ]},
+        {id:'todos',ic:'☐',title:'Görev Yönetimi',color:'var(--bl)',content:[
+          {type:'steps',title:'Görev Oluşturma',steps:[
+            '"+ Yeni Görev" butonuna tıklayın',
+            'Görev adı, öncelik (🚩 Acil / 🟠 Önemli / 🔵 Normal / ⚪ Düşük), durum ve kategori seçin',
+            'Ağırlık % alanına görevin önemini girin — CRM kurmak %30, toplantı notu %5 gibi',
+            'Başlangıç ve bitiş tarihi ile tahmini süreyi (sa) belirtin',
+            '"Kaydet" ile görev oluşturulur',
+          ]},
+          {type:'steps',title:'Görev Düzenleme',steps:[
+            'Görev kartının sağ üstündeki ✏ butonuna tıklayın',
+            'Açılan formda tüm alanları (ad, durum, öncelik, tarih, ağırlık) güncelleyin',
+            '"Kaydet" ile değişiklikler anında uygulanır',
+            'Durum için hızlı güncelleme: Kart sağındaki dropdown (⏳/⚙️/✅/🚫)',
+          ]},
+          {type:'steps',title:'Alt Görev Yönetimi',steps:[
+            'Görev kartına tıklayın — kart genişler',
+            '"Alt Görevler" bölümünde "+ Ekle" butonuna tıklayın',
+            'Alt görev adı ve sorumlusunu girin, kaydedin',
+            'Her alt görevin yanındaki ✏ butonu ile adı/sorumluyu güncelleyebilirsiniz',
+            '× ile sil, checkbox ile tamamla',
+          ]},
+          {type:'steps',title:'Bağımlılık & Sıralama',steps:[
+            'Görevi genişletin → "🔗 Bağımlılık Ekle" bölümünden önce bitmesi gereken görevi seçin',
+            'Bağımlı görev tamamlanmadan bu görev turuncu uyarı gösterir',
+            'Sıralamak için: soldaki ⠿ simgesini tutup sürükleyin, istenen konuma bırakın',
+          ]},
+          {type:'example',title:'Ağırlıklı İlerleme Örneği',rows:[
+            ['CRM sistemi kur','%30 ağırlık → Tamamlanınca çubuk çok ilerler'],
+            ['Veri aktarımı','%20 ağırlık → Orta katkı'],
+            ['Toplantı notu yaz','%5 ağırlık → Küçük katkı'],
+            ['Sonuç','Ağırlıklı çubuk gerçek ilerlemeyi gösterir'],
+          ]},
+          {type:'tip',text:'💡 The One Thing: Her sabah "Bugünün tek en kritik görevi nedir?" sorusunu sorun. Bunu yaparsanız günü kazanmış sayılırsınız. Görevler → The One Thing sekmesinden yönetin.'},
+        ]},
+        {id:'habits',ic:'◐',title:'Alışkanlık Takibi',color:'var(--gn)',content:[
+          {type:'steps',title:'Alışkanlık Ekle ve Takip Et',steps:[
+            '"Alışkanlıklar" sayfasından "+ Yeni Alışkanlık" butonuna tıklayın',
+            'İsim (ör. Meditasyon), emoji ve renk seçin, kaydedin',
+            'Bugünün kutucuğuna tıklayarak o günü işaretleyin',
+            'Seri (streak) otomatik hesaplanır — üst üste işaretlediğiniz gün sayısı',
+            'Isı haritasında son 30 günlük tutarlılığınızı görün',
+          ]},
+          {type:'example',title:'Örnek Alışkanlık Sistemi',rows:[
+            ['Sabah rutini','🌅 Meditasyon + Günlük hedef belirleme'],
+            ['Sağlık','💪 Egzersiz (haftada 3x) + Su içme'],
+            ['Öğrenme','📚 15 dk okuma + Yeni kelime'],
+            ['Akşam rutini','📝 Günlük review + Yarını planla'],
+          ]},
+          {type:'tip',text:'💡 Seri Psikolojisi: Zincirinizi kırmayın! 21 günlük seri sonrası alışkanlık otomatik hale gelir. Kaçırırsanız hemen ertesi gün geri dönün.'},
+        ]},
+        {id:'ai',ic:'🧠',title:'AI Koç Kullanımı',color:'var(--pu)',content:[
+          {type:'steps',title:'AI Koç ile Verimli Çalışma',steps:[
+            '"AI Koç" sayfasında Claude ile sohbet edin — tüm verilerinizi biliyor',
+            'Hazır sorular butonlarını kullanın ya da kendi sorunuzu yazın',
+            'Shift+Enter ile çok satırlı mesaj, Enter ile gönder',
+            '"Temizle" ile yeni konuşma başlatın',
+          ]},
+          {type:'example',title:'Etkili AI Koç Soruları',rows:[
+            ['Önceliklendirme','Bugün 8 görevim var. Hangisinden başlamalıyım ve neden?'],
+            ['Analiz','Bu hafta hedeflerimde ne kadar ilerleme kaydettim?'],
+            ['Strateji','Q2 SaaS hedefime 3 ayda ulaşmak için plan öner'],
+            ['Sorun Çözme','Stripe entegrasyonunda takıldım, nasıl ilerlemeliyim?'],
+            ['Motivasyon','Yoruldum ama hedeflerimden vazgeçmek istemiyorum'],
+          ]},
+          {type:'tip',text:'💡 Bağlam Verin: "Pazartesi koçluk seansı" gibi açılış yapın. Koç zaten verilerinizi biliyor ama ne hissettiğinizi siz söylemelisiniz.'},
+        ]},
+        {id:'shortcuts',ic:'⌨',title:'Kısayollar & İpuçları',color:'var(--tl)',content:[
+          {type:'shortcuts',items:[
+            {k:'✏ Butonu',d:'Hedef / Adım / Görev / Alt Görevi düzenle'},
+            {k:'× Butonu',d:'Öğeyi sil (onay sorulur)'},
+            {k:'⠿ Sürükle',d:'Görev listesinde sırayı değiştir'},
+            {k:'▾ Ok',d:'Görev kartını genişlet / daralt'},
+            {k:'Enter',d:'Yeni alt adım / bağlantı / alt görev ekle'},
+            {k:'Status Dropdown',d:'Görev durumunu anında değiştir'},
+            {k:'Checkbox',d:'Görev veya adımı tamamlandı işaretle'},
+          ]},
+          {type:'example',title:'Veri Yedekleme',rows:[
+            ['JSON Yedek','Haftalık Review → "Yedek Al" → tüm veri JSON olarak iner'],
+            ['Excel Export','Görevler → "⬇ Excel" → tablo formatında indir'],
+            ['PDF','Görevler → "🖨 PDF" → yazdır veya kaydet'],
+          ]},
+          {type:'tip',text:'💡 Altın Kural: Her Cuma 10 dakika Haftalık Review yapın, her Pazartesi 5 dakika haftalık planı kurun. Bu 15 dakika haftanızı dönüştürür.'},
+        ]},
+      ];
+      const[activeSection,setActiveSection]=React.useState('overview');
+      const sec=sections.find(s=>s.id===activeSection)||sections[0];
+      return(
+        <div className="afu" style={{padding:0}}>
+          <div className="ph" style={{padding:'14px 22px',marginBottom:0,borderBottom:'1px solid var(--bd)'}}>
+            <div><div className="ptit">📖 Kullanım Rehberi</div><div className="psub">Her özelliği adım adım öğrenin</div></div>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'190px 1fr',height:'calc(100vh - 170px)',overflow:'hidden'}}>
+            {/* Section nav */}
+            <div style={{borderRight:'1px solid var(--bd)',overflowY:'auto',padding:'8px 0',background:'var(--bg2)'}}>
+              {sections.map(s=>(
+                <button key={s.id} onClick={()=>setActiveSection(s.id)}
+                  style={{width:'100%',display:'flex',gap:9,alignItems:'center',padding:'10px 14px',border:'none',
+                    background:activeSection===s.id?'var(--sur)':'transparent',
+                    cursor:'pointer',fontFamily:'var(--ff)',fontSize:12.5,
+                    fontWeight:activeSection===s.id?600:400,
+                    color:activeSection===s.id?s.color:'var(--ink3)',
+                    borderLeft:`3px solid ${activeSection===s.id?s.color:'transparent'}`,
+                    transition:'all .12s',textAlign:'left'}}>
+                  <span style={{fontSize:15}}>{s.ic}</span>
+                  <span>{s.title}</span>
+                </button>
+              ))}
+            </div>
+            {/* Content */}
+            <div style={{overflowY:'auto',padding:'28px 32px'}}>
+              <div style={{display:'flex',gap:12,alignItems:'center',marginBottom:24,paddingBottom:16,borderBottom:'2px solid var(--bd)'}}>
+                <span style={{fontSize:30}}>{sec.ic}</span>
+                <div>
+                  <div style={{fontFamily:'var(--fd)',fontStyle:'italic',fontSize:22,color:'var(--ink)'}}>{sec.title}</div>
+                  <div style={{fontSize:10.5,color:sec.color,fontFamily:'var(--fm)',letterSpacing:.8,marginTop:3,fontWeight:700}}>KULLANIM REHBERİ</div>
+                </div>
+              </div>
+              {sec.content.map((block,bi)=>{
+                if(block.type==='intro')return(
+                  <div key={bi} style={{padding:'14px 18px',background:'var(--acb)',border:'1px solid var(--acbd)',borderRadius:'var(--r2)',marginBottom:20,fontSize:13.5,color:'var(--ink2)',lineHeight:1.9}}>{block.text}</div>
+                );
+                if(block.type==='arch')return(
+                  <div key={bi} style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:10,marginBottom:20}}>
+                    {block.items.map((it,i)=>(
+                      <div key={i} style={{padding:'14px 16px',background:'var(--sur)',border:'1px solid var(--bd)',borderRadius:'var(--r2)',transition:'all .15s'}}
+                        onMouseEnter={ev=>{ev.currentTarget.style.borderColor='var(--ac)';ev.currentTarget.style.transform='translateY(-2px)';ev.currentTarget.style.boxShadow='var(--shm)';}}
+                        onMouseLeave={ev=>{ev.currentTarget.style.borderColor='var(--bd)';ev.currentTarget.style.transform='none';ev.currentTarget.style.boxShadow='none';}}>
+                        <div style={{fontSize:22,marginBottom:8}}>{it.ic}</div>
+                        <div style={{fontWeight:700,fontSize:13,marginBottom:5,color:'var(--ink)'}}>{it.t}</div>
+                        <div style={{fontSize:12,color:'var(--ink4)',lineHeight:1.6}}>{it.d}</div>
+                      </div>
+                    ))}
+                  </div>
+                );
+                if(block.type==='steps')return(
+                  <div key={bi} style={{marginBottom:22}}>
+                    <div style={{fontWeight:700,fontSize:14,color:'var(--ink)',marginBottom:11,display:'flex',alignItems:'center',gap:9}}>
+                      <span style={{width:4,height:18,background:sec.color,borderRadius:2,flexShrink:0,display:'inline-block'}}/>
+                      {block.title}
+                    </div>
+                    <div style={{display:'flex',flexDirection:'column',gap:5}}>
+                      {block.steps.map((step,si)=>(
+                        <div key={si} style={{display:'flex',gap:12,alignItems:'flex-start',padding:'10px 14px',background:'var(--sur)',border:'1px solid var(--bd)',borderRadius:'var(--r)',transition:'border-color .12s'}}
+                          onMouseEnter={ev=>ev.currentTarget.style.borderColor='var(--bd2)'}
+                          onMouseLeave={ev=>ev.currentTarget.style.borderColor='var(--bd)'}>
+                          <div style={{width:22,height:22,borderRadius:'50%',background:sec.color,color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,fontFamily:'var(--fm)',flexShrink:0,marginTop:1}}>{si+1}</div>
+                          <span style={{fontSize:13,color:'var(--ink)',lineHeight:1.7}}>{step}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+                if(block.type==='example')return(
+                  <div key={bi} style={{marginBottom:22}}>
+                    <div style={{fontWeight:700,fontSize:13,color:'var(--ink3)',marginBottom:9,display:'flex',alignItems:'center',gap:6}}>
+                      <span style={{fontSize:15}}>📋</span>{block.title}
+                    </div>
+                    <div style={{border:'1px solid var(--bd)',borderRadius:'var(--r2)',overflow:'hidden',boxShadow:'var(--shs)'}}>
+                      {block.rows.map((row,ri)=>(
+                        <div key={ri} style={{display:'grid',gridTemplateColumns:'160px 1fr',borderBottom:ri<block.rows.length-1?'1px solid var(--bd)':'none',background:ri%2===0?'var(--sur)':'var(--bg2)'}}>
+                          <div style={{padding:'9px 13px',fontSize:11.5,fontWeight:700,color:'var(--ink3)',fontFamily:'var(--fm)',borderRight:'1px solid var(--bd)',lineHeight:1.5}}>{row[0]}</div>
+                          <div style={{padding:'9px 13px',fontSize:12.5,color:'var(--ink)',lineHeight:1.5}}>{row[1]}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+                if(block.type==='tip')return(
+                  <div key={bi} style={{padding:'13px 17px',background:'var(--gnb)',border:'1px solid var(--gnbd)',borderLeft:'4px solid var(--gn)',borderRadius:'var(--r2)',marginBottom:20,fontSize:13,color:'#1a4a2a',lineHeight:1.8,fontWeight:500}}>{block.text}</div>
+                );
+                if(block.type==='shortcuts')return(
+                  <div key={bi} style={{marginBottom:20,display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:8}}>
+                    {block.items.map((it,i)=>(
+                      <div key={i} style={{display:'flex',gap:11,alignItems:'center',padding:'11px 14px',background:'var(--sur)',border:'1px solid var(--bd)',borderRadius:'var(--r)',transition:'border-color .12s'}}
+                        onMouseEnter={ev=>ev.currentTarget.style.borderColor='var(--bd2)'}
+                        onMouseLeave={ev=>ev.currentTarget.style.borderColor='var(--bd)'}>
+                        <code style={{padding:'4px 10px',background:'var(--ink)',border:'1px solid var(--ink2)',borderBottom:'3px solid var(--ink2)',borderRadius:6,fontFamily:'var(--fm)',fontSize:10.5,fontWeight:700,color:'var(--bg)',flexShrink:0,minWidth:90,textAlign:'center'}}>{it.k}</code>
+                        <span style={{fontSize:12.5,color:'var(--ink3)',lineHeight:1.5}}>{it.d}</span>
+                      </div>
+                    ))}
+                  </div>
+                );
+                return null;
+              })}
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     default:return <div className="empty">Sayfa bulunamadı.</div>;
     }
@@ -3250,27 +3318,22 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
           <Nav id="dashboard" label="Dashboard" ic="◈"/>
           <Nav id="review" label="Haftalık İnceleme" ic="↗"/>
           <Nav id="coach" label="AI Koç" ic="🧠"/>
+          <Nav id="guide" label="Kullanım Rehberi" ic="📖"/>
           <div className="nsec">Planlama</div>
           <Nav id="goals" label="Smart Hedefler" ic="🎯"/>
           <Nav id="todos" label="Görevler & Takvim" ic="☐" badge={overdue}/>
           <Nav id="kanban" label="Kanban" ic="⊞"/>
           <Nav id="habits" label="Alışkanlıklar" ic="◐" soft={`${todayH}/${D.habits.length}`}/>
-          <div className="nsec">Bilgi & İçerik</div>
           <Nav id="bookmarks" label="Yer İmleri" ic="🔖" soft={(D.bookmarks||[]).length}/>
+          <div className="nsec">Bilgi & İçerik</div>
           <Nav id="notes" label="Notlar" ic="📝" soft={(D.notes||[]).length}/>
           <Nav id="books" label="Okuma Listesi" ic="📚"/>
           <Nav id="journal" label="Journal" ic="✍️"/>
           <Nav id="quotes" label="Alıntılar" ic="❝"/>
           <Nav id="routines" label="Rutinler" ic="🔄"/>
-        </div>
-
-          <Nav id="challenges" label="Meydan Okumalar" ic="⚡"/>
           <Nav id="coaching" label="Koçluk Merkezi" ic="🧭"/>
+        </div>
         <div className="sfoot">
-          <button style={{display:'flex',alignItems:'center',gap:7,padding:'7px 10px',borderRadius:'var(--r)',cursor:'pointer',width:'100%',border:'none',background:'none',color:'var(--ink4)',fontSize:12.5,fontFamily:'var(--ff)',transition:'all .15s'}}
-            onClick={()=>setShowPwModal(true)}>
-            <span>🔑</span><span>Şifre Değiştir</span>
-          </button>
           <button style={{display:'flex',alignItems:'center',gap:7,padding:'7px 10px',borderRadius:'var(--r)',cursor:'pointer',width:'100%',border:'none',background:'none',color:'var(--ink4)',fontSize:12.5,fontFamily:'var(--ff)',transition:'all .15s'}}
             onClick={()=>setDark(d=>!d)}
             onMouseEnter={ev=>ev.currentTarget.style.background='var(--bg3)'}
@@ -3292,21 +3355,17 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
       <div className="main">
         {/* Topbar */}
         <div className="topbar">
-          <div style={{display:'flex',alignItems:'center',gap:8}}>
-            <span style={{fontSize:12,color:'var(--ink2)',fontFamily:'var(--fm)',fontWeight:500}}>
-              {new Date().toLocaleDateString('tr-TR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})}
-            </span>
-            <span style={{fontSize:10,color:'var(--ink4)',background:'var(--bg3)',padding:'2px 8px',borderRadius:10,fontFamily:'var(--fm)'}}>
-              Hafta {weekNum()}
-            </span>
+          <div className="topdate">
+            <span className="mono" style={{fontSize:11}}>{new Date().toLocaleDateString('tr-TR',{weekday:'short',day:'2-digit',month:'short'})} · H{weekNum()}</span>
           </div>
-          <div style={{flex:1}}/>
-          <div style={{display:'flex',alignItems:'center',gap:8}}>
-            {overdue>0&&<button className="ibtn" onClick={()=>setTab('todos')} title="Gecikmiş görevler" style={{position:'relative'}}>
-              🔔<span style={{position:'absolute',top:-4,right:-4,background:'#e53e3e',color:'#fff',borderRadius:'50%',fontSize:9,width:14,height:14,display:'flex',alignItems:'center',justifyContent:'center'}}>{overdue}</span>
-            </button>}
-            <button className="ibtn" onClick={()=>setQnote(v=>!v)} title="Hızlı not">✎</button>
+          <div className="ticker-wrap">
+            {curQ&&<span key={quoteIdx} className="ticker-text">"{curQ.text.slice(0,80)}{curQ.text.length>80?'…':''}" — {curQ.author}</span>}
           </div>
+          <div className="bellw">
+            <button className="ibtn" onClick={()=>setTab('todos')} title="Gecikmiş görevler">🔔</button>
+            {overdue>0&&<div className="bellb">{overdue}</div>}
+          </div>
+          <button className="ibtn" onClick={()=>setQnote(v=>!v)} title="Hızlı not">✎</button>
           <div className="search-wrap">
             <span className="search-ic">⌕</span>
             <input value={search} onChange={ev=>setSearch(ev.target.value)} placeholder="Ara…"/>
@@ -3349,56 +3408,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
 
       {detailPanel()}
       {modalEl()}
-      {showPwModal&&<ChangePasswordModal onClose={()=>setShowPwModal(false)}/>}
-    {printQ&&<PrintModal q={printQ} onClose={()=>setPrintQ(null)}/>}
-    </div>
-  );
-}
-
-
-function ChangePasswordModal({onClose}){
-  const [cur,setCur]=React.useState('');
-  const [nw,setNw]=React.useState('');
-  const [nw2,setNw2]=React.useState('');
-  const [msg,setMsg]=React.useState('');
-  const [ok,setOk]=React.useState(false);
-  const [loading,setLoading]=React.useState(false);
-
-  const handle=async()=>{
-    if(!cur||!nw||!nw2){setMsg('Tüm alanları doldur');return;}
-    if(nw!==nw2){setMsg('Yeni şifreler eşleşmiyor');return;}
-    if(nw.length<4){setMsg('Şifre en az 4 karakter olmalı');return;}
-    setLoading(true);
-    const res = await window.changePassword(cur,nw);
-    setLoading(false);
-    if(res.ok){setOk(true);setMsg('Şifre başarıyla değiştirildi!');}
-    else setMsg(res.msg||'Hata oluştu');
-  };
-
-  return (
-    <div style={{position:'fixed',top:0,left:0,width:'100vw',height:'100vh',background:'rgba(0,0,0,0.5)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:9999}}>
-      <div style={{background:'var(--sur)',borderRadius:16,padding:32,width:360,display:'flex',flexDirection:'column',gap:16}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-          <h3 style={{fontFamily:"'Cabinet Grotesk',sans-serif",fontWeight:700}}>Şifre Değiştir</h3>
-          <button onClick={onClose} style={{background:'none',border:'none',fontSize:20,cursor:'pointer',color:'var(--ink3)'}}>×</button>
-        </div>
-        {['Mevcut Şifre','Yeni Şifre','Yeni Şifre (Tekrar)'].map((label,i)=>(
-          <div key={i}>
-            <div style={{fontSize:12,color:'var(--ink3)',marginBottom:4}}>{label}</div>
-            <input type="password"
-              value={i===0?cur:i===1?nw:nw2}
-              onChange={e=>i===0?setCur(e.target.value):i===1?setNw(e.target.value):setNw2(e.target.value)}
-              style={{width:'100%',padding:'9px 12px',border:'1px solid var(--bd)',borderRadius:8,fontSize:14,background:'var(--bg)',color:'var(--ink)',boxSizing:'border-box'}}
-            />
-          </div>
-        ))}
-        {msg&&<div style={{fontSize:13,color:ok?'#38a169':'#e53e3e',textAlign:'center'}}>{msg}</div>}
-        {!ok&&<button onClick={handle} disabled={loading}
-          style={{padding:'10px',background:'var(--ink)',color:'#fff',border:'none',borderRadius:8,fontWeight:600,cursor:'pointer'}}>
-          {loading?'Kaydediliyor...':'Şifreyi Güncelle'}
-        </button>}
-        {ok&&<button onClick={onClose} style={{padding:'10px',background:'#38a169',color:'#fff',border:'none',borderRadius:8,fontWeight:600,cursor:'pointer'}}>Kapat</button>}
-      </div>
+      {printQ&&<PrintModal q={printQ} onClose={()=>setPrintQ(null)}/>}
     </div>
   );
 }
