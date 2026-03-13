@@ -683,41 +683,24 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:
   </div>
 </div>
 <script>
-const GAS_AUTH_URL = 'https://script.google.com/a/macros/duaycor.com/s/AKfycbwv9SWAdGTPMZaxAZp0F60IehBCrS2gGC8dkk7s5YGNQ6Pg7aZuSlAcvfHvtkW0pSJB/exec';
-
-// Şifreler Sheets'ten yüklenir, başlangıçta varsayılan
-let AUTH_USERS = {'Baran Focus': 'HeZ*2026focus'};
-
-// Sheets'ten kullanıcıları yükle
-async function loadAuthUsers(){
-  try {
-    const r = await fetch(GAS_AUTH_URL + '?auth=1');
-    const d = await r.json();
-    if(d.users) AUTH_USERS = d.users;
-  } catch(e){}
-}
-loadAuthUsers();
+// ── Kullanıcılar — buraya kendi bilgilerini yaz ──
+const AUTH_USERS = {'baran2026': 'HeZ*2026'};
 
 function doLogin(){
   const u = document.getElementById('login-user').value.trim();
   const p = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-err');
   if(AUTH_USERS[u] && AUTH_USERS[u]===p){
     document.getElementById('login-screen').style.display='none';
     sessionStorage.setItem('focusup_auth', u);
+    err.style.display='none';
   } else {
-    const err = document.getElementById('login-err');
     err.style.display='block';
     err.textContent='Kullanıcı adı veya şifre hatalı';
   }
 }
 
-document.addEventListener('keydown', e => {
-  if(e.key==='Enter' && document.getElementById('login-screen').style.display!=='none'){
-    doLogin();
-  }
-});
-
-// Oturum kontrolü
+// Oturum kontrolü — sayfa yenilenince tekrar sormaz
 if(sessionStorage.getItem('focusup_auth')){
   document.addEventListener('DOMContentLoaded',()=>{
     const s = document.getElementById('login-screen');
@@ -725,26 +708,14 @@ if(sessionStorage.getItem('focusup_auth')){
   });
 }
 
-// Şifre değiştirme fonksiyonu — React'tan çağrılır
-window.changePassword = async function(currentPass, newPass){
+// Şifre değiştirme — sadece session'da günceller
+window.changePassword = function(currentPass, newPass){
   const u = sessionStorage.getItem('focusup_auth');
   if(!u) return {ok:false, msg:'Oturum yok'};
   if(AUTH_USERS[u] !== currentPass) return {ok:false, msg:'Mevcut şifre hatalı'};
   if(newPass.length < 4) return {ok:false, msg:'Şifre en az 4 karakter olmalı'};
-  try {
-    const body = JSON.stringify({action:'changePassword', user:u, newPass});
-    const r = await fetch(GAS_AUTH_URL, {method:'POST', body, headers:{'Content-Type':'text/plain'}});
-    const d = await r.json();
-    if(d.ok) {
-      AUTH_USERS[u] = newPass;
-      return {ok:true};
-    }
-    return {ok:false, msg:'Sunucu hatası'};
-  } catch(e){
-    // Offline — sadece session'da güncelle
-    AUTH_USERS[u] = newPass;
-    return {ok:true};
-  }
+  AUTH_USERS[u] = newPass;
+  return {ok:true};
 }
 </script>
 
@@ -1005,41 +976,24 @@ const exportTodosPDF=(todos)=>{
   </div>
 </div>
 <script>
-const GAS_AUTH_URL = 'https://script.google.com/a/macros/duaycor.com/s/AKfycbwv9SWAdGTPMZaxAZp0F60IehBCrS2gGC8dkk7s5YGNQ6Pg7aZuSlAcvfHvtkW0pSJB/exec';
-
-// Şifreler Sheets'ten yüklenir, başlangıçta varsayılan
-let AUTH_USERS = {'Baran Focus': 'HeZ*2026focus'};
-
-// Sheets'ten kullanıcıları yükle
-async function loadAuthUsers(){
-  try {
-    const r = await fetch(GAS_AUTH_URL + '?auth=1');
-    const d = await r.json();
-    if(d.users) AUTH_USERS = d.users;
-  } catch(e){}
-}
-loadAuthUsers();
+// ── Kullanıcılar — buraya kendi bilgilerini yaz ──
+const AUTH_USERS = {'baran2026': 'HeZ*2026'};
 
 function doLogin(){
   const u = document.getElementById('login-user').value.trim();
   const p = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-err');
   if(AUTH_USERS[u] && AUTH_USERS[u]===p){
     document.getElementById('login-screen').style.display='none';
     sessionStorage.setItem('focusup_auth', u);
+    err.style.display='none';
   } else {
-    const err = document.getElementById('login-err');
     err.style.display='block';
     err.textContent='Kullanıcı adı veya şifre hatalı';
   }
 }
 
-document.addEventListener('keydown', e => {
-  if(e.key==='Enter' && document.getElementById('login-screen').style.display!=='none'){
-    doLogin();
-  }
-});
-
-// Oturum kontrolü
+// Oturum kontrolü — sayfa yenilenince tekrar sormaz
 if(sessionStorage.getItem('focusup_auth')){
   document.addEventListener('DOMContentLoaded',()=>{
     const s = document.getElementById('login-screen');
@@ -1047,26 +1001,14 @@ if(sessionStorage.getItem('focusup_auth')){
   });
 }
 
-// Şifre değiştirme fonksiyonu — React'tan çağrılır
-window.changePassword = async function(currentPass, newPass){
+// Şifre değiştirme — sadece session'da günceller
+window.changePassword = function(currentPass, newPass){
   const u = sessionStorage.getItem('focusup_auth');
   if(!u) return {ok:false, msg:'Oturum yok'};
   if(AUTH_USERS[u] !== currentPass) return {ok:false, msg:'Mevcut şifre hatalı'};
   if(newPass.length < 4) return {ok:false, msg:'Şifre en az 4 karakter olmalı'};
-  try {
-    const body = JSON.stringify({action:'changePassword', user:u, newPass});
-    const r = await fetch(GAS_AUTH_URL, {method:'POST', body, headers:{'Content-Type':'text/plain'}});
-    const d = await r.json();
-    if(d.ok) {
-      AUTH_USERS[u] = newPass;
-      return {ok:true};
-    }
-    return {ok:false, msg:'Sunucu hatası'};
-  } catch(e){
-    // Offline — sadece session'da güncelle
-    AUTH_USERS[u] = newPass;
-    return {ok:true};
-  }
+  AUTH_USERS[u] = newPass;
+  return {ok:true};
 }
 </script>
 
@@ -1139,41 +1081,24 @@ const exportActionPlanPDF=(goal)=>{
   </div>
 </div>
 <script>
-const GAS_AUTH_URL = 'https://script.google.com/a/macros/duaycor.com/s/AKfycbwv9SWAdGTPMZaxAZp0F60IehBCrS2gGC8dkk7s5YGNQ6Pg7aZuSlAcvfHvtkW0pSJB/exec';
-
-// Şifreler Sheets'ten yüklenir, başlangıçta varsayılan
-let AUTH_USERS = {'Baran Focus': 'HeZ*2026focus'};
-
-// Sheets'ten kullanıcıları yükle
-async function loadAuthUsers(){
-  try {
-    const r = await fetch(GAS_AUTH_URL + '?auth=1');
-    const d = await r.json();
-    if(d.users) AUTH_USERS = d.users;
-  } catch(e){}
-}
-loadAuthUsers();
+// ── Kullanıcılar — buraya kendi bilgilerini yaz ──
+const AUTH_USERS = {'baran2026': 'HeZ*2026'};
 
 function doLogin(){
   const u = document.getElementById('login-user').value.trim();
   const p = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-err');
   if(AUTH_USERS[u] && AUTH_USERS[u]===p){
     document.getElementById('login-screen').style.display='none';
     sessionStorage.setItem('focusup_auth', u);
+    err.style.display='none';
   } else {
-    const err = document.getElementById('login-err');
     err.style.display='block';
     err.textContent='Kullanıcı adı veya şifre hatalı';
   }
 }
 
-document.addEventListener('keydown', e => {
-  if(e.key==='Enter' && document.getElementById('login-screen').style.display!=='none'){
-    doLogin();
-  }
-});
-
-// Oturum kontrolü
+// Oturum kontrolü — sayfa yenilenince tekrar sormaz
 if(sessionStorage.getItem('focusup_auth')){
   document.addEventListener('DOMContentLoaded',()=>{
     const s = document.getElementById('login-screen');
@@ -1181,26 +1106,14 @@ if(sessionStorage.getItem('focusup_auth')){
   });
 }
 
-// Şifre değiştirme fonksiyonu — React'tan çağrılır
-window.changePassword = async function(currentPass, newPass){
+// Şifre değiştirme — sadece session'da günceller
+window.changePassword = function(currentPass, newPass){
   const u = sessionStorage.getItem('focusup_auth');
   if(!u) return {ok:false, msg:'Oturum yok'};
   if(AUTH_USERS[u] !== currentPass) return {ok:false, msg:'Mevcut şifre hatalı'};
   if(newPass.length < 4) return {ok:false, msg:'Şifre en az 4 karakter olmalı'};
-  try {
-    const body = JSON.stringify({action:'changePassword', user:u, newPass});
-    const r = await fetch(GAS_AUTH_URL, {method:'POST', body, headers:{'Content-Type':'text/plain'}});
-    const d = await r.json();
-    if(d.ok) {
-      AUTH_USERS[u] = newPass;
-      return {ok:true};
-    }
-    return {ok:false, msg:'Sunucu hatası'};
-  } catch(e){
-    // Offline — sadece session'da güncelle
-    AUTH_USERS[u] = newPass;
-    return {ok:true};
-  }
+  AUTH_USERS[u] = newPass;
+  return {ok:true};
 }
 </script>
 
