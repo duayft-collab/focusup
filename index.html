@@ -674,7 +674,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:
 
 <div id="root"></div>
 <script type="text/babel">
-const GAS_URL = 'https://script.google.com/a/macros/duaycor.com/s/AKfycbwv9SWAdGTPMZaxAZp0F60IehBCrS2gGC8dkk7s5YGNQ6Pg7aZuSlAcvfHvtkW0pSJB/exec';
+const GAS_URL = 'https://focusup-879b7-default-rtdb.europe-west1.firebasedatabase.app/data.json';
 
 const {useState,useEffect,useMemo,useCallback,useRef,Fragment}=React;
 
@@ -1121,7 +1121,7 @@ function App(){
   // GAS: Veri yükle
   useEffect(()=>{
     if(!GAS_URL) return;
-    fetch(GAS_URL)
+    fetch('https://focusup-879b7-default-rtdb.europe-west1.firebasedatabase.app/data.json')
       .then(r=>r.json())
       .then(saved=>{
         if(saved && saved.todos) setD({...INIT,...saved});
@@ -1150,7 +1150,7 @@ function App(){
     if(gasTimer.current) clearTimeout(gasTimer.current);
     gasTimer.current=setTimeout(()=>{
       setGasStatus('saving');
-      fetch(GAS_URL,{method:'POST',body:JSON.stringify(D),headers:{'Content-Type':'text/plain'}})
+      fetch('https://focusup-879b7-default-rtdb.europe-west1.firebasedatabase.app/data.json',{method:'PUT',body:JSON.stringify(D),headers:{'Content-Type':'application/json'}})
         .then(()=>setGasStatus('saved'))
         .catch(()=>setGasStatus('error'));
     },2000);
