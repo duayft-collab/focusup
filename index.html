@@ -913,6 +913,7 @@ const INIT={
     {time:'Bugün 09:41',action:'Görev tamamlandı',type:'g'},
     {time:'Bugün 08:30',action:'Alışkanlıklar: Günlük, Egzersiz',type:'b'},
   ],
+  challenges:[],
   teamMembers:[...TEAM_MEMBERS],
 };
 
@@ -1258,6 +1259,10 @@ function App(){
     else if(t==='subtaskEdit'){
       const{tid,sid}=modal;
       upd({...D,todos:D.todos.map(todo=>todo.id===tid?{...todo,subtasks:(todo.subtasks||[]).map(s=>s.id===sid?{...s,text:v.text,assignee:v.assignee||'',updatedAt:now_ts()}:s)}:todo)},'Alt görev güncellendi');
+    }
+    else if(t==='challenge'){
+      const {title,category,description,difficulty,endDate,notes}=v;
+      save(prev=>({...prev,challenges:[...(prev.challenges||[]),{id,title,category:category||'Fiziksel',description,difficulty:parseInt(difficulty)||3,status:'Aktif',startDate:today(),endDate:endDate||'',notes:notes||'',createdAt:today()}]}),'Meydan okuma eklendi');
     }
     else if(t==='book'){upd({...D,books:[{id,...v,status:'Kuyruk',rating:null,pagesTotal:parseInt(v.pagesTotal)||0,pagesDone:0,notes:''},...D.books]},'Kitap eklendi','b');}
     else if(t==='habit'){upd({...D,habits:[{id,name:v.name,emoji:v.emoji||'✅',color:v.color||'#B8621A',logs:[]},...D.habits]},'Alışkanlık eklendi','b');}
@@ -2582,14 +2587,53 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
     /* ── BOOKMARKS ── */
     case 'bookmarks':{
       const bms=D.bookmarks||[];
+      const last7=new Date(Date.now()-7*24*60*60*1000).toISOString().split('T')[0];
       const cats=['Tümü',...new Set(bms.map(b=>b.category))].filter(Boolean);
       let filtered=fl(bms,['title','url','purpose','notes','category']);
       if(fCat!=='Tümü')filtered=filtered.filter(b=>b.category===fCat);
       return(
         <div className="afu">
-          <div className="ph">
-            <div><div className="ptit">Yer İmleri</div><div className="psub">{bms.length} site</div></div>
+          <div>
+            {/* İstatistikler */}
+            <div style={{display:'flex',gap:12,marginBottom:12,flexWrap:'wrap'}}>
+              {[
+                {l:'Toplam',v:bms.length,ic:'🔖'},
+                {l:'Kategori',v:cats.length-1,ic:'📁'},
+                {l:'Bu Hafta',v:bms.filter(b=>b.addedAt&&b.addedAt>=last7).length,ic:'📅'},
+              ].map(s=>(
+                <div key={s.l} style={{background:'var(--sur)',border:'1px solid var(--bd)',borderRadius:10,padding:'10px 16px',display:'flex',alignItems:'center',gap:8}}>
+                  <span style={{fontSize:18}}>{s.ic}</span>
+                  <div><div style={{fontSize:20,fontWeight:700,color:'var(--ink)'}}>{s.v}</div><div style={{fontSize:11,color:'var(--ink3)'}}>{s.l}</div></div>
+                </div>
+              ))}
+            </div>
+            <div className="ph" style={{marginBottom:0}}>
+            <div><div className="ptit">Yer İmleri</div><div className="psub">{bms.length} site · {cats.length-1} kategori</div></div>
             <div style={{display:'flex',gap:7}}>
+              <button className="btn btns" onClick={()=>{
+                if(!window.XLSX)return alert('XLSX kütüphanesi yükleniyor...');
+                const ws=window.XLSX.utils.json_to_sheet(bms.map(b=>({Başlık:b.title,URL:b.url,Kategori:b.category,Amaç:b.purpose,Notlar:b.notes})));
+                const wb=window.XLSX.utils.book_new();
+                window.XLSX.utils.book_append_sheet(wb,ws,'Yer İmleri');
+                window.XLSX.writeFile(wb,'yer-imleri.xlsx');
+              }}>⬇ Excel</button>
+              <label className="btn btns" style={{cursor:'pointer'}}>
+                ⬆ Excel
+                <input type="file" accept=".xlsx,.xls,.csv" style={{display:'none'}} onChange={e=>{
+                  const f=e.target.files[0];if(!f)return;
+                  const reader=new FileReader();
+                  reader.onload=ev=>{
+                    const data=new Uint8Array(ev.target.result);
+                    const wb=window.XLSX.read(data,{type:'array'});
+                    const ws=wb.Sheets[wb.SheetNames[0]];
+                    const rows=window.XLSX.utils.sheet_to_json(ws);
+                    const newBms=rows.map(r=>({id:uid(),title:r['Başlık']||r.title||'',url:r['URL']||r.url||'',category:r['Kategori']||r.category||'Genel',purpose:r['Amaç']||r.purpose||'',notes:r['Notlar']||r.notes||'',addedAt:today()}));
+                    setD(p=>({...p,bookmarks:[...p.bookmarks,...newBms]}));
+                  };
+                  reader.readAsArrayBuffer(f);
+                  e.target.value='';
+                }}/>
+              </label>
               <button className={`btn btns${bmView==='grid'?' btnp':''}`} onClick={()=>setBmView('grid')}>⊞</button>
               <button className={`btn btns${bmView==='list'?' btnp':''}`} onClick={()=>setBmView('list')}>≡</button>
               <button className="btn btnp btns" onClick={()=>setModal({type:'bookmark'})}>+ Ekle</button>
@@ -3211,15 +3255,17 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
           <Nav id="todos" label="Görevler & Takvim" ic="☐" badge={overdue}/>
           <Nav id="kanban" label="Kanban" ic="⊞"/>
           <Nav id="habits" label="Alışkanlıklar" ic="◐" soft={`${todayH}/${D.habits.length}`}/>
-          <Nav id="bookmarks" label="Yer İmleri" ic="🔖" soft={(D.bookmarks||[]).length}/>
           <div className="nsec">Bilgi & İçerik</div>
+          <Nav id="bookmarks" label="Yer İmleri" ic="🔖" soft={(D.bookmarks||[]).length}/>
           <Nav id="notes" label="Notlar" ic="📝" soft={(D.notes||[]).length}/>
           <Nav id="books" label="Okuma Listesi" ic="📚"/>
           <Nav id="journal" label="Journal" ic="✍️"/>
           <Nav id="quotes" label="Alıntılar" ic="❝"/>
           <Nav id="routines" label="Rutinler" ic="🔄"/>
-          <Nav id="coaching" label="Koçluk Merkezi" ic="🧭"/>
         </div>
+
+          <Nav id="challenges" label="Meydan Okumalar" ic="⚡"/>
+          <Nav id="coaching" label="Koçluk Merkezi" ic="🧭"/>
         <div className="sfoot">
           <button style={{display:'flex',alignItems:'center',gap:7,padding:'7px 10px',borderRadius:'var(--r)',cursor:'pointer',width:'100%',border:'none',background:'none',color:'var(--ink4)',fontSize:12.5,fontFamily:'var(--ff)',transition:'all .15s'}}
             onClick={()=>setShowPwModal(true)}>
