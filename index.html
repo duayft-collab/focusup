@@ -620,6 +620,12 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:
 .drop-zone-active{border:2px dashed var(--ac)!important;background:var(--acb)!important}
 
 
+
+.subtask-toggle{cursor:pointer;font-size:12px;color:var(--ink3);padding:4px 0;display:flex;align-items:center;gap:4px;border:none;background:none;font-family:var(--ff);}
+.subtask-toggle:hover{color:var(--ink);}
+.subtask-list{overflow:hidden;transition:max-height .25s ease;}
+.subtask-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12.5px;}
+
 </style>
 
 
@@ -646,7 +652,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:
 </div>
 <script>
 (function(){
-  var USERS = {'baran2026':'HeZ*2026'};
+  var USERS = {'baran202690':'HeZ*202690'};
   function tryLogin(){
     var u = document.getElementById('lu').value.trim();
     var p = document.getElementById('lp').value;
@@ -777,9 +783,58 @@ const INIT={
   ],
   todoCats:[...TODO_CATS_DEFAULT],
   books:[
-    {id:201,title:'The Lean Startup',author:'Eric Ries',startDate:'2026-02-15',endDate:'2026-03-20',status:'Okunuyor',rating:null,pagesTotal:299,pagesDone:180,notes:'Doğrulanmış öğrenme.',color:'#C4873A'},
-    {id:202,title:'Meditations',author:'Marcus Aurelius',startDate:'',endDate:'2026-03-31',status:'Kuyruk',rating:null,pagesTotal:254,pagesDone:0,notes:'',color:'#2D7A4F'},
-    {id:203,title:'Atomic Habits',author:'James Clear',startDate:'2025-12-01',endDate:'2026-01-31',status:'Bitti',rating:5,pagesTotal:320,pagesDone:320,notes:'Uygulama niyetleri en iyi çerçeve.',color:'#2563EB'},
+    {id:201,title:'Atomik Alışkanlıklar',author:'James Clear',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#6C63FF'},
+    {id:202,title:'Dünyanın En İyi Satış Görevlisi',author:'Og Mandino',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:224,pagesDone:0,notes:'',color:'#FF6584'},
+    {id:203,title:'Düşün ve Zengin Ol',author:'Napoleon Hill',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#43B89C'},
+    {id:204,title:'Sapiens',author:'Yuval Noah Harari',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:512,pagesDone:0,notes:'',color:'#F7B731'},
+    {id:205,title:'Derin Çalışma',author:'Cal Newport',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:296,pagesDone:0,notes:'',color:'#4A90E2'},
+    {id:206,title:'Mindset',author:'Carol Dweck',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#E74C3C'},
+    {id:207,title:'The Lean Startup',author:'Eric Ries',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:299,pagesDone:0,notes:'',color:'#2ECC71'},
+    {id:208,title:'Zero to One',author:'Peter Thiel',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:224,pagesDone:0,notes:'',color:'#9B59B6'},
+    {id:209,title:'Odak',author:'Daniel Goleman',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#1ABC9C'},
+    {id:210,title:'Savaş Sanatı',author:'Sun Tzu',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#E67E22'},
+    {id:211,title:'Ikigai',author:'Héctor García',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:208,pagesDone:0,notes:'',color:'#FF6B6B'},
+    {id:212,title:'Başlamak İçin Doğru Zaman',author:'Daniel Pink',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#45B7D1'},
+    {id:213,title:'Grit',author:'Angela Duckworth',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:352,pagesDone:0,notes:'',color:'#96CEB4'},
+    {id:214,title:'İnsanın Anlam Arayışı',author:'Viktor Frankl',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:200,pagesDone:0,notes:'',color:'#FFEAA7'},
+    {id:215,title:'Tek Önemli Şey',author:'Gary Keller',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:240,pagesDone:0,notes:'',color:'#DDA0DD'},
+    {id:216,title:'Hızlı ve Yavaş Düşünme',author:'Daniel Kahneman',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:499,pagesDone:0,notes:'',color:'#20B2AA'},
+    {id:217,title:'Etki',author:'Robert Cialdini',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:336,pagesDone:0,notes:'',color:'#8B0000'},
+    {id:218,title:'Outliers',author:'Malcolm Gladwell',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:336,pagesDone:0,notes:'',color:'#556B2F'},
+    {id:219,title:'Antifragile',author:'Nassim Taleb',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:519,pagesDone:0,notes:'',color:'#B8860B'},
+    {id:220,title:'Essentialism',author:'Greg McKeown',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#2F4F4F'},
+    {id:221,title:'The Hard Thing About Hard Things',author:'Ben Horowitz',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:304,pagesDone:0,notes:'',color:'#DC143C'},
+    {id:222,title:'Principles',author:'Ray Dalio',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:592,pagesDone:0,notes:'',color:'#00CED1'},
+    {id:223,title:'Shoe Dog',author:'Phil Knight',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:400,pagesDone:0,notes:'',color:'#FF4500'},
+    {id:224,title:'Elon Musk',author:'Walter Isaacson',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:688,pagesDone:0,notes:'',color:'#708090'},
+    {id:225,title:'Good to Great',author:'Jim Collins',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:320,pagesDone:0,notes:'',color:'#6495ED'},
+    {id:226,title:'Never Split the Difference',author:'Chris Voss',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#CD853F'},
+    {id:227,title:'Dört Anlaşma',author:'Don Miguel Ruiz',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:160,pagesDone:0,notes:'',color:'#8B4513'},
+    {id:228,title:'Ego Düşmandır',author:'Ryan Holiday',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#2F4F4F'},
+    {id:229,title:'High Output Management',author:'Andy Grove',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#191970'},
+    {id:230,title:'The Mom Test',author:'Rob Fitzpatrick',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:144,pagesDone:0,notes:'',color:'#FF69B4'},
+    {id:231,title:'Hooked',author:'Nir Eyal',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#20B2AA'},
+    {id:232,title:'Start with Why',author:'Simon Sinek',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#FFD700'},
+    {id:233,title:'Etkili İnsanların 7 Alışkanlığı',author:'Stephen Covey',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:432,pagesDone:0,notes:'',color:'#008B8B'},
+    {id:234,title:'Rich Dad Poor Dad',author:'Robert Kiyosaki',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:336,pagesDone:0,notes:'',color:'#B8860B'},
+    {id:235,title:'The Alchemist',author:'Paulo Coelho',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:208,pagesDone:0,notes:'',color:'#DAA520'},
+    {id:236,title:'Meditations',author:'Marcus Aurelius',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:254,pagesDone:0,notes:'',color:'#696969'},
+    {id:237,title:"Can't Hurt Me",author:'David Goggins',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:364,pagesDone:0,notes:'',color:'#1C1C1C'},
+    {id:238,title:'Linchpin',author:'Seth Godin',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#7B68EE'},
+    {id:239,title:'4 Saatlik İş Haftası',author:'Tim Ferriss',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:416,pagesDone:0,notes:'',color:'#3CB371'},
+    {id:240,title:'Inspired',author:'Marty Cagan',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:368,pagesDone:0,notes:'',color:'#4682B4'},
+    {id:241,title:'Building a StoryBrand',author:'Donald Miller',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:240,pagesDone:0,notes:'',color:'#FF7F50'},
+    {id:242,title:'Contagious',author:'Jonah Berger',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#FF6347'},
+    {id:243,title:'Traction',author:'Gabriel Weinberg',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:240,pagesDone:0,notes:'',color:'#32CD32'},
+    {id:244,title:'Crossing the Chasm',author:'Geoffrey Moore',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:272,pagesDone:0,notes:'',color:'#DAA520'},
+    {id:245,title:'Product-Led Growth',author:'Wes Bush',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:246,pagesDone:0,notes:'',color:'#9370DB'},
+    {id:246,title:'Bilinçdışı Markalama',author:'Douglas Van Praet',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#9932CC'},
+    {id:247,title:'Hayatını Tasarla',author:'Bill Burnett',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:288,pagesDone:0,notes:'',color:'#4169E1'},
+    {id:248,title:'Antikırılgan',author:'Nassim Taleb',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:544,pagesDone:0,notes:'',color:'#8FBC8F'},
+    {id:249,title:'Mavi Okyanus Stratejisi',author:'W. Chan Kim',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:256,pagesDone:0,notes:'',color:'#4169E1'},
+    {id:250,title:'The Power of Now',author:'Eckhart Tolle',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:236,pagesDone:0,notes:'',color:'#66CDAA'},
+    {id:251,title:'Yaratıcılık Inc.',author:'Ed Catmull',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:368,pagesDone:0,notes:'',color:'#FF8C00'},
+    {id:252,title:'Zero to One (Türkçe)',author:'Peter Thiel',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:224,pagesDone:0,notes:'',color:'#8B008B'}
   ],
   habits:[
     {id:301,name:'Sabah günlüğü',emoji:'✍️',color:'#7c3aed',logs:mkLogs(22)},
@@ -1951,7 +2006,7 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
                           </div>
                           {/* Sub-task progress bar */}
                           {(t.subtasks||[]).length>0&&(
-                            <div style={{marginTop:3,display:'flex',gap:6,alignItems:'center'}}>
+                            <div style={{marginTop:3,display:'flex',gap:6,alignItems:'center',cursor:'pointer'}} onClick={e=>{e.stopPropagation();setExpTask(expTask===t.id?null:t.id);}}>
                               <div className="pb" style={{flex:1,height:2}}><div className="pf" style={{width:subPct+'%',background:subPct===100?'var(--gn)':'var(--ac)'}}/></div>
                             </div>
                           )}
@@ -2318,7 +2373,22 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
       const filtered=books.filter(b=>fSt==='Tümü'||b.status===fSt);
       return(
         <div className="afu">
-          <div className="ph"><div><div className="ptit">Okuma Listesi</div><div className="psub">{D.books.filter(b=>b.status==='Okunuyor').length} okunuyor</div></div><button className="btn btnp" onClick={()=>setModal({type:'book'})}>+ Kitap</button></div>
+          <div className="ph">
+            <div>
+              <div className="ptit">Okuma Listesi</div>
+              <div className="psub">📚 Haftada 1 kitap · {D.books.filter(b=>b.status==='Okunuyor').length} okunuyor · {D.books.filter(b=>b.status==='Bitti').length}/{D.books.length} tamamlandı</div>
+            </div>
+            <div style={{display:'flex',gap:7}}>
+              <button className="btn btns" onClick={()=>{
+                const txt=prompt('Kitap adı ve yazar (her satıra bir kitap):\nKitap Adı — Yazar');
+                if(!txt)return;
+                const lines=txt.split('\n').filter(Boolean);
+                const newBooks=lines.map((l,i)=>{const[t,a]=l.split('—');return{id:uid(),title:t?.trim()||l,author:a?.trim()||'',startDate:null,endDate:null,status:'Kuyruk',rating:null,pagesTotal:0,pagesDone:0,notes:'',color:'#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0')};});
+                setD(p=>({...p,books:[...p.books,...newBooks]}));
+              }}>+ Toplu Ekle</button>
+              <button className="btn btnp" onClick={()=>setModal({type:'book'})}>+ Kitap</button>
+            </div>
+          </div>
           <div className="fbar">{['Tümü',...BOOK_ST].map(f=><button key={f} className={`chip${fSt===f?' on':''}`} onClick={()=>setFSt(f)}>{f}</button>)}</div>
           <div style={{display:'flex',flexDirection:'column',gap:8}}>
             {filtered.map(b=>{const p=b.pagesTotal?pct(b.pagesDone,b.pagesTotal):0;return(
@@ -2398,7 +2468,28 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
       const quotes=fl(D.quotes,['text','author','category']);
       return(
         <div className="afu">
-          <div className="ph"><div><div className="ptit">Alıntılar</div></div><div style={{display:'flex',gap:7}}><button className="btn btnp btns" onClick={()=>setModal({type:'quote'})}>+ Ekle</button></div></div>
+          <div className="ph">
+            <div><div className="ptit">Alıntılar</div><div style={{fontSize:12,color:'var(--ink3)'}}>Haftada 1 kitap · {D.quotes.length} alıntı</div></div>
+            <div style={{display:'flex',gap:7,alignItems:'center'}}>
+              <input type="text" placeholder="Ara..." value={search} onChange={e=>setSearch(e.target.value)}
+                style={{padding:'6px 10px',border:'1px solid var(--bd)',borderRadius:'var(--r)',fontSize:13,background:'var(--bg)',color:'var(--ink)',width:160}}/>
+              <button className="btn btns" onClick={()=>{
+                const txt=prompt('JSON veya metin yapıştır:\n[{"text":"...","author":"..."}]\nveya\nMetin — Yazar');
+                if(!txt)return;
+                try{
+                  let items=JSON.parse(txt);
+                  if(!Array.isArray(items))items=[items];
+                  const newQ=items.map((q,i)=>({id:uid(),text:q.text||q,author:q.author||'Bilinmiyor',category:q.category||'Genel',bg:'#18160F',fg:'#F0EDE4'}));
+                  setD(p=>({...p,quotes:[...p.quotes,...newQ]}));
+                }catch(e){
+                  const lines=txt.split('\n').filter(Boolean);
+                  const newQ=lines.map(l=>{const[t,a]=l.split('—');return{id:uid(),text:t?.trim()||l,author:a?.trim()||'Bilinmiyor',category:'Genel',bg:'#18160F',fg:'#F0EDE4'};});
+                  setD(p=>({...p,quotes:[...p.quotes,...newQ]}));
+                }
+              }}>⬆ İçe Aktar</button>
+              <button className="btn btnp btns" onClick={()=>setModal({type:'quote'})}>+ Ekle</button>
+            </div>
+          </div>
           <div className="g3">
             {quotes.map(q=>(
               <div key={q.id} className="q-card" style={{background:q.bg||'#18160F',color:q.fg||'#F0EDE4'}}>
@@ -3155,17 +3246,20 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
       <div className="main">
         {/* Topbar */}
         <div className="topbar">
-          <div className="topdate">
-            <span className="mono" style={{fontSize:11}}>{new Date().toLocaleDateString('tr-TR',{weekday:'short',day:'2-digit',month:'short'})} · H{weekNum()}</span>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <span style={{fontSize:12,color:'var(--ink2)',fontFamily:'var(--fm)',fontWeight:500}}>
+              {new Date().toLocaleDateString('tr-TR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})}
+            </span>
+            <span style={{fontSize:10,color:'var(--ink4)',background:'var(--bg3)',padding:'2px 8px',borderRadius:10,fontFamily:'var(--fm)'}}>
+              Hafta {weekNum()}
+            </span>
           </div>
-          <div className="ticker-wrap">
-            {curQ&&<span key={quoteIdx} className="ticker-text">"{curQ.text.slice(0,80)}{curQ.text.length>80?'…':''}" — {curQ.author}</span>}
-          </div>
-          <div className="bellw">
-            <button className="ibtn" onClick={()=>setTab('todos')} title="Gecikmiş görevler">🔔</button>
-            {overdue>0&&<div className="bellb">{overdue}</div>}
-          </div>
-          <button className="ibtn" onClick={()=>setQnote(v=>!v)} title="Hızlı not">✎</button>
+          <div style={{flex:1}}/>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            {overdue>0&&<button className="ibtn" onClick={()=>setTab('todos')} title="Gecikmiş görevler" style={{position:'relative'}}>
+              🔔<span style={{position:'absolute',top:-4,right:-4,background:'#e53e3e',color:'#fff',borderRadius:'50%',fontSize:9,width:14,height:14,display:'flex',alignItems:'center',justifyContent:'center'}}>{overdue}</span>
+            </button>}
+            <button className="ibtn" onClick={()=>setQnote(v=>!v)} title="Hızlı not">✎</button>
           <div className="search-wrap">
             <span className="search-ic">⌕</span>
             <input value={search} onChange={ev=>setSearch(ev.target.value)} placeholder="Ara…"/>
