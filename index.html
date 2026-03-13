@@ -622,102 +622,55 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:
 
 </style>
 
-<style>
-#login-screen {
-  position:fixed;top:0;left:0;width:100vw;height:100vh;
-  background:var(--bg,#F5F2EC);
-  display:flex;align-items:center;justify-content:center;
-  z-index:99999;
-}
-.login-box {
-  background:var(--sur,#FDFCF9);
-  border:1px solid var(--bd,#DDD8CE);
-  border-radius:16px;
-  padding:48px 40px;
-  width:360px;
-  display:flex;flex-direction:column;gap:20px;
-  box-shadow:0 4px 24px rgba(0,0,0,0.08);
-}
-.login-box h2 {
-  font-family:'Cabinet Grotesk',sans-serif;
-  font-size:24px;font-weight:700;
-  color:var(--ink,#18160F);
-  text-align:center;margin-bottom:4px;
-}
-.login-box p {
-  font-size:13px;color:var(--ink3,#888);
-  text-align:center;margin-top:-12px;
-}
-.login-box input {
-  width:100%;padding:10px 14px;
-  border:1px solid var(--bd,#DDD8CE);
-  border-radius:8px;font-size:14px;
-  background:var(--bg,#F5F2EC);
-  color:var(--ink,#18160F);
-  outline:none;box-sizing:border-box;
-}
-.login-box input:focus { border-color:var(--acc,#6B5CFF); }
-.login-btn {
-  width:100%;padding:11px;
-  background:var(--ink,#18160F);
-  color:#fff;border:none;border-radius:8px;
-  font-size:14px;font-weight:600;cursor:pointer;
-}
-.login-btn:hover { opacity:0.85; }
-.login-error {
-  color:#e53e3e;font-size:13px;
-  text-align:center;display:none;
-}
-</style>
+
 </head>
 <body>
-<div id="login-screen">
-  <div class="login-box">
+<style>
+#ls{position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:999999;font-family:sans-serif}
+.lb{background:#fff;border-radius:12px;padding:40px;width:320px;display:flex;flex-direction:column;gap:14px}
+.lb h2{margin:0;font-size:22px;text-align:center;color:#111}
+.lb input{padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:15px;outline:none;width:100%;box-sizing:border-box}
+.lb input:focus{border-color:#6c63ff}
+.lb button{padding:11px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+.lb button:hover{background:#5a52d5}
+#lerr{color:red;font-size:13px;text-align:center;display:none}
+</style>
+<div id="ls">
+  <div class="lb">
     <h2>⚡ FocusUp Pro</h2>
-    <p>Giriş yapman gerekiyor</p>
-    <input type="text" id="login-user" placeholder="Kullanıcı adı" autocomplete="username"/>
-    <input type="password" id="login-pass" placeholder="Şifre" autocomplete="current-password"
-      onkeydown="if(event.key==='Enter')doLogin()"/>
-    <button class="login-btn" onclick="doLogin()">Giriş Yap</button>
-    <div class="login-error" id="login-err">Kullanıcı adı veya şifre hatalı</div>
+    <input type="text" id="lu" placeholder="Kullanıcı adı"/>
+    <input type="password" id="lp" placeholder="Şifre"/>
+    <button id="lbtn">Giriş Yap</button>
+    <div id="lerr">Kullanıcı adı veya şifre hatalı</div>
   </div>
 </div>
 <script>
-// ── Kullanıcılar — buraya kendi bilgilerini yaz ──
-const AUTH_USERS = {'baran2026': 'HeZ*2026'};
-
-function doLogin(){
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value;
-  const err = document.getElementById('login-err');
-  if(AUTH_USERS[u] && AUTH_USERS[u]===p){
-    document.getElementById('login-screen').style.display='none';
-    sessionStorage.setItem('focusup_auth', u);
-    err.style.display='none';
-  } else {
-    err.style.display='block';
-    err.textContent='Kullanıcı adı veya şifre hatalı';
+(function(){
+  var USERS = {'baran2026':'HeZ*2026'};
+  function tryLogin(){
+    var u = document.getElementById('lu').value.trim();
+    var p = document.getElementById('lp').value;
+    if(USERS[u] && USERS[u]===p){
+      document.getElementById('ls').remove();
+      sessionStorage.setItem('_fa','1');
+    } else {
+      document.getElementById('lerr').style.display='block';
+    }
   }
-}
-
-// Oturum kontrolü — sayfa yenilenince tekrar sormaz
-if(sessionStorage.getItem('focusup_auth')){
-  document.addEventListener('DOMContentLoaded',()=>{
-    const s = document.getElementById('login-screen');
-    if(s) s.style.display='none';
+  document.getElementById('lbtn').addEventListener('click', tryLogin);
+  document.getElementById('lp').addEventListener('keydown', function(e){
+    if(e.key==='Enter') tryLogin();
   });
-}
-
-// Şifre değiştirme — sadece session'da günceller
-window.changePassword = function(currentPass, newPass){
-  const u = sessionStorage.getItem('focusup_auth');
-  if(!u) return {ok:false, msg:'Oturum yok'};
-  if(AUTH_USERS[u] !== currentPass) return {ok:false, msg:'Mevcut şifre hatalı'};
-  if(newPass.length < 4) return {ok:false, msg:'Şifre en az 4 karakter olmalı'};
-  AUTH_USERS[u] = newPass;
-  return {ok:true};
-}
+  document.getElementById('lu').addEventListener('keydown', function(e){
+    if(e.key==='Enter') document.getElementById('lp').focus();
+  });
+  if(sessionStorage.getItem('_fa')==='1'){
+    document.getElementById('ls').remove();
+  }
+})();
 </script>
+
+
 
 <div id="root"></div>
 <script type="text/babel">
@@ -916,101 +869,10 @@ const exportTodosExcel=(todos)=>{
 const exportTodosPDF=(todos)=>{
   const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Görevler</title>
   <style>body{font-family:Georgia,serif;font-size:12px;color:#18160f;padding:24px}h1{font-size:20px;margin-bottom:16px;color:#B8621A;font-style:italic}table{width:100%;border-collapse:collapse}th{background:#f5f2ec;padding:8px;text-align:left;border:1px solid #ddd8ce;font-size:10px;letter-spacing:.5px;text-transform:uppercase}td{padding:7px 8px;border:1px solid #ddd8ce;vertical-align:top}.done{color:#8c8674;text-decoration:line-through}</style>
-<style>
-#login-screen {
-  position:fixed;top:0;left:0;width:100vw;height:100vh;
-  background:var(--bg,#F5F2EC);
-  display:flex;align-items:center;justify-content:center;
-  z-index:99999;
-}
-.login-box {
-  background:var(--sur,#FDFCF9);
-  border:1px solid var(--bd,#DDD8CE);
-  border-radius:16px;
-  padding:48px 40px;
-  width:360px;
-  display:flex;flex-direction:column;gap:20px;
-  box-shadow:0 4px 24px rgba(0,0,0,0.08);
-}
-.login-box h2 {
-  font-family:'Cabinet Grotesk',sans-serif;
-  font-size:24px;font-weight:700;
-  color:var(--ink,#18160F);
-  text-align:center;margin-bottom:4px;
-}
-.login-box p {
-  font-size:13px;color:var(--ink3,#888);
-  text-align:center;margin-top:-12px;
-}
-.login-box input {
-  width:100%;padding:10px 14px;
-  border:1px solid var(--bd,#DDD8CE);
-  border-radius:8px;font-size:14px;
-  background:var(--bg,#F5F2EC);
-  color:var(--ink,#18160F);
-  outline:none;box-sizing:border-box;
-}
-.login-box input:focus { border-color:var(--acc,#6B5CFF); }
-.login-btn {
-  width:100%;padding:11px;
-  background:var(--ink,#18160F);
-  color:#fff;border:none;border-radius:8px;
-  font-size:14px;font-weight:600;cursor:pointer;
-}
-.login-btn:hover { opacity:0.85; }
-.login-error {
-  color:#e53e3e;font-size:13px;
-  text-align:center;display:none;
-}
-</style>
+
 </head><body>
-<div id="login-screen">
-  <div class="login-box">
-    <h2>⚡ FocusUp Pro</h2>
-    <p>Giriş yapman gerekiyor</p>
-    <input type="text" id="login-user" placeholder="Kullanıcı adı" autocomplete="username"/>
-    <input type="password" id="login-pass" placeholder="Şifre" autocomplete="current-password"
-      onkeydown="if(event.key==='Enter')doLogin()"/>
-    <button class="login-btn" onclick="doLogin()">Giriş Yap</button>
-    <div class="login-error" id="login-err">Kullanıcı adı veya şifre hatalı</div>
-  </div>
-</div>
-<script>
-// ── Kullanıcılar — buraya kendi bilgilerini yaz ──
-const AUTH_USERS = {'baran2026': 'HeZ*2026'};
 
-function doLogin(){
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value;
-  const err = document.getElementById('login-err');
-  if(AUTH_USERS[u] && AUTH_USERS[u]===p){
-    document.getElementById('login-screen').style.display='none';
-    sessionStorage.setItem('focusup_auth', u);
-    err.style.display='none';
-  } else {
-    err.style.display='block';
-    err.textContent='Kullanıcı adı veya şifre hatalı';
-  }
-}
 
-// Oturum kontrolü — sayfa yenilenince tekrar sormaz
-if(sessionStorage.getItem('focusup_auth')){
-  document.addEventListener('DOMContentLoaded',()=>{
-    const s = document.getElementById('login-screen');
-    if(s) s.style.display='none';
-  });
-}
-
-// Şifre değiştirme — sadece session'da günceller
-window.changePassword = function(currentPass, newPass){
-  const u = sessionStorage.getItem('focusup_auth');
-  if(!u) return {ok:false, msg:'Oturum yok'};
-  if(AUTH_USERS[u] !== currentPass) return {ok:false, msg:'Mevcut şifre hatalı'};
-  if(newPass.length < 4) return {ok:false, msg:'Şifre en az 4 karakter olmalı'};
-  AUTH_USERS[u] = newPass;
-  return {ok:true};
-}
-</script>
 
   <h1>Görevler — ${new Date().toLocaleDateString('tr-TR')}</h1>
   <table><thead><tr><th>Görev</th><th>Öncelik</th><th>Kategori</th><th>Sorumlu</th><th>Bitiş</th><th>Durum</th></tr></thead>
@@ -1021,101 +883,10 @@ const exportActionPlanPDF=(goal)=>{
   const steps=goal.actionPlan||[];
   const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Eylem Planı</title>
   <style>body{font-family:Georgia,serif;font-size:12px;color:#18160f;padding:30px;max-width:700px;margin:0 auto}h1{font-size:22px;color:#B8621A;font-style:italic;margin-bottom:4px}.sub{color:#8c8674;font-size:12px;margin-bottom:24px;font-family:monospace}.step{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #ddd8ce;display:flex;gap:16px}.num{width:32px;height:32px;border-radius:50%;background:#B8621A;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;margin-top:2px;font-family:monospace}.done .num{background:#1F6B42}.action{font-weight:600;font-size:13px;margin-bottom:4px}.date{color:#8c8674;font-size:10px;font-family:monospace}.result{background:#fbf2e8;padding:6px 10px;border-radius:5px;font-size:11.5px;color:#5c5848;border-left:3px solid #B8621A;margin-top:6px}</style>
-<style>
-#login-screen {
-  position:fixed;top:0;left:0;width:100vw;height:100vh;
-  background:var(--bg,#F5F2EC);
-  display:flex;align-items:center;justify-content:center;
-  z-index:99999;
-}
-.login-box {
-  background:var(--sur,#FDFCF9);
-  border:1px solid var(--bd,#DDD8CE);
-  border-radius:16px;
-  padding:48px 40px;
-  width:360px;
-  display:flex;flex-direction:column;gap:20px;
-  box-shadow:0 4px 24px rgba(0,0,0,0.08);
-}
-.login-box h2 {
-  font-family:'Cabinet Grotesk',sans-serif;
-  font-size:24px;font-weight:700;
-  color:var(--ink,#18160F);
-  text-align:center;margin-bottom:4px;
-}
-.login-box p {
-  font-size:13px;color:var(--ink3,#888);
-  text-align:center;margin-top:-12px;
-}
-.login-box input {
-  width:100%;padding:10px 14px;
-  border:1px solid var(--bd,#DDD8CE);
-  border-radius:8px;font-size:14px;
-  background:var(--bg,#F5F2EC);
-  color:var(--ink,#18160F);
-  outline:none;box-sizing:border-box;
-}
-.login-box input:focus { border-color:var(--acc,#6B5CFF); }
-.login-btn {
-  width:100%;padding:11px;
-  background:var(--ink,#18160F);
-  color:#fff;border:none;border-radius:8px;
-  font-size:14px;font-weight:600;cursor:pointer;
-}
-.login-btn:hover { opacity:0.85; }
-.login-error {
-  color:#e53e3e;font-size:13px;
-  text-align:center;display:none;
-}
-</style>
+
 </head><body>
-<div id="login-screen">
-  <div class="login-box">
-    <h2>⚡ FocusUp Pro</h2>
-    <p>Giriş yapman gerekiyor</p>
-    <input type="text" id="login-user" placeholder="Kullanıcı adı" autocomplete="username"/>
-    <input type="password" id="login-pass" placeholder="Şifre" autocomplete="current-password"
-      onkeydown="if(event.key==='Enter')doLogin()"/>
-    <button class="login-btn" onclick="doLogin()">Giriş Yap</button>
-    <div class="login-error" id="login-err">Kullanıcı adı veya şifre hatalı</div>
-  </div>
-</div>
-<script>
-// ── Kullanıcılar — buraya kendi bilgilerini yaz ──
-const AUTH_USERS = {'baran2026': 'HeZ*2026'};
 
-function doLogin(){
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value;
-  const err = document.getElementById('login-err');
-  if(AUTH_USERS[u] && AUTH_USERS[u]===p){
-    document.getElementById('login-screen').style.display='none';
-    sessionStorage.setItem('focusup_auth', u);
-    err.style.display='none';
-  } else {
-    err.style.display='block';
-    err.textContent='Kullanıcı adı veya şifre hatalı';
-  }
-}
 
-// Oturum kontrolü — sayfa yenilenince tekrar sormaz
-if(sessionStorage.getItem('focusup_auth')){
-  document.addEventListener('DOMContentLoaded',()=>{
-    const s = document.getElementById('login-screen');
-    if(s) s.style.display='none';
-  });
-}
-
-// Şifre değiştirme — sadece session'da günceller
-window.changePassword = function(currentPass, newPass){
-  const u = sessionStorage.getItem('focusup_auth');
-  if(!u) return {ok:false, msg:'Oturum yok'};
-  if(AUTH_USERS[u] !== currentPass) return {ok:false, msg:'Mevcut şifre hatalı'};
-  if(newPass.length < 4) return {ok:false, msg:'Şifre en az 4 karakter olmalı'};
-  AUTH_USERS[u] = newPass;
-  return {ok:true};
-}
-</script>
 
   <h1>${goal.isFrog?'🐸 ':''}${goal.title}</h1>
   <div class="sub">${goal.desc||''} · Son tarih: ${goal.deadline||'—'}</div>
