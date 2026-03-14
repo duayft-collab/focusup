@@ -1047,6 +1047,40 @@ function TimeBlockTab({D,setD}){
 
 function App(){
   const [D,setD]=useState(INIT);
+  // Firebase URL
+  const DB_URL = 'https://focusup-879b7-default-rtdb.europe-west1.firebasedatabase.app/data.json';
+
+  // Yükleme durumu
+  const [dbStatus,setDbStatus]=useState('loading');
+
+  // Veri yükle
+  useEffect(()=>{
+    fetch(DB_URL)
+      .then(r=>r.json())
+      .then(saved=>{
+        if(saved && typeof saved==='object' && (saved.todos||saved.goals||saved.habits)){
+          setD({...INIT,...saved});
+        }
+        setDbStatus('ok');
+      })
+      .catch(()=>setDbStatus('error'));
+  },[]);
+
+  // Otomatik kaydet
+  const dbTimer=useRef(null);
+  useEffect(()=>{
+    if(dbStatus==='loading') return;
+    if(dbTimer.current) clearTimeout(dbTimer.current);
+    dbTimer.current=setTimeout(()=>{
+      setDbStatus('saving');
+      fetch(DB_URL,{method:'PUT',body:JSON.stringify(D),headers:{'Content-Type':'application/json'}})
+        .then(()=>setDbStatus('ok'))
+        .catch(()=>setDbStatus('error'));
+    },2000);
+    return()=>{if(dbTimer.current)clearTimeout(dbTimer.current);};
+  },[D]);
+
+
   const [tab,setTab]=useState('dashboard');
   const [modal,setModal]=useState(null);
   const [detail,setDetail]=useState(null);
