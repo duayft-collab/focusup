@@ -624,48 +624,37 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:
 </head>
 <body>
 <style>
-#ls{position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:999999;font-family:sans-serif}
-.lb{background:#fff;border-radius:12px;padding:40px;width:320px;display:flex;flex-direction:column;gap:14px}
+#ls{position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:999999}
+.lb{background:#fff;border-radius:12px;padding:40px;width:320px;display:flex;flex-direction:column;gap:14px;font-family:sans-serif}
 .lb h2{margin:0;font-size:22px;text-align:center;color:#111}
 .lb input{padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:15px;outline:none;width:100%;box-sizing:border-box}
-.lb input:focus{border-color:#6c63ff}
 .lb button{padding:11px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
 #lerr{color:red;font-size:13px;text-align:center;display:none}
 </style>
-<div id="ls">
-  <div class="lb">
-    <h2>⚡ FocusUp Pro</h2>
-    <input type="text" id="lu" placeholder="Kullanıcı adı"/>
-    <input type="password" id="lp" placeholder="Şifre"/>
-    <button id="lbtn">Giriş Yap</button>
-    <div id="lerr">Kullanıcı adı veya şifre hatalı</div>
-  </div>
-</div>
+<div id="ls"><div class="lb">
+  <h2>⚡ FocusUp Pro</h2>
+  <input type="text" id="lu" placeholder="Kullanıcı adı"/>
+  <input type="password" id="lp" placeholder="Şifre"/>
+  <button id="lbtn">Giriş Yap</button>
+  <div id="lerr">Hatalı kullanıcı adı veya şifre</div>
+</div></div>
 <script>
 (function(){
-  var USERS={'baran202690':'HeZ*202690'};
-  function tryLogin(){
+  var U={'baran202690':'HeZ*202690'};
+  function go(){
     var u=document.getElementById('lu').value.trim();
     var p=document.getElementById('lp').value;
-    if(USERS[u]&&USERS[u]===p){
-      document.getElementById('ls').remove();
-      sessionStorage.setItem('_fa','1');
-    }else{
-      document.getElementById('lerr').style.display='block';
-    }
+    if(U[u]&&U[u]===p){document.getElementById('ls').remove();sessionStorage.setItem('ok','1');}
+    else document.getElementById('lerr').style.display='block';
   }
-  document.getElementById('lbtn').addEventListener('click',tryLogin);
-  document.getElementById('lp').addEventListener('keydown',function(e){if(e.key==='Enter')tryLogin();});
-  document.getElementById('lu').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('lp').focus();});
-  if(sessionStorage.getItem('_fa')==='1'){
-    window.addEventListener('DOMContentLoaded',function(){var s=document.getElementById('ls');if(s)s.remove();});
-    var s=document.getElementById('ls');if(s)s.remove();
-  }
+  document.getElementById('lbtn').onclick=go;
+  document.getElementById('lp').onkeydown=function(e){if(e.key==='Enter')go();};
+  document.getElementById('lu').onkeydown=function(e){if(e.key==='Enter')document.getElementById('lp').focus();};
+  if(sessionStorage.getItem('ok')==='1')document.getElementById('ls').remove();
 })();
 </script>
 <div id="root"></div>
 <script type="text/babel">
-const GAS_URL = 'https://focusup-879b7-default-rtdb.europe-west1.firebasedatabase.app/data.json';
 const {useState,useEffect,useMemo,useCallback,useRef,Fragment}=React;
 
 /* ── Helpers ── */
@@ -1058,8 +1047,6 @@ function TimeBlockTab({D,setD}){
 
 function App(){
   const [D,setD]=useState(INIT);
-  const [gasStatus,setGasStatus]=useState(GAS_URL?'loading':'idle');
-  const [gasReady,setGasReady]=useState(!GAS_URL);
   const [tab,setTab]=useState('dashboard');
   const [modal,setModal]=useState(null);
   const [detail,setDetail]=useState(null);
@@ -1095,37 +1082,6 @@ function App(){
   const [todoTab,setTodoTab]=useState('tasks'); // 'tasks'|'onething'|'nottodo'|'timeblock'|'review'
   const chatEnd=useRef(null);
   const dragItem=useRef(null);
-
-
-  useEffect(()=>{
-    if(!GAS_URL){setGasReady(true);return;}
-    fetch(GAS_URL)
-      .then(r=>r.json())
-      .then(saved=>{
-        if(saved&&saved.todos)setD({...INIT,...saved});
-        try{localStorage.setItem('focusup_bak',JSON.stringify(saved));}catch(e){}
-        setGasStatus('idle');setGasReady(true);
-      })
-      .catch(()=>{
-        try{const b=localStorage.getItem('focusup_bak');if(b)setD({...INIT,...JSON.parse(b)});}catch(e){}
-        setGasStatus('error');setGasReady(true);
-      });
-  },[]);
-
-  const _gasTimer=useRef(null);
-  useEffect(()=>{
-    if(!gasReady)return;
-    try{localStorage.setItem('focusup_bak',JSON.stringify(D));}catch(e){}
-    if(!GAS_URL)return;
-    if(_gasTimer.current)clearTimeout(_gasTimer.current);
-    _gasTimer.current=setTimeout(()=>{
-      setGasStatus('saving');
-      fetch(GAS_URL,{method:'PUT',body:JSON.stringify(D),headers:{'Content-Type':'application/json'}})
-        .then(()=>setGasStatus('saved'))
-        .catch(()=>setGasStatus('error'));
-    },2000);
-    return()=>{if(_gasTimer.current)clearTimeout(_gasTimer.current);};
-  },[D,gasReady]);
 
   useEffect(()=>{document.documentElement.toggleAttribute('data-dark',dark);},[dark]);
   useEffect(()=>{chatEnd.current?.scrollIntoView({behavior:'smooth'});},[chatHist,chatWait]);
@@ -3318,7 +3274,6 @@ function CalPage({D,setD,setDetail,setModal,calView,setCalView,calDate,setCalDat
           <Nav id="dashboard" label="Dashboard" ic="◈"/>
           <Nav id="review" label="Haftalık İnceleme" ic="↗"/>
           <Nav id="coach" label="AI Koç" ic="🧠"/>
-          <Nav id="guide" label="Kullanım Rehberi" ic="📖"/>
           <div className="nsec">Planlama</div>
           <Nav id="goals" label="Smart Hedefler" ic="🎯"/>
           <Nav id="todos" label="Görevler & Takvim" ic="☐" badge={overdue}/>
