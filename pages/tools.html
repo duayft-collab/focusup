@@ -1,0 +1,213 @@
+<!--
+  Strategy Hub — pages/tools.html
+  İş Araçları: Kur Riski, İhale Takibi, Müşteri Kârlılığı, WhatsApp, BAE Rehberi
+  Versiyon: 6.1.0 | 2026-03-27
+-->
+<div class="page-content">
+  <div class="ph">
+    <h2>İş Araçları</h2>
+    <p>Kur riski · İhale takibi · Müşteri kârlılığı · WhatsApp · BAE kurulum rehberi</p>
+  </div>
+
+  <!-- ── 1. KUR RİSKİ HESAPLAYICI ─────────────────────────────────── -->
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-h">
+      <div class="card-icon" style="background:rgba(255,59,48,.08)">📉</div>
+      <h3>Açık Pozisyon & Kur Riski</h3>
+      <span class="badge-live" style="background:rgba(0,102,204,.08);color:var(--accent);border-color:rgba(0,102,204,.2)">CANLI KUR</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div class="ed-grid" style="margin-bottom:12px">
+          <span class="ed-lbl">Alacak (USD)</span>
+          <input class="ed-inp" id="fx-recv-usd" type="number" placeholder="500,000" oninput="ToolsModule.calcFX()">
+          <span class="ed-lbl">Alacak (EUR)</span>
+          <input class="ed-inp" id="fx-recv-eur" type="number" placeholder="200,000" oninput="ToolsModule.calcFX()">
+          <span class="ed-lbl">Borç (TL)</span>
+          <input class="ed-inp" id="fx-debt-tl" type="number" placeholder="5,000,000" oninput="ToolsModule.calcFX()">
+          <span class="ed-lbl">Senaryo +%</span>
+          <input class="ed-inp" id="fx-scenario" type="number" placeholder="5" value="5" oninput="ToolsModule.calcFX()">
+        </div>
+        <div style="font-size:10px;color:var(--text3)">
+          Canlı USD/TRY: <span id="fx-live-usd" style="color:var(--text);font-weight:600;font-family:var(--mono)">—</span> &nbsp;·&nbsp;
+          EUR/TRY: <span id="fx-live-eur" style="color:var(--text);font-weight:600;font-family:var(--mono)">—</span>
+        </div>
+      </div>
+      <div id="fx-result" style="background:var(--bg3);border-radius:10px;padding:16px;border:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--text3)">Değerleri gir → risk analizi çıkar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2. MÜŞTERI KÂRLILIĞI ─────────────────────────────────────── -->
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-h">
+      <div class="card-icon" style="background:rgba(52,199,89,.08)">💰</div>
+      <h3>Gerçek Müşteri Kârlılık Analizi</h3>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div class="ed-grid" style="margin-bottom:12px">
+          <span class="ed-lbl">Sipariş (USD)</span>
+          <input class="ed-inp" id="prof-order" type="number" placeholder="100,000" oninput="ToolsModule.calcProfit()">
+          <span class="ed-lbl">Maliyet (TL)</span>
+          <input class="ed-inp" id="prof-cost" type="number" placeholder="3,000,000" oninput="ToolsModule.calcProfit()">
+          <span class="ed-lbl">Navlun (USD)</span>
+          <input class="ed-inp" id="prof-freight" type="number" placeholder="2,400" oninput="ToolsModule.calcProfit()">
+          <span class="ed-lbl">Gümrük (%)</span>
+          <input class="ed-inp" id="prof-customs" type="number" placeholder="5" value="5" oninput="ToolsModule.calcProfit()">
+          <span class="ed-lbl">Akreditif (%)</span>
+          <input class="ed-inp" id="prof-lc" type="number" placeholder="1.5" value="1.5" oninput="ToolsModule.calcProfit()">
+          <span class="ed-lbl">Sigorta (%)</span>
+          <input class="ed-inp" id="prof-ins" type="number" placeholder="0.5" value="0.5" oninput="ToolsModule.calcProfit()">
+        </div>
+      </div>
+      <div id="prof-result" style="background:var(--bg3);border-radius:10px;padding:16px;border:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--text3)">Sipariş bilgilerini gir → gerçek kâr çıkar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. İHALE TAKİP MOTORU ────────────────────────────────────── -->
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-h">
+      <div class="card-icon" style="background:rgba(88,86,214,.08)">🏗️</div>
+      <h3>Uluslararası İhale Takip Motoru</h3>
+      <span class="badge-live">Finansman Garantili</span>
+    </div>
+
+    <!-- Filtreler -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="tender-filters">
+      <button onclick="ToolsModule.filterTenders('all')" class="btn-secondary" style="font-size:10px;padding:3px 10px">Tümü</button>
+      <button onclick="ToolsModule.filterTenders('construction')" class="btn-secondary" style="font-size:10px;padding:3px 10px">İnşaat</button>
+      <button onclick="ToolsModule.filterTenders('energy')" class="btn-secondary" style="font-size:10px;padding:3px 10px">Enerji</button>
+      <button onclick="ToolsModule.filterTenders('textile')" class="btn-secondary" style="font-size:10px;padding:3px 10px">Tekstil</button>
+      <button onclick="ToolsModule.filterTenders('food')" class="btn-secondary" style="font-size:10px;padding:3px 10px">Gıda</button>
+      <button onclick="ToolsModule.filterTenders('machinery')" class="btn-secondary" style="font-size:10px;padding:3px 10px">Makine</button>
+    </div>
+
+    <div id="tender-list"></div>
+
+    <div class="ab" style="border-color:var(--accent);background:rgba(0,102,204,.04);margin-top:12px">
+      <div class="abl" style="color:var(--accent)">Otomatik Takip</div>
+      <p style="font-size:11px;color:var(--text2);line-height:1.6">
+        GitHub Actions her gün AfDB, Dünya Bankası, UNDP ihalelerini tarar. 
+        Türkiye'nin güçlü olduğu sektörlerle eşleşince otomatik bildirim gelir.
+        <a href="https://www.afdb.org/en/projects-and-operations/procurement" target="_blank" style="color:var(--accent);font-weight:600"> AfDB İhaleler →</a>
+        <a href="https://projects.worldbank.org/en/projects-operations/procurement" target="_blank" style="color:var(--accent);font-weight:600"> World Bank →</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ── 4. WHATSAPP ŞABLONLARI ────────────────────────────────────── -->
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-h">
+      <div class="card-icon" style="background:rgba(52,199,89,.08)">💬</div>
+      <h3>WhatsApp İş Mesaj Şablonları</h3>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="wa-templates"></div>
+  </div>
+
+  <!-- ── 5. HAFTALIK RAPOR ─────────────────────────────────────────── -->
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-h">
+      <div class="card-icon" style="background:rgba(88,86,214,.08)">📊</div>
+      <h3>Haftalık Yönetim Raporu</h3>
+    </div>
+    <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px">
+      Pipeline durumu, kur değişimleri, kritik haberler ve yaklaşan hatırlatmaları tek PDF olarak oluştur.
+    </p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+      <div style="padding:12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Dahil Edilecek</div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);margin-bottom:6px;cursor:pointer">
+          <input type="checkbox" id="rpt-pipeline" checked> Afrika Pipeline Özeti
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);margin-bottom:6px;cursor:pointer">
+          <input type="checkbox" id="rpt-fx" checked> Kur Hareketleri
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);margin-bottom:6px;cursor:pointer">
+          <input type="checkbox" id="rpt-notes" checked> Hatırlatmalar
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);cursor:pointer">
+          <input type="checkbox" id="rpt-market" checked> Piyasa Verileri
+        </label>
+      </div>
+      <div style="padding:12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Gönderim</div>
+        <input class="ed-inp" id="rpt-email" placeholder="email@sirket.com" style="margin-bottom:8px">
+        <div style="font-size:10px;color:var(--text3)">GitHub Actions ile her pazartesi 09:00'da otomatik gönderilir.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-primary" style="background:var(--text);color:var(--bg2)" onclick="ToolsModule.generateReport()">📄 PDF Oluştur</button>
+      <button class="btn-secondary" onclick="ToolsModule.generateReport('excel')">📊 Excel</button>
+    </div>
+    <div id="rpt-status" style="font-size:11px;color:var(--text3);margin-top:8px"></div>
+  </div>
+
+  <!-- ── 6. BAE KURULUM REHBERİ ────────────────────────────────────── -->
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-h">
+      <div class="card-icon" style="background:rgba(255,149,0,.08)">🇦🇪</div>
+      <h3>BAE Şirket Kurulum Rehberi — Dubai'den Afrika'ya Re-Export</h3>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+      <div style="padding:12px;background:rgba(52,199,89,.06);border-radius:8px;border:1px solid rgba(52,199,89,.15)">
+        <div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Vergi Avantajı</div>
+        <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--text);margin-bottom:3px">%0</div>
+        <div style="font-size:11px;color:var(--text2)">Kurumsal vergi<br>Serbest bölge içi işlemlerde gümrük yok</div>
+      </div>
+      <div style="padding:12px;background:rgba(0,102,204,.06);border-radius:8px;border:1px solid rgba(0,102,204,.15)">
+        <div style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Kurulum Süresi</div>
+        <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--text);margin-bottom:3px">7 gün</div>
+        <div style="font-size:11px;color:var(--text2)">Online başvuru<br>%100 yabancı mülkiyet</div>
+      </div>
+      <div style="padding:12px;background:rgba(255,149,0,.06);border-radius:8px;border:1px solid rgba(255,149,0,.15)">
+        <div style="font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Erişim</div>
+        <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--text);margin-bottom:3px">3 Kıta</div>
+        <div style="font-size:11px;color:var(--text2)">Afrika + Güney Asya<br>+ Körfez'e re-export</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:8px">Adım Adım Kurulum</div>
+        <div id="bae-steps"></div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:8px">Maliyet Hesaplama</div>
+        <div id="bae-costs"></div>
+      </div>
+    </div>
+
+    <div class="ab" style="border-color:var(--gold);background:rgba(255,149,0,.04)">
+      <div class="abl" style="color:var(--gold)">Strateji Notu</div>
+      <p style="font-size:11px;color:var(--text2);line-height:1.6">
+        Türkiye'den direkt Nijerya'ya ihracat: akreditif %2 + navlun $2,400 + Eximbank sigortası %0.8 = toplam ~%5 ek maliyet.<br>
+        Dubai üzerinden: %0 gümrük + daha ucuz akreditif (%1.2) + re-export avantajı = ~%2.5 ek maliyet. <strong style="color:var(--text)">Yıllık $1M işlemde $25,000 tasarruf.</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- ── 7. CLOUD BACKUP ───────────────────────────────────────────── -->
+  <div class="card">
+    <div class="card-h">
+      <div class="card-icon" style="background:rgba(88,86,214,.08)">☁️</div>
+      <h3>Veri Yedekleme & Dışa Aktarma</h3>
+    </div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6">
+      Tüm verilerini (pipeline, gayrimenkul, CRM, notlar, alarmlar) JSON veya CSV olarak indir. Telefon değiştirirken veya yedek almak için.
+    </p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn-primary" style="background:var(--text);color:var(--bg2)" onclick="ToolsModule.exportAll('json')">⬇ Tüm Veriyi JSON İndir</button>
+      <button class="btn-secondary" onclick="ToolsModule.exportAll('csv')">⬇ CSV İndir</button>
+      <button class="btn-secondary" onclick="ToolsModule.importData()" style="color:var(--accent);border-color:var(--accent)">⬆ Veri Yükle (JSON)</button>
+    </div>
+    <div id="export-status" style="font-size:11px;color:var(--text3);margin-top:8px"></div>
+  </div>
+
+</div>
+
+<script type="module" data-module="src/modules/tools.module.js"></script>
