@@ -1,0 +1,316 @@
+<!--
+  Strategy Hub — pages/prices.html
+  Canlı Fiyat Merkezi — Kredi, Döviz, Altın, Bitcoin + Güvenilir Kuyumcu/Döviz Büroları
+  Versiyon: 5.6.0 | 2026-03-27
+-->
+<div class="page-content">
+  <div class="ph">
+    <h2>Canlı Fiyat Merkezi</h2>
+    <p>Döviz · Altın · Bitcoin · Kredi Faizleri · Güvenilir Kaynaklar</p>
+  </div>
+
+  <!-- ── CANLI FİYAT ŞERİDİ ─────────────────────────────────────────── -->
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px">
+    <div class="price-card">
+      <div class="pc-lbl">USD / TRY <span style="width:5px;height:5px;background:var(--green);border-radius:50%;display:inline-block;animation:blink 1.5s infinite"></span></div>
+      <div class="pc-val" id="p-usd">—</div>
+      <div id="p-usd-c" class="pc-chg nt">yükleniyor</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-lbl">EUR / TRY <span style="width:5px;height:5px;background:var(--green);border-radius:50%;display:inline-block;animation:blink 1.5s infinite"></span></div>
+      <div class="pc-val" id="p-eur">—</div>
+      <div id="p-eur-c" class="pc-chg nt">yükleniyor</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-lbl">GBP / TRY</div>
+      <div class="pc-val" id="p-gbp">—</div>
+      <div id="p-gbp-c" class="pc-chg nt">yükleniyor</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-lbl">EUR / USD</div>
+      <div class="pc-val" id="p-eurusd">—</div>
+      <div id="p-eurusd-c" class="pc-chg nt">yükleniyor</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px">
+    <div class="price-card">
+      <div class="pc-lbl">ONS ALTIN (USD) <span style="width:5px;height:5px;background:var(--gold);border-radius:50%;display:inline-block;animation:blink 1.5s infinite"></span></div>
+      <div class="pc-val" id="p-xau">—</div>
+      <div id="p-xau-c" class="pc-chg nt">yükleniyor</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-lbl">GRAM ALTIN (TL)</div>
+      <div class="pc-val" id="p-gram">—</div>
+      <div id="p-gram-c" class="pc-chg nt">hesaplanıyor</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-lbl">ÇEYREK ALTIN (TL)</div>
+      <div class="pc-val" id="p-ceyrek">—</div>
+      <div id="p-ceyrek-c" class="pc-chg nt">hesaplanıyor</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-lbl">BITCOIN (USD) <span style="width:5px;height:5px;background:var(--accent2);border-radius:50%;display:inline-block;animation:blink 1.5s infinite"></span></div>
+      <div class="pc-val" id="p-btc">—</div>
+      <div id="p-btc-c" class="pc-chg nt">yükleniyor</div>
+    </div>
+  </div>
+
+  <!-- ── KRİPTO GENİŞ ─────────────────────────────────────────────── -->
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px">
+    <div class="price-card">
+      <div class="pc-lbl">ETHEREUM (USD)</div>
+      <div class="pc-val" id="p-eth">—</div>
+      <div id="p-eth-c" class="pc-chg nt">yükleniyor</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-lbl">GÜMÜŞ (USD/ONS)</div>
+      <div class="pc-val" id="p-xag">—</div>
+      <div id="p-xag-c" class="pc-chg nt">yükleniyor</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-lbl">BRENT PETROL (USD)</div>
+      <div class="pc-val" id="p-brent">—</div>
+      <div id="p-brent-c" class="pc-chg nt">yükleniyor</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-lbl">BIST 100</div>
+      <div class="pc-val" id="p-bist">—</div>
+      <div id="p-bist-c" class="pc-chg nt">yükleniyor</div>
+    </div>
+  </div>
+
+  <!-- ── KREDİ FAİZLERİ ───────────────────────────────────────────── -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-h">
+      <div class="card-icon" style="background:rgba(220,38,38,.08)">🏦</div>
+      <h3>Güncel Kredi Faizleri</h3>
+      <span style="font-size:9px;color:var(--text3);margin-left:auto">TCMB bazlı · Mart 2026</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <div style="padding:12px;background:var(--bg3);border-radius:10px;border:1px solid var(--sidebar-border)">
+        <div style="font-size:9px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Konut Kredisi</div>
+        <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--text)">%3.49</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px">Aylık · Değişken</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:6px">Yıllık: ~%41.9<br>120 ay vade mevcut<br>En iyi: Ziraat, Halkbank</div>
+      </div>
+      <div style="padding:12px;background:var(--bg3);border-radius:10px;border:1px solid var(--sidebar-border)">
+        <div style="font-size:9px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">İhtiyaç Kredisi</div>
+        <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--text)">%4.99</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px">Aylık · Sabit</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:6px">Yıllık: ~%59.9<br>Max 36 ay vade<br>En iyi: Akbank, Garanti</div>
+      </div>
+      <div style="padding:12px;background:var(--bg3);border-radius:10px;border:1px solid var(--sidebar-border)">
+        <div style="font-size:9px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Taşıt Kredisi</div>
+        <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--text)">%3.99</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px">Aylık · Değişken</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:6px">Yıllık: ~%47.9<br>Max 48 ay vade<br>En iyi: TEB, Vakıfbank</div>
+      </div>
+      <div style="padding:12px;background:var(--bg3);border-radius:10px;border:1px solid var(--sidebar-border)">
+        <div style="font-size:9px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Ticari Kredi</div>
+        <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--text)">%3.75</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px">Aylık · İşletme</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:6px">Yıllık: ~%45<br>KOBİ avantajlı<br>KOSGEB destekli mevcut</div>
+      </div>
+      <div style="padding:12px;background:var(--bg3);border-radius:10px;border:1px solid var(--sidebar-border)">
+        <div style="font-size:9px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Kredi Kartı</div>
+        <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--text)">%5.49</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px">Aylık azami</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:6px">BDDK azami sınır<br>Nakit avans: %5.49<br>Gecikme: %5.74</div>
+      </div>
+      <div style="padding:12px;background:rgba(37,99,235,.04);border-radius:10px;border:1px solid rgba(37,99,235,.2)">
+        <div style="font-size:9px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">TCMB Politika Faizi</div>
+        <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:var(--text)">%42.50</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px">Yıllık · Sabit</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:6px">Sonraki PPK: Nisan 2026<br>Faiz indirimi beklentisi<br>Yaz'a ötelendi</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── GÜVENİLİR KAYNAKLAR ─────────────────────────────────────── -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-h">
+      <div class="card-icon" style="background:rgba(217,119,6,.08)">🥇</div>
+      <h3>Güvenilir Kuyumcu & Sarraf Fiyatları</h3>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="gold-dealers">
+
+      <div style="padding:14px;background:var(--bg3);border-radius:12px;border:1px solid var(--sidebar-border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(217,119,6,.12);display:flex;align-items:center;justify-content:center;font-size:18px">🔱</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text)">Harem Altın</div>
+            <div style="font-size:9px;color:var(--text3)">İstanbul · Kuruluş 1936</div>
+          </div>
+        </div>
+        <div id="harem-price" style="font-size:22px;font-weight:700;font-family:var(--mono);color:var(--gold);margin-bottom:8px">—</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.6;margin-bottom:8px">
+          Türkiye'nin en köklü kuyumcularından.<br>
+          Kapalıçarşı & şube ağı.<br>
+          HAREMGold sertifikalı altın.
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:6px">📍 Kapalıçarşı, Beyazıt / İstanbul</div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:8px">📞 <a href="tel:+902125225050" style="color:var(--accent);text-decoration:none">0212 522 50 50</a></div>
+        <a href="https://www.haremaltın.com.tr" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;background:rgba(217,119,6,.1);color:var(--gold);border-radius:6px;font-size:10px;font-weight:700;text-decoration:none;border:1px solid rgba(217,119,6,.2)">
+          Web Sitesi →
+        </a>
+      </div>
+
+      <div style="padding:14px;background:var(--bg3);border-radius:12px;border:1px solid var(--sidebar-border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(217,119,6,.12);display:flex;align-items:center;justify-content:center;font-size:18px">💎</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text)">Nadir Gold</div>
+            <div style="font-size:9px;color:var(--text3)">İstanbul · Online & Şube</div>
+          </div>
+        </div>
+        <div id="nadir-price" style="font-size:22px;font-weight:700;font-family:var(--mono);color:var(--gold);margin-bottom:8px">—</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.6;margin-bottom:8px">
+          Online altın alım satım platformu.<br>
+          Gram altın, cumhuriyet altını, çeyrek.<br>
+          Anlık fiyat güncelleme, güvenli teslimat.
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:6px">📍 Bağcılar / İstanbul</div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:8px">📞 <a href="tel:+902124441111" style="color:var(--accent);text-decoration:none">0212 444 11 11</a></div>
+        <a href="https://www.nadirgold.com" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;background:rgba(217,119,6,.1);color:var(--gold);border-radius:6px;font-size:10px;font-weight:700;text-decoration:none;border:1px solid rgba(217,119,6,.2)">
+          Web Sitesi →
+        </a>
+      </div>
+
+      <div style="padding:14px;background:var(--bg3);border-radius:12px;border:1px solid var(--sidebar-border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(217,119,6,.12);display:flex;align-items:center;justify-content:center;font-size:18px">👑</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text)">Taç Kuyumculuk</div>
+            <div style="font-size:9px;color:var(--text3)">İstanbul · Kapalıçarşı</div>
+          </div>
+        </div>
+        <div id="tac-price" style="font-size:22px;font-weight:700;font-family:var(--mono);color:var(--gold);margin-bottom:8px">—</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.6;margin-bottom:8px">
+          Kapalıçarşı'nın köklü sarraflarından.<br>
+          Has altın, bilezik, cumhuriyet altını.<br>
+          Toptan & perakende alım satım.
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:6px">📍 Kapalıçarşı 25/26, İstanbul</div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:8px">📞 <a href="tel:+902125272020" style="color:var(--accent);text-decoration:none">0212 527 20 20</a></div>
+        <a href="https://www.kuyumcukenti.com" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;background:rgba(217,119,6,.1);color:var(--gold);border-radius:6px;font-size:10px;font-weight:700;text-decoration:none;border:1px solid rgba(217,119,6,.2)">
+          Web Sitesi →
+        </a>
+      </div>
+
+      <div style="padding:14px;background:var(--bg3);border-radius:12px;border:1px solid var(--sidebar-border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(37,99,235,.1);display:flex;align-items:center;justify-content:center;font-size:18px">💱</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text)">Taç Döviz</div>
+            <div style="font-size:9px;color:var(--text3)">İstanbul · Döviz Bürosu</div>
+          </div>
+        </div>
+        <div id="tacdoviz-price" style="font-size:22px;font-weight:700;font-family:var(--mono);color:var(--accent);margin-bottom:8px">—</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.6;margin-bottom:8px">
+          Kurumsal döviz alım satım.<br>
+          Havale, swift, döviz transferi.<br>
+          Rekabetçi kur, düşük spread.
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:6px">📍 Eminönü / İstanbul</div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:8px">📞 <a href="tel:+902125130909" style="color:var(--accent);text-decoration:none">0212 513 09 09</a></div>
+        <a href="https://www.tacdoviz.com" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;background:rgba(37,99,235,.1);color:var(--accent);border-radius:6px;font-size:10px;font-weight:700;text-decoration:none;border:1px solid rgba(37,99,235,.2)">
+          Web Sitesi →
+        </a>
+      </div>
+
+      <div style="padding:14px;background:var(--bg3);border-radius:12px;border:1px solid var(--sidebar-border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(37,99,235,.1);display:flex;align-items:center;justify-content:center;font-size:18px">🌐</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text)">Döviz.com</div>
+            <div style="font-size:9px;color:var(--text3)">Online · Canlı Kur Platformu</div>
+          </div>
+        </div>
+        <div id="dovizcom-usd" style="font-size:22px;font-weight:700;font-family:var(--mono);color:var(--accent);margin-bottom:8px">—</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.6;margin-bottom:8px">
+          Türkiye'nin en kapsamlı döviz platformu.<br>
+          Banka ve büro karşılaştırması.<br>
+          Anlık kur, grafik, ekonomi takvimi.
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:6px">📍 Online Platform</div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:8px">📞 <a href="tel:+908503463030" style="color:var(--accent);text-decoration:none">0850 346 30 30</a></div>
+        <a href="https://www.doviz.com" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;background:rgba(37,99,235,.1);color:var(--accent);border-radius:6px;font-size:10px;font-weight:700;text-decoration:none;border:1px solid rgba(37,99,235,.2)">
+          Web Sitesi →
+        </a>
+      </div>
+
+      <div style="padding:14px;background:var(--bg3);border-radius:12px;border:1px solid var(--sidebar-border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(5,150,105,.1);display:flex;align-items:center;justify-content:center;font-size:18px">📊</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text)">Altın Fiyatı</div>
+            <div style="font-size:9px;color:var(--text3)">altinfiyati.net · Anlık</div>
+          </div>
+        </div>
+        <div id="altinfiyati-gram" style="font-size:22px;font-weight:700;font-family:var(--mono);color:var(--gold);margin-bottom:8px">—</div>
+        <div style="font-size:10px;color:var(--text2);line-height:1.6;margin-bottom:8px">
+          Gram, çeyrek, yarım, tam altın anlık.<br>
+          Kapalıçarşı & bankalararası fiyat.<br>
+          Türkiye'nin en güvenilir altın takip sitesi.
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:6px">📍 Online Platform</div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:8px">🌐 altinfiyati.net</div>
+        <a href="https://www.altinfiyati.net" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;background:rgba(5,150,105,.1);color:var(--green);border-radius:6px;font-size:10px;font-weight:700;text-decoration:none;border:1px solid rgba(5,150,105,.2)">
+          Web Sitesi →
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── REFERANS FİYAT KARŞILAŞTIRMA ────────────────────────────── -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-h">
+      <div class="card-icon" style="background:rgba(124,58,237,.08)">⚖️</div>
+      <h3>Fiyat Karşılaştırma — Gram Altın</h3>
+      <span style="font-size:10px;color:var(--text3);margin-left:auto" id="prices-updated">—</span>
+    </div>
+    <table class="dt">
+      <thead>
+        <tr>
+          <th>Kaynak</th>
+          <th>Alış (TL)</th>
+          <th>Satış (TL)</th>
+          <th>Spread</th>
+          <th>Güncelleme</th>
+        </tr>
+      </thead>
+      <tbody id="comparison-table">
+        <tr><td colspan="5" style="text-align:center;color:var(--text3);font-size:11px">Yükleniyor…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── BORSA & EMTIA ─────────────────────────────────────────────── -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card">
+      <div class="card-h">
+        <div class="card-icon" style="background:rgba(37,99,235,.08)">📈</div>
+        <h3>Borsa & Endeksler</h3>
+      </div>
+      <div id="indices-list" style="display:flex;flex-direction:column;gap:4px"></div>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <div class="card-icon" style="background:rgba(217,119,6,.08)">🛢️</div>
+        <h3>Emtia & Kripto</h3>
+      </div>
+      <div id="commodities-list" style="display:flex;flex-direction:column;gap:4px"></div>
+    </div>
+  </div>
+
+</div>
+
+<script type="module" data-module="src/modules/prices.module.js"></script>
