@@ -1947,22 +1947,40 @@ function navigate(tabId) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.ni[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tabId));
   const tab = getEl('tab-'+tabId);
-  if(tab) tab.classList.add('active');
+  if(!tab) return;
+  tab.classList.add('active');
   const title = getEl('page-title');
   if(title) title.textContent = LABELS[tabId]||tabId;
   location.hash = tabId;
+  // Boş tab div'lerini pages/ klasöründen fetch et
+  const PAGES_WITH_FILES = ['prices','signals','youtube','datasources','bookmarks','tools','africa'];
+  if(PAGES_WITH_FILES.includes(tabId) && !tab._loaded) {
+    tab._loaded = true;
+    tab.innerHTML = '<div style="padding:40px;text-align:center;color:var(--text3)"><div class="sp" style="width:60%;height:14px;display:inline-block;margin-bottom:10px"></div></div>';
+    fetch(BASE+'/pages/'+tabId+'.html')
+      .then(r=>r.ok?r.text():Promise.reject(r.status))
+      .then(h=>{ tab.innerHTML=h; })
+      .catch(e=>{ tab.innerHTML='<div style="padding:40px;text-align:center;color:var(--text3)">Sayfa yüklenemedi: '+e+'</div>'; });
+  }
   // Sekmeye özel init
-  if(tabId==='prices'){import(BASE+'/src/modules/prices.module.js').then(m=>{if(m.PricesModule&&!window._pricesInit){window._pricesInit=1;m.PricesModule.init();}});}
-  if(tabId==='signals'){import(BASE+'/src/modules/signals.module.js').then(m=>{if(m.SignalsModule&&!window._signalsInit){window._signalsInit=1;m.SignalsModule.init();}});}
-  if(tabId==='youtube'){import(BASE+'/src/modules/youtube.module.js').then(m=>{if(m.YouTubeModule&&!window._ytInit){window._ytInit=1;m.YouTubeModule.init();}});}
-  if(tabId==='datasources'){import(BASE+'/src/modules/data-sources.module.js').then(m=>{if(m.DataSourcesModule&&!window._dsInit){window._dsInit=1;m.DataSourcesModule.init();}});}
-  if(tabId==='bookmarks'){import(BASE+'/src/modules/bookmarks.module.js').then(m=>{if(m.BookmarksModule&&!window._bmInit){window._bmInit=1;m.BookmarksModule.init();}});}
-  if(tabId==='tools'){import(BASE+'/src/modules/tools.module.js').then(m=>{if(m.ToolsModule&&!window._toolsInit){window._toolsInit=1;m.ToolsModule.init();}});}
-  if(tabId==='prices')     { import(BASE+'/src/modules/prices.module.js').then(m=>{m.PricesModule?.init();}); }
-  if(tabId==='signals')    { import(BASE+'/src/modules/signals.module.js').then(m=>{m.SignalsModule?.init();}); }
-  if(tabId==='youtube')    { import(BASE+'/src/modules/youtube.module.js').then(m=>{m.YouTubeModule?.init();}); }
-  if(tabId==='datasources'){ import(BASE+'/src/modules/data-sources.module.js').then(m=>{m.DataSourcesModule?.init(); window.AlarmModule?.init(); window.NotesModule?.init();}); }
-  if(tabId==='bookmarks')  { import(BASE+'/src/modules/bookmarks.module.js').then(m=>{m.BookmarksModule?.init();}); }
+  // Modül init — fetch'ten sonra tetikle
+  const MOD_MAP = {
+    prices:'prices.module.js', signals:'signals.module.js', youtube:'youtube.module.js',
+    datasources:'data-sources.module.js', bookmarks:'bookmarks.module.js', tools:'tools.module.js',
+  };
+  const MOD_KEY = {
+    prices:'PricesModule', signals:'SignalsModule', youtube:'YouTubeModule',
+    datasources:'DataSourcesModule', bookmarks:'BookmarksModule', tools:'ToolsModule',
+  };
+  if(MOD_MAP[tabId]) {
+    const delay = PAGES_WITH_FILES.includes(tabId) ? 400 : 0;
+    setTimeout(()=>{
+      import(BASE+'/src/modules/'+MOD_MAP[tabId]).then(m=>{
+        const mod = m[MOD_KEY[tabId]];
+        if(mod && !window['_init_'+tabId]) { window['_init_'+tabId]=1; mod.init(); }
+      });
+    }, delay);
+  }
   if(tabId==='weather' && !window._weatherLoaded) { loadWeather(); window._weatherLoaded=true; }
   if(tabId==='world') { renderLivePrices(); renderCommodities(); loadMarkets(); }
   if(tabId==='africa') { renderAfricaPipeline(); renderCRM(); renderNavlun(); }
@@ -2560,10 +2578,5 @@ setInterval(()=>{ if(!document.hidden) loadGold(); }, 300000);
 </script>
 
 <!-- YENİ SEKMELER: pages/ klasöründen dinamik yüklenir -->
-<div class="tab" id="tab-prices"></div>
-<div class="tab" id="tab-signals"></div>
-<div class="tab" id="tab-youtube"></div>
-<div class="tab" id="tab-datasources"></div>
-<div class="tab" id="tab-bookmarks"></div>
 </body>
 </html>
