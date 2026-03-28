@@ -1,26 +1,26 @@
 {
   "channels": [
     {
-      "name": "Cihat E. Çiçek",
+      "name": "Cihat E. \u00c7i\u00e7ek",
       "channel_id": "UCHExW8VqaE0a3W0kwSe_BXg",
       "url": "https://www.youtube.com/@cihatecicek",
-      "category": "Finans & Yatırım"
+      "category": "Finans & Yat\u0131r\u0131m"
     },
     {
       "name": "The Rich Dad Channel (Kiyosaki)",
       "channel_id": "UCuifm5ns5SRG8LZJ6gCfKyw",
       "url": "https://www.youtube.com/@theRichDadChannel",
-      "category": "Finans & Yatırım"
+      "category": "Finans & Yat\u0131r\u0131m"
     },
     {
       "name": "Jeffrey Gitomer",
       "channel_id": "UCGlhB4HWTBFoWIfHfuRYq6g",
       "url": "https://www.youtube.com/user/BuyGitomer",
-      "category": "Satış & Pazarlama"
+      "category": "Sat\u0131\u015f & Pazarlama"
     }
   ],
   "settings": {
     "max_videos_per_run": 5,
-    "lookback_hours": 48
+    "lookback_hours": 720
   }
 }
