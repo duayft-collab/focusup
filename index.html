@@ -1987,7 +1987,7 @@ function navigate(tabId) {
   if(tabId==='bizdev') { renderPipeline(); }
   if(tabId==='growth') { renderBooks(); renderGoals(); }
   if(tabId==='kids') { renderActivities(); }
-  if(tabId==='anayasa') { renderRuleTable(); renderChecklist(); }
+  if(tabId==='anayasa') { setTimeout(()=>{ if(typeof renderRuleTable==='function'){renderRuleTable(); renderChecklist();} }, 50); }
 }
 window.navigate = navigate;
 
@@ -1997,7 +1997,7 @@ document.getElementById('sidebar').addEventListener('click',e=>{
 });
 
 const initHash = location.hash.replace('#','');
-navigate(LABELS[initHash]?initHash:'dashboard');
+navigate(initHash&&initHash!=='anayasa'&&LABELS[initHash]?initHash:'dashboard');
 
 /* ══ TOAST ════════════════════════════════════════════════════════════════ */
 function toast(msg,type='info',undoFn=null) {
