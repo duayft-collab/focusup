@@ -1875,6 +1875,12 @@ a { text-decoration: none; color: inherit; }
     </div>
 
   </div><!-- end page-outlet -->
+<div class="tab" id="tab-prices"></div>
+<div class="tab" id="tab-signals"></div>
+<div class="tab" id="tab-youtube"></div>
+<div class="tab" id="tab-datasources"></div>
+<div class="tab" id="tab-bookmarks"></div>
+<div class="tab" id="tab-tools"></div>
 </main>
 </div><!-- end hub -->
 
@@ -2547,12 +2553,6 @@ window.generateReport=function(format='pdf'){
     <h2>Müşteriler</h2><table><tr><th>Firma</th><th>Ülke</th><th>Ödeme</th><th>Son Temas</th></tr>${crm.map(c=>`<tr><td>${c.name}</td><td>${c.country}</td><td>${c.payment}</td><td>${c.contact}</td></tr>`).join('')}</table>
     <script>window.onload=()=>window.print()<\/script>
 <!-- YENİ SEKMELER: pages/ klasöründen dinamik yüklenir -->
-<div class="tab" id="tab-prices"></div>
-<div class="tab" id="tab-signals"></div>
-<div class="tab" id="tab-youtube"></div>
-<div class="tab" id="tab-datasources"></div>
-<div class="tab" id="tab-bookmarks"></div>
-<div class="tab" id="tab-tools"></div>
 </body></html>`);
     w.document.close();
     toast('PDF hazırlandı','success');
